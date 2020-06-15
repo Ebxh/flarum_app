@@ -1,3 +1,6 @@
 {
-  "@@locale": "zh_CN"
+  "@@locale": "zh_CN",
+  "title_welcome": "欢迎！",
+  "content_add_flarum":"请添加一个 flarum 站点以继续：",
+  "button_done": "完成"
 }
