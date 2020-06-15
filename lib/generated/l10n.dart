@@ -62,6 +62,16 @@ class S {
       args: [],
     );
   }
+
+  /// `URL Error!`
+  String get error_url {
+    return Intl.message(
+      'URL Error!',
+      name: 'error_url',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

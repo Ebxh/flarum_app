@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "button_done" : MessageLookupByLibrary.simpleMessage("完成"),
     "content_add_flarum" : MessageLookupByLibrary.simpleMessage("请添加一个 flarum 站点以继续："),
+    "error_url" : MessageLookupByLibrary.simpleMessage("链接有误!"),
     "title_welcome" : MessageLookupByLibrary.simpleMessage("欢迎！")
   };
 }
