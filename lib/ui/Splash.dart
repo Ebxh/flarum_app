@@ -19,7 +19,7 @@ class _SplashState extends State<Splash> {
         S.delegate
       ],
       supportedLocales: [
-        const Locale('en', 'US'),
+        const Locale('en'),
         const Locale('zh', 'CN'),
       ],
       home: Builder(builder: (BuildContext context) {
