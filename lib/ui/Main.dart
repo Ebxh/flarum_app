@@ -1,3 +1,4 @@
+import 'package:core/api/decoder/forums.dart';
 import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/Setup.dart';
@@ -10,6 +11,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  bool _isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -30,17 +32,31 @@ class _MainPageState extends State<MainPage> {
         const Locale('zh', 'CN'),
       ],
       home: Builder(builder: (BuildContext context) {
-        AppConfig.init().then((value) {
-          if (AppConfig.getUrlList() == null ||
-              AppConfig.getUrlList().length == 0) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return Setup();
-            }));
-          }
-        });
-        return Scaffold();
+        initApp(context);
+        return Scaffold(
+          body: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Center(
+                  child: Text("hello"),
+                ),
+        );
       }),
     );
+  }
+
+  Future<void> initApp(BuildContext context) async {
+    if (!await AppConfig.init()) {
+      return;
+    }
+    if (AppConfig.getUrlList() == null || AppConfig.getUrlList().length == 0) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext context) {
+        return Setup();
+      })).then((value) {
+        if (value is ForumInfo) {}
+      });
+    }
   }
 }

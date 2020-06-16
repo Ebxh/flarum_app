@@ -1,4 +1,5 @@
 import 'package:core/api/Api.dart';
+import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
@@ -54,11 +55,14 @@ class _SplashState extends State<Setup> {
                               setState(() {
                                 _isLoading = true;
                               });
+                              var url = "${urlInput.text}/api";
                               var f =
-                                  await Api.checkUrl(urlInput.text + "/api/");
+                                  await Api.checkUrl(url);
                               if (f != null) {
                                 //do...
-
+                                AppConfig.addUrl(f.title,f.apiUrl);
+                                AppConfig.setUrlIndex(0);
+                                Navigator.pop(context,f);
                               } else {
                                 scaffold.currentState.showSnackBar(SnackBar(
                                     content: Text(S.of(context).error_url)));

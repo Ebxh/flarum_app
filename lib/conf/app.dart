@@ -1,23 +1,44 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConfig {
   static SharedPreferences _prefs;
 
-  static Future<void> init() async {
+  static Future<bool> init() async {
     if (_prefs == null) {
       _prefs = await SharedPreferences.getInstance();
+      return true;
     }
-    return;
+    return false;
   }
 
-  static Future<bool> addUrl(String url) async {
+  static Future<bool> addUrl(String title, String url) async {
+    title = base64Encode(utf8.encode(title));
+    url = base64Encode(utf8.encode(url));
     List<String> urlList = _prefs.getStringList("url_List");
-    urlList.add(url);
+    if (urlList == null) {
+      urlList = [];
+    }
+    urlList.add("$title|$url");
     return await _prefs.setStringList("url_List", urlList);
   }
 
-  static List<String> getUrlList() {
-    return _prefs.getStringList("url_List");
+  static Map<String, String> getUrlList() {
+    Map<String, String> urls = {};
+    var l = _prefs.getStringList("url_List");
+    if (l == null) {
+      return null;
+    }
+    l.forEach((String data) {
+      var d = data.split("|");
+      var title = d[0];
+      var url = d[1];
+      title = utf8.decode(base64Decode(title));
+      url = utf8.decode(base64Decode(url));
+      urls.addAll({"title": title, "url": url});
+    });
+    return urls;
   }
 
   static Future<bool> setUrlIndex(int index) async {
