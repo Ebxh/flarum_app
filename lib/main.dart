@@ -1,8 +1,8 @@
-import 'package:core/ui/Splash.dart';
+import 'package:core/ui/Main.dart';
 import 'package:core/util/SystemUI.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(Splash());
+  runApp(MainPage());
   SystemUI.setStatusBarColor(Colors.transparent, Brightness.dark);
 }

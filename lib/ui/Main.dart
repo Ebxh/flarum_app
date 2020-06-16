@@ -1,4 +1,8 @@
+import 'package:core/conf/app.dart';
+import 'package:core/generated/l10n.dart';
+import 'package:core/ui/Setup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -7,7 +11,36 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container();
+    return MaterialApp(
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        S.delegate
+      ],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('zh', 'CN'),
+      ],
+      home: Builder(builder: (BuildContext context) {
+        AppConfig.init().then((value) {
+          if (AppConfig.getUrlList() == null ||
+              AppConfig.getUrlList().length == 0) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) {
+              return Setup();
+            }));
+          }
+        });
+        return Scaffold();
+      }),
+    );
   }
 }
