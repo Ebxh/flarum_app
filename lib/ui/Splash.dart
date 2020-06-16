@@ -1,3 +1,4 @@
+import 'package:core/api/Api.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/util/String.dart';
 import 'package:flutter/material.dart';
@@ -53,19 +54,16 @@ class _SplashState extends State<Splash> {
                       TextField(
                         controller: urlInput,
                         decoration: InputDecoration(
-                            hintText: "https://discuss.flarum.org/"),
+                            hintText: "https://discuss.flarum.org"),
                       ),
                       Padding(
                         padding: EdgeInsets.only(
                           top: 10,
                         ),
                         child: RaisedButton(
-                          onPressed: () {
-                            if (StringCheck(urlInput.text).isUrl()) {
-                              //do sth
-                            } else {
-                              scaffold.currentState.showSnackBar(SnackBar(
-                                  content: Text(S.of(context).error_url)));
+                          onPressed: () async {
+                            if (await Api.checkUrl(urlInput.text + "/api/")){
+
                             }
                           },
                           child: Text(
