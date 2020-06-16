@@ -1,6 +1,5 @@
 import 'package:core/api/Api.dart';
 import 'package:core/generated/l10n.dart';
-import 'package:core/util/String.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -12,6 +11,7 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   TextEditingController urlInput = TextEditingController();
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -61,16 +61,33 @@ class _SplashState extends State<Splash> {
                           top: 10,
                         ),
                         child: RaisedButton(
-                          onPressed: () async {
-                            if (await Api.checkUrl(urlInput.text + "/api/")){
-
-                            }
-                          },
+                          onPressed: _isLoading
+                              ? null
+                              : () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  var f = await Api.checkUrl(
+                                      urlInput.text + "/api/");
+                                  if (f != null) {
+                                    //do...
+                                    
+                                  } else {
+                                    scaffold.currentState.showSnackBar(SnackBar(
+                                        content:
+                                            Text(S.of(context).error_url)));
+                                  }
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                },
                           child: Text(
-                            S.of(context).button_done,
+                            _isLoading ? "..." : S.of(context).button_done,
                             style: TextStyle(color: Colors.white),
                           ),
-                          color: Colors.blueAccent,
+                          color: _isLoading
+                              ? Colors.transparent
+                              : Colors.blueAccent,
                         ),
                       )
                     ],
