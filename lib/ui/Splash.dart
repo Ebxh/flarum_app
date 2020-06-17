@@ -1,3 +1,4 @@
+import 'package:core/api/Api.dart';
 import 'package:core/api/decoder/forums.dart';
 import 'package:core/ui/widgets.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ class Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    loadData(context);
     return Scaffold(
         bottomNavigationBar: Column(
       mainAxisSize: MainAxisSize.min,
@@ -23,5 +25,21 @@ class Splash extends StatelessWidget {
         )
       ],
     ));
+  }
+
+  void loadData(BuildContext context) async {
+    Api.apiUrl = info.apiUrl;
+    var tags = await Api.getTags();
+    print("-- miniTags --");
+    tags.miniTags.forEach((tag) {
+      print(tag.name);
+    });
+    print("-- Tags --");
+    tags.tags.forEach((position, tag) {
+      print(tag.name);
+      tag.children.forEach((position, tag) {
+        print(" >>${tag.name}");
+      });
+    });
   }
 }
