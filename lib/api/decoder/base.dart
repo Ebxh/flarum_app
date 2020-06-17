@@ -14,9 +14,23 @@ class BaseBean {
   }
 }
 
+class BaseListBean {
+  Links links;
+  BaseDataList data;
+  BaseIncluded included;
+
+  BaseListBean(this.links, this.data, this.included);
+
+  factory BaseListBean.formJson(String data) {
+    _BaseBean _baseBean = _BaseBean.formJson(data);
+    return BaseListBean(Links.formBase(_baseBean),
+        BaseDataList.formBase(_baseBean), BaseIncluded.formBase(_baseBean));
+  }
+}
+
 class _BaseBean {
   Map<String, String> links;
-  Map<String, dynamic> data;
+  dynamic data;
   List included;
 
   _BaseBean(this.links, this.data, this.included);
@@ -30,19 +44,37 @@ class _BaseBean {
 class BaseData {
   String type;
   String id;
-  Map<String,dynamic> attributes;
-  Map<String,dynamic> relationships;
+  Map<String, dynamic> attributes;
+  Map<String, dynamic> relationships;
 
   BaseData(this.type, this.id, this.attributes, this.relationships);
 
   factory BaseData.formBase(_BaseBean baseBean) {
     Map j = baseBean.data;
-    return BaseData(j["type"], j["id"], j["attributes"], j["relationships"]);
+    return BaseData.formMap(j);
   }
 
-  factory BaseData.formMap(Map map) {
-    Map j = map;
+  factory BaseData.formMap(Map j) {
     return BaseData(j["type"], j["id"], j["attributes"], j["relationships"]);
+  }
+}
+
+class BaseDataList {
+  List<BaseData> list;
+
+  BaseDataList(this.list);
+
+  factory BaseDataList.formBase(_BaseBean baseBean) {
+    List l = baseBean.data;
+    return BaseDataList.formList(l);
+  }
+
+  factory BaseDataList.formList(List l) {
+    List<BaseData> li = [];
+    l.forEach((map) {
+      li.add(BaseData.formMap(map));
+    });
+    return BaseDataList(li);
   }
 }
 
@@ -73,7 +105,7 @@ class Links {
 
   factory Links.formBase(_BaseBean baseBean) {
     Map j = baseBean.links;
-    if (j == null){
+    if (j == null) {
       return null;
     }
     return Links(j["first"], j["prev"], j["next"]);

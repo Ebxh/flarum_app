@@ -24,8 +24,8 @@ class AppConfig {
     return await _prefs.setStringList("url_List", urlList);
   }
 
-  static Map<String, String> getUrlList() {
-    Map<String, String> urls = {};
+  static List<UrlInfo> getUrlList() {
+    List<UrlInfo> list = [];
     var l = _prefs.getStringList("url_List");
     if (l == null) {
       return null;
@@ -36,9 +36,13 @@ class AppConfig {
       var url = d[1];
       title = utf8.decode(base64Decode(title));
       url = utf8.decode(base64Decode(url));
-      urls.addAll({"title": title, "url": url});
+      list.add(UrlInfo(title, url));
     });
-    return urls;
+    return list;
+  }
+
+  static UrlInfo getIndexUrl() {
+    return getUrlList()[getUrlIndex()];
   }
 
   static Future<bool> setUrlIndex(int index) async {
@@ -48,4 +52,11 @@ class AppConfig {
   static int getUrlIndex() {
     return _prefs.getInt("url_index");
   }
+}
+
+class UrlInfo {
+  String title;
+  String url;
+
+  UrlInfo(this.title, this.url);
 }

@@ -58,6 +58,10 @@ class ForumInfo {
 
   factory ForumInfo.formJson(String data) {
     var base = BaseBean.formJson(data);
+    return ForumInfo.formBase(base);
+  }
+
+  factory ForumInfo.formBase(BaseBean base) {
     if (base.data.type == "forums") {
       Map info = base.data.attributes;
       return ForumInfo(
