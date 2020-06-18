@@ -1,38 +1,48 @@
 import 'package:core/api/Api.dart';
+import 'package:core/api/data.dart';
 import 'package:core/api/decoder/forums.dart';
 import 'package:core/ui/widgets.dart';
 import 'package:flutter/material.dart';
 
-class Splash extends StatelessWidget {
+class Splash extends StatefulWidget {
   final ForumInfo info;
 
   Splash(this.info);
 
   @override
+  State<StatefulWidget> createState() {
+    return _SplashPage();
+  }
+}
+
+class _SplashPage extends State<Splash> {
+  @override
+  void initState() {
+    Api.apiUrl = widget.info.apiUrl;
+    Future.wait([
+      Api.getTags(),
+      Api.getDiscussionsTest(),
+    ]).then((results) {
+      Navigator.pop(context, InitData(widget.info, results[0], results[1]));
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    loadData(context);
     return Scaffold(
         bottomNavigationBar: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        SiteIcon(info),
+        SiteIcon(widget.info),
         ListTile(
           title: Text(
-            info.title,
+            widget.info.title,
             textAlign: TextAlign.center,
           ),
-          subtitle: Text(info.baseUrl, textAlign: TextAlign.center),
+          subtitle: Text(widget.info.baseUrl, textAlign: TextAlign.center),
         )
       ],
     ));
-  }
-
-  void loadData(BuildContext context) async {
-    Api.apiUrl = info.apiUrl;
-    var tags = await Api.getTags();
-    var ds = await Api.getDiscussionsTest();
-    ds.list.forEach((d) {
-      print(d.title);
-    });
   }
 }

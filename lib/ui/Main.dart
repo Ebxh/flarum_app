@@ -1,4 +1,5 @@
 import 'package:core/api/Api.dart';
+import 'package:core/api/data.dart';
 import 'package:core/api/decoder/forums.dart';
 import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
@@ -13,7 +14,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  bool _isLoading = true;
+  InitData initData;
+  bool _isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -34,7 +36,14 @@ class _MainPageState extends State<MainPage> {
         const Locale('zh', 'CN'),
       ],
       home: Builder(builder: (BuildContext context) {
-        initApp(context);
+        if (initData == null && !_isLoading) {
+          initApp(context).then((result) {
+            setState(() {
+              initData = result;
+              _isLoading = false;
+            });
+          });
+        }
         return Scaffold(
           body: _isLoading
               ? Center(
@@ -48,9 +57,10 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Future<void> initApp(BuildContext context) async {
+  Future<InitData> initApp(BuildContext context) async {
+    _isLoading = true;
     if (!await AppConfig.init()) {
-      return;
+      return null;
     }
     ForumInfo info;
     if (AppConfig.getUrlList() == null || AppConfig.getUrlList().length == 0) {
@@ -62,8 +72,16 @@ class _MainPageState extends State<MainPage> {
       var urlInfo = AppConfig.getIndexUrl();
       info = await Api.checkUrl(urlInfo.url);
     }
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+    if (info == null) {
+      return null;
+    }
+    var result = await Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) {
       return Splash(info);
     }));
+    if (result != null || result is InitData) {
+      return result;
+    }
+    return null;
   }
 }
