@@ -1,5 +1,4 @@
-import 'dart:collection';
-
+import 'package:core/api/decoder/discussions.dart';
 import 'package:core/api/decoder/forums.dart';
 import 'package:core/util/String.dart';
 import 'package:dio/dio.dart';
@@ -25,6 +24,18 @@ class Api {
   static Future<Tags> getTags() async {
     try {
       return TagInfo.getListFormJson((await _dio.get("$apiUrl/tags")).data);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  static Future<Discussions> getDiscussionsTest() async {
+    return Discussions.formJson((await _dio.get(
+        "$apiUrl/discussions?include=user%2ClastPostedUser%2CfirstPost%2Ctags&&page%5Boffset%5D=20"))
+        .data);
+    try {
+
     } catch (e) {
       print(e);
       return null;
