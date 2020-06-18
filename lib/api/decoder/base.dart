@@ -29,7 +29,7 @@ class BaseListBean {
 }
 
 class _BaseBean {
-  Map<String, String> links;
+  Map<String, dynamic> links;
   dynamic data;
   List included;
 
@@ -43,7 +43,7 @@ class _BaseBean {
 
 class BaseData {
   String type;
-  String id;
+  int id;
   Map<String, dynamic> attributes;
   Map<String, dynamic> relationships;
 
@@ -55,7 +55,8 @@ class BaseData {
   }
 
   factory BaseData.formMap(Map j) {
-    return BaseData(j["type"], j["id"], j["attributes"], j["relationships"]);
+    return BaseData(
+        j["type"], int.parse(j["id"]), j["attributes"], j["relationships"]);
   }
 }
 

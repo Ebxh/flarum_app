@@ -73,7 +73,7 @@ class TagInfo {
     List<TagInfo> children = [];
     List<TagInfo> miniTags = [];
     base.data.list.forEach((m) {
-      var t = TagInfo.formMapAndId(m.attributes, int.parse(m.id));
+      var t = TagInfo.formMapAndId(m.attributes, m.id);
       if (t.position == null) {
         miniTags.add(t);
       } else if (t.isChild) {

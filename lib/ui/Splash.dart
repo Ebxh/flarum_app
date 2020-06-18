@@ -30,5 +30,9 @@ class Splash extends StatelessWidget {
   void loadData(BuildContext context) async {
     Api.apiUrl = info.apiUrl;
     var tags = await Api.getTags();
+    var ds = await Api.getDiscussionsTest();
+    ds.list.forEach((d) {
+      print(d.title);
+    });
   }
 }

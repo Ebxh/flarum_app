@@ -29,7 +29,7 @@ class Groups {
   factory Groups.formBase(BaseListBean base) {
     List<GroupInfo> list = [];
     base.data.list.forEach((m) {
-      var g = GroupInfo.formMapAndId(m.attributes, int.parse(m.id));
+      var g = GroupInfo.formMapAndId(m.attributes, m.id);
       list.add(g);
     });
     return Groups(list);
