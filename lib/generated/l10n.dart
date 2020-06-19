@@ -72,6 +72,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Switch Site`
+  String get title_switchSite {
+    return Intl.message(
+      'Switch Site',
+      name: 'title_switchSite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Site`
+  String get title_addSite {
+    return Intl.message(
+      'Add Site',
+      name: 'title_addSite',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

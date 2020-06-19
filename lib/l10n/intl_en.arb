@@ -3,5 +3,7 @@
   "title_welcome": "Welcome!",
   "content_add_flarum": "Please enter a flarum site to continue:",
   "button_done": "Done",
-  "error_url": "URL Error!"
+  "error_url": "URL Error!",
+  "title_switchSite":"Switch Site",
+  "title_addSite":"Add Site"
 }

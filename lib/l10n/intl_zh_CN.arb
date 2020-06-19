@@ -3,5 +3,7 @@
   "title_welcome": "欢迎！",
   "content_add_flarum":"请添加一个 flarum 站点以继续：",
   "button_done": "完成",
-  "error_url": "链接有误!"
+  "error_url": "链接有误!",
+  "title_switchSite":"切换站点",
+  "title_addSite":"添加站点"
 }

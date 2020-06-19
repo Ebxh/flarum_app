@@ -16,6 +16,7 @@ class _SplashState extends State<Setup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
         key: scaffold,
         body: Center(
           child: Card(
@@ -56,13 +57,16 @@ class _SplashState extends State<Setup> {
                                 _isLoading = true;
                               });
                               var url = "${urlInput.text}/api";
-                              var f =
-                                  await Api.checkUrl(url);
+                              var f = await Api.checkUrl(url);
                               if (f != null) {
-                                //do...
-                                AppConfig.addUrl(f.title,f.apiUrl);
-                                AppConfig.setUrlIndex(0);
-                                Navigator.pop(context,f);
+                                AppConfig.addSite(
+                                    f.title, f.apiUrl, f.faviconUrl);
+                                var index = AppConfig.getUrlIndex();
+                                if (index == null) {
+                                  index = 0;
+                                }
+                                AppConfig.setUrlIndex(index);
+                                Navigator.pop(context, f);
                               } else {
                                 scaffold.currentState.showSnackBar(SnackBar(
                                     content: Text(S.of(context).error_url)));

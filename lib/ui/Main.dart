@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/forums.dart';
@@ -57,30 +58,75 @@ class _MainPageState extends State<MainPage> {
                   title: Text(initData.forumInfo.title),
                   centerTitle: true,
                   leading: IconButton(
+                      tooltip: S.of(context).title_switchSite,
                       icon: Icon(Icons.keyboard_arrow_down),
                       onPressed: () {
-                        showModalBottomSheet(context: context, builder: (BuildContext context){
-                          return Scaffold(
-                            appBar: AppBar(
-                              backgroundColor: Colors.white,
-                              title: Text(
-                                "切换站点",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              leading: IconButton(
-                                  icon: Icon(
-                                    Icons.chevron_left,
-                                    color: Colors.black,
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              var sites = AppConfig.getSiteList();
+                              return Scaffold(
+                                appBar: AppBar(
+                                  backgroundColor: Colors.white,
+                                  elevation: 0.1,
+                                  title: Text(
+                                    S.of(context).title_switchSite,
+                                    style: TextStyle(color: Colors.black),
                                   ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  }),
-                            ),
-                            body: ListView.builder(itemBuilder: (BuildContext context,int index){
-                              return Text(index.toString());
-                            }),
-                          );
-                        });
+                                  leading: IconButton(
+                                      icon: Icon(
+                                        Icons.chevron_left,
+                                        color: Colors.black,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      }),
+                                  actions: <Widget>[
+                                    IconButton(
+                                      icon: Icon(Icons.add),
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                        addSite(context);
+                                      },
+                                      color: Colors.black,
+                                      tooltip: S.of(context).title_addSite,
+                                    )
+                                  ],
+                                ),
+                                body: ListView.builder(
+                                    itemCount: sites.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Dismissible(
+                                        key: Key(index.toString()),
+                                        child: ListTile(
+                                          title: Text(sites[index].title),
+                                          subtitle: Text(sites[index]
+                                              .url
+                                              .replaceAll("/api", "")),
+                                          leading: CachedNetworkImage(
+                                              height: 42,
+                                              imageUrl:
+                                                  sites[index].faviconUrl),
+                                          onTap: () {
+                                            AppConfig.setUrlIndex(index);
+                                            refreshUI();
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        onDismissed:
+                                            (DismissDirection direction) {
+                                          AppConfig.removeSite(index);
+                                          if (AppConfig.getSiteList().length ==
+                                              0) {
+                                            Navigator.pop(context);
+                                            refreshUI();
+                                          }
+                                        },
+                                      );
+                                    }),
+                              );
+                            });
                       }),
                   actions: <Widget>[
                     IconButton(
@@ -121,21 +167,14 @@ class _MainPageState extends State<MainPage> {
 
   Future<InitData> initApp(BuildContext context) async {
     _isLoading = true;
-    if (!await AppConfig.init()) {
-      return null;
-    }
+    await AppConfig.init();
     ForumInfo info;
-    if (AppConfig.getUrlList() == null || AppConfig.getUrlList().length == 0) {
-      info = await Navigator.of(context)
-          .push(MaterialPageRoute(builder: (BuildContext context) {
-        return Setup();
-      }));
+    if (AppConfig.getSiteList() == null ||
+        AppConfig.getSiteList().length == 0) {
+      info = await addSite(context);
     } else {
-      var urlInfo = AppConfig.getIndexUrl();
-      info = await Api.checkUrl(urlInfo.url);
-    }
-    if (info == null) {
-      return null;
+      info = await Api.checkUrl(
+          AppConfig.getSiteList()[AppConfig.getUrlIndex()].url);
     }
     var result = await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) {
@@ -145,5 +184,19 @@ class _MainPageState extends State<MainPage> {
       return result;
     }
     return null;
+  }
+
+  Future<ForumInfo> addSite(BuildContext context) async {
+    ForumInfo info = await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return Setup();
+    }));
+    return info;
+  }
+
+  void refreshUI() {
+    setState(() {
+      initData = null;
+    });
   }
 }

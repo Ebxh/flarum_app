@@ -24,6 +24,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "button_done" : MessageLookupByLibrary.simpleMessage("Done"),
     "content_add_flarum" : MessageLookupByLibrary.simpleMessage("Please enter a flarum site to continue:"),
     "error_url" : MessageLookupByLibrary.simpleMessage("URL Error!"),
+    "title_addSite" : MessageLookupByLibrary.simpleMessage("Add Site"),
+    "title_switchSite" : MessageLookupByLibrary.simpleMessage("Switch Site"),
     "title_welcome" : MessageLookupByLibrary.simpleMessage("Welcome!")
   };
 }
