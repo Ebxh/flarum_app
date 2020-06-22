@@ -4,7 +4,6 @@ import 'package:core/api/data.dart';
 import 'package:core/api/decoder/forums.dart';
 import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
-import 'package:core/ui/Setup.dart';
 import 'package:core/ui/Splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -61,72 +60,7 @@ class _MainPageState extends State<MainPage> {
                       tooltip: S.of(context).title_switchSite,
                       icon: Icon(Icons.keyboard_arrow_down),
                       onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext context) {
-                              var sites = AppConfig.getSiteList();
-                              return Scaffold(
-                                appBar: AppBar(
-                                  backgroundColor: Colors.white,
-                                  elevation: 0.1,
-                                  title: Text(
-                                    S.of(context).title_switchSite,
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  leading: IconButton(
-                                      icon: Icon(
-                                        Icons.chevron_left,
-                                        color: Colors.black,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      }),
-                                  actions: <Widget>[
-                                    IconButton(
-                                      icon: Icon(Icons.add),
-                                      onPressed: () async {
-                                        Navigator.pop(context);
-                                        addSite(context);
-                                      },
-                                      color: Colors.black,
-                                      tooltip: S.of(context).title_addSite,
-                                    )
-                                  ],
-                                ),
-                                body: ListView.builder(
-                                    itemCount: sites.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Dismissible(
-                                        key: Key(index.toString()),
-                                        child: ListTile(
-                                          title: Text(sites[index].title),
-                                          subtitle: Text(sites[index]
-                                              .url
-                                              .replaceAll("/api", "")),
-                                          leading: CachedNetworkImage(
-                                              height: 42,
-                                              imageUrl:
-                                                  sites[index].faviconUrl),
-                                          onTap: () {
-                                            AppConfig.setUrlIndex(index);
-                                            refreshUI();
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                        onDismissed:
-                                            (DismissDirection direction) {
-                                          AppConfig.removeSite(index);
-                                          if (AppConfig.getSiteList().length ==
-                                              0) {
-                                            Navigator.pop(context);
-                                            refreshUI();
-                                          }
-                                        },
-                                      );
-                                    }),
-                              );
-                            });
+                        showSites(context);
                       }),
                   actions: <Widget>[
                     IconButton(
@@ -171,8 +105,11 @@ class _MainPageState extends State<MainPage> {
     ForumInfo info;
     if (AppConfig.getSiteList() == null ||
         AppConfig.getSiteList().length == 0) {
-      info = await addSite(context);
+      info = await addSite(context, true);
     } else {
+      if (AppConfig.getSiteList().length < AppConfig.getUrlIndex()) {
+        AppConfig.setUrlIndex(0);
+      }
       info = await Api.checkUrl(
           AppConfig.getSiteList()[AppConfig.getUrlIndex()].url);
     }
@@ -186,11 +123,146 @@ class _MainPageState extends State<MainPage> {
     return null;
   }
 
-  Future<ForumInfo> addSite(BuildContext context) async {
-    ForumInfo info = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
-      return Setup();
-    }));
+  void showSites(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (BuildContext context) {
+          var sites = AppConfig.getSiteList();
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0.1,
+              title: Text(
+                S.of(context).title_switchSite,
+                style: TextStyle(color: Colors.black),
+              ),
+              leading: IconButton(
+                  icon: Icon(
+                    Icons.chevron_left,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    var info = await addSite(context, false);
+                    if (info != null) {
+                      showSites(ctx);
+                    }
+                  },
+                  color: Colors.black,
+                  tooltip: S.of(context).title_addSite,
+                )
+              ],
+            ),
+            body: ListView.builder(
+                itemCount: sites.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Dismissible(
+                    key: Key(sites[index].url),
+                    child: ListTile(
+                      title: Text(sites[index].title),
+                      subtitle: Text(sites[index].url.replaceAll("/api", "")),
+                      leading: CachedNetworkImage(
+                          height: 42, imageUrl: sites[index].faviconUrl),
+                      onTap: () {
+                        AppConfig.setUrlIndex(index);
+                        refreshUI();
+                        Navigator.pop(context);
+                      },
+                    ),
+                    onDismissed: (DismissDirection direction) {
+                      AppConfig.removeSite(index);
+                      if (index == AppConfig.getUrlIndex()) {
+                        Navigator.pop(context);
+                        AppConfig.setUrlIndex(0);
+                        refreshUI();
+                      }
+                      if (AppConfig.getSiteList().length == 0) {
+                        Navigator.pop(context);
+                        refreshUI();
+                      }
+                    },
+                  );
+                }),
+          );
+        });
+  }
+
+  Future<ForumInfo> addSite(BuildContext context, bool firstAdd) async {
+    TextEditingController urlInput = TextEditingController();
+    String err;
+    var isLoading = false;
+    var canDismissible = true;
+    if (firstAdd) {
+      canDismissible = false;
+    } else {
+      canDismissible = !isLoading;
+    }
+    ForumInfo info = await showDialog(
+        barrierDismissible: canDismissible,
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            contentPadding: EdgeInsets.all(20),
+            children: <Widget>[
+              Text(
+                S.of(context).title_welcome,
+                style: TextStyle(fontSize: 32),
+                textAlign: TextAlign.center,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Text(S.of(context).content_add_flarum),
+              ),
+              TextField(
+                controller: urlInput,
+                decoration:
+                    InputDecoration(hintText: "https://", errorText: err),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 10,
+                ),
+                child: RaisedButton(
+                  onPressed: isLoading
+                      ? null
+                      : () async {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {
+                            isLoading = true;
+                          });
+                          var url = "${urlInput.text}/api";
+                          var f = await Api.checkUrl(url);
+                          if (f != null) {
+                            AppConfig.addSite(f.title, f.apiUrl, f.faviconUrl);
+                            var index = AppConfig.getUrlIndex();
+                            if (index == null) {
+                              index = 0;
+                            }
+                            AppConfig.setUrlIndex(index);
+                            Navigator.pop(context, f);
+                          } else {
+                            err = S.of(context).error_url;
+                          }
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                  child: Text(
+                    isLoading ? "..." : S.of(context).button_done,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  color: isLoading ? Colors.transparent : Colors.blueAccent,
+                ),
+              )
+            ],
+          );
+        });
     return info;
   }
 
