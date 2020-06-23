@@ -5,6 +5,8 @@ import 'package:core/api/decoder/forums.dart';
 import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/Splash.dart';
+import 'package:core/ui/page/main/Home.dart';
+import 'package:core/ui/page/main/Tags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -17,6 +19,7 @@ class _MainPageState extends State<MainPage> {
   InitData initData;
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
   bool _isLoading = false;
+  int pageIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -67,6 +70,10 @@ class _MainPageState extends State<MainPage> {
                         icon: Icon(Icons.account_circle), onPressed: () {})
                   ],
                 ),
+                body: IndexedStack(
+                  index: pageIndex,
+                  children: <Widget>[HomePage(initData), TagsPage(initData)],
+                ),
                 floatingActionButton: FloatingActionButton(
                     child: Icon(Icons.add), onPressed: () {}),
                 floatingActionButtonLocation:
@@ -83,14 +90,22 @@ class _MainPageState extends State<MainPage> {
                           Icons.home,
                           color: Colors.white,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            pageIndex = 0;
+                          });
+                        },
                       ),
                       IconButton(
                           icon: Icon(
                             Icons.apps,
                             color: Colors.white,
                           ),
-                          onPressed: () {})
+                          onPressed: () {
+                            setState(() {
+                              pageIndex = 1;
+                            });
+                          })
                     ],
                   ),
                 ),
