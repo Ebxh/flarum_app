@@ -19,7 +19,7 @@ class TagInfo {
   String lastPostedAt;
   bool canStartDiscussion;
   bool canAddToDiscussion;
-  LinkedHashMap<int, TagInfo> children;
+  SplayTreeMap<int, TagInfo> children;
   int parent;
 
   TagInfo(
@@ -60,7 +60,7 @@ class TagInfo {
         m["lastPostedAt"],
         m["canStartDiscussion"],
         m["canAddToDiscussion"],
-        LinkedHashMap(),
+        SplayTreeMap(),
         -1);
   }
 
@@ -88,24 +88,24 @@ class TagInfo {
       var parent = tags[tag.parent];
       parent.children.addAll({tag.position: tag});
     });
-    LinkedHashMap<int, TagInfo> linkedList = LinkedHashMap();
+    SplayTreeMap<int, TagInfo> splayTreeList = SplayTreeMap();
     tags.forEach((id, tag) {
-      linkedList.addAll({tag.position: tag});
+      splayTreeList.addAll({tag.position: tag});
     });
 
+    SplayTreeMap<int, TagInfo> positionFixedSplayTreeListList = SplayTreeMap();
     var i = 0;
-    LinkedHashMap<int, TagInfo> positionFixedMap = LinkedHashMap();
-    linkedList.forEach((position, t) {
-      positionFixedMap.addAll({i: t});
+    splayTreeList.forEach((position, t) {
+      positionFixedSplayTreeListList.addAll({i: t});
       i++;
     });
 
-    return Tags(positionFixedMap, miniTags);
+    return Tags(positionFixedSplayTreeListList, miniTags);
   }
 }
 
 class Tags {
-  LinkedHashMap<int, TagInfo> tags;
+  SplayTreeMap<int, TagInfo> tags;
   List<TagInfo> miniTags;
 
   Tags(this.tags, this.miniTags);
