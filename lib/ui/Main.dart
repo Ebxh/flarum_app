@@ -7,6 +7,7 @@ import 'package:core/generated/l10n.dart';
 import 'package:core/ui/Splash.dart';
 import 'package:core/ui/page/main/Home.dart';
 import 'package:core/ui/page/main/Tags.dart';
+import 'package:core/util/HexColor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -20,6 +21,7 @@ class _MainPageState extends State<MainPage> {
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
   bool _isLoading = false;
   int pageIndex = 0;
+  Color textColor;
   @override
   void initState() {
     super.initState();
@@ -28,7 +30,12 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(brightness: Brightness.light),
+      theme: ThemeData(
+          primaryColor:
+              initData != null && initData.forumInfo.themePrimaryColor != null
+                  ? HexColor.fromHex(initData.forumInfo.themePrimaryColor)
+                  : Colors.blue,
+          brightness: Brightness.light),
       darkTheme: ThemeData(brightness: Brightness.dark),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
@@ -41,6 +48,9 @@ class _MainPageState extends State<MainPage> {
         const Locale('zh', 'CN'),
       ],
       home: Builder(builder: (BuildContext context) {
+        textColor = Theme.of(context).primaryColor.computeLuminance() < 0.5
+            ? Colors.white
+            : Colors.black;
         if (initData == null && !_isLoading) {
           initApp(context).then((result) {
             setState(() {
@@ -57,17 +67,17 @@ class _MainPageState extends State<MainPage> {
             : Scaffold(
                 key: scaffold,
                 appBar: AppBar(
-                  title: Text(initData.forumInfo.title),
+                  title: Text(initData.forumInfo.title,style: TextStyle(color: textColor),),
                   centerTitle: true,
                   leading: IconButton(
                       tooltip: S.of(context).title_switchSite,
-                      icon: Icon(Icons.keyboard_arrow_down),
+                      icon: Icon(Icons.keyboard_arrow_down,color: textColor,),
                       onPressed: () {
                         showSites(context);
                       }),
                   actions: <Widget>[
                     IconButton(
-                        icon: Icon(Icons.account_circle), onPressed: () {})
+                        icon: Icon(Icons.account_circle,color: textColor,), onPressed: () {})
                   ],
                 ),
                 body: IndexedStack(
@@ -75,7 +85,9 @@ class _MainPageState extends State<MainPage> {
                   children: <Widget>[HomePage(initData), TagsPage(initData)],
                 ),
                 floatingActionButton: FloatingActionButton(
-                    child: Icon(Icons.add), onPressed: () {}),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: Icon(Icons.add,color: textColor,),
+                    onPressed: () {}),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerDocked,
                 bottomNavigationBar: BottomAppBar(
@@ -88,7 +100,7 @@ class _MainPageState extends State<MainPage> {
                       IconButton(
                         icon: Icon(
                           Icons.home,
-                          color: Colors.white,
+                          color: textColor,
                         ),
                         onPressed: () {
                           setState(() {
@@ -99,7 +111,7 @@ class _MainPageState extends State<MainPage> {
                       IconButton(
                           icon: Icon(
                             Icons.apps,
-                            color: Colors.white,
+                            color: textColor,
                           ),
                           onPressed: () {
                             setState(() {
