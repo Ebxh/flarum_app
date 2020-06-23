@@ -67,17 +67,27 @@ class _MainPageState extends State<MainPage> {
             : Scaffold(
                 key: scaffold,
                 appBar: AppBar(
-                  title: Text(initData.forumInfo.title,style: TextStyle(color: textColor),),
+                  title: Text(
+                    initData.forumInfo.title,
+                    style: TextStyle(color: textColor),
+                  ),
                   centerTitle: true,
                   leading: IconButton(
                       tooltip: S.of(context).title_switchSite,
-                      icon: Icon(Icons.keyboard_arrow_down,color: textColor,),
+                      icon: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: textColor,
+                      ),
                       onPressed: () {
                         showSites(context);
                       }),
                   actions: <Widget>[
                     IconButton(
-                        icon: Icon(Icons.account_circle,color: textColor,), onPressed: () {})
+                        icon: Icon(
+                          Icons.account_circle,
+                          color: textColor,
+                        ),
+                        onPressed: () {})
                   ],
                 ),
                 body: IndexedStack(
@@ -86,7 +96,10 @@ class _MainPageState extends State<MainPage> {
                 ),
                 floatingActionButton: FloatingActionButton(
                     backgroundColor: Theme.of(context).primaryColor,
-                    child: Icon(Icons.add,color: textColor,),
+                    child: Icon(
+                      Icons.add,
+                      color: textColor,
+                    ),
                     onPressed: () {}),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerDocked,
@@ -284,7 +297,9 @@ class _MainPageState extends State<MainPage> {
                     isLoading ? "..." : S.of(context).button_done,
                     style: TextStyle(color: Colors.white),
                   ),
-                  color: isLoading ? Colors.transparent : Colors.blueAccent,
+                  color: isLoading
+                      ? Colors.transparent
+                      : Theme.of(context).primaryColor,
                 ),
               )
             ],
