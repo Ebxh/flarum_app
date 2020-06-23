@@ -83,16 +83,24 @@ class TagInfo {
       } else {
         tags.addAll({t.id: t});
       }
-      children.forEach((tag) {
-        var parent = tags[tag.parent];
-        parent.children.addAll({tag.position: tag});
-      });
+    });
+    children.forEach((tag) {
+      var parent = tags[tag.parent];
+      parent.children.addAll({tag.position: tag});
     });
     LinkedHashMap<int, TagInfo> linkedList = LinkedHashMap();
-    tags.forEach((_, tag) {
+    tags.forEach((id, tag) {
       linkedList.addAll({tag.position: tag});
     });
-    return Tags(linkedList, miniTags);
+
+    var i = 0;
+    LinkedHashMap<int, TagInfo> positionFixedMap = LinkedHashMap();
+    linkedList.forEach((position, t) {
+      positionFixedMap.addAll({i: t});
+      i++;
+    });
+
+    return Tags(positionFixedMap, miniTags);
   }
 }
 

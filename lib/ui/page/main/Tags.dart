@@ -61,7 +61,9 @@ class _TagsPageState extends State<TagsPage> {
               ),
             ),
             Padding(
-              padding: children.length != 0 ? EdgeInsets.only(bottom: 10) : EdgeInsets.all(0),
+              padding: children.length != 0
+                  ? EdgeInsets.only(bottom: 10)
+                  : EdgeInsets.all(0),
               child: Column(children: children),
             )
           ],
