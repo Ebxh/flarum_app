@@ -41,10 +41,10 @@ class _TagsPageState extends State<TagsPage> {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6))),
             child: Padding(
-              padding: EdgeInsets.only(left: 30, top: 8, bottom: 8),
+              padding: EdgeInsets.only(left: 30, top: 6, bottom: 8),
               child: Text(
                 t.name,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -60,7 +60,7 @@ class _TagsPageState extends State<TagsPage> {
             ListTile(
               title: Text(
                 tag.name,
-                style: TextStyle(color: titleColor, fontSize: 24),
+                style: TextStyle(color: titleColor, fontSize: 20),
               ),
             ),
             Padding(
