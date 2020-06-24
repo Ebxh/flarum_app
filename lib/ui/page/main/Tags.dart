@@ -16,8 +16,11 @@ class _TagsPageState extends State<TagsPage> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.initData.tags.tags.length,
+        itemCount: widget.initData.tags.tags.length + 1,
         itemBuilder: (BuildContext context, int index) {
+          if (index == widget.initData.tags.tags.length) {
+            return makeMiniCard(widget.initData.tags.miniTags, context);
+          }
           return makeTagCard(widget.initData.tags.tags[index], context);
         });
   }
@@ -67,6 +70,48 @@ class _TagsPageState extends State<TagsPage> {
               child: Column(children: children),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget makeMiniCard(List<TagInfo> miniTags, BuildContext context) {
+    List<Widget> cards = [];
+    miniTags.forEach((t) {
+      var backgroundColor = HexColor.fromHex(t.color);
+      var titleColor = backgroundColor.computeLuminance() < 0.5
+          ? Colors.white
+          : Colors.black;
+      cards.add(SizedBox(
+        height: 46,
+        child: Card(
+          color: backgroundColor,
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              t.name,
+              style: TextStyle(color: titleColor, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ));
+    });
+    return Padding(
+      padding: EdgeInsets.only(bottom: 25),
+      child: SizedBox(
+        height: 50,
+        child: Center(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SizedBox(
+              height: 50,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: cards,
+              ),
+            ),
+          ),
         ),
       ),
     );

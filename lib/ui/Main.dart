@@ -9,6 +9,7 @@ import 'package:core/ui/page/main/Home.dart';
 import 'package:core/ui/page/main/Tags.dart';
 import 'package:core/util/HexColor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MainPage extends StatefulWidget {
@@ -51,6 +52,7 @@ class _MainPageState extends State<MainPage> {
         textColor = Theme.of(context).primaryColor.computeLuminance() < 0.5
             ? Colors.white
             : Colors.black;
+
         if (initData == null && !_isLoading) {
           initApp(context).then((result) {
             setState(() {
