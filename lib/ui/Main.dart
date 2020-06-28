@@ -69,9 +69,23 @@ class _MainPageState extends State<MainPage> {
             : Scaffold(
                 key: scaffold,
                 appBar: AppBar(
-                  title: Text(
-                    initData.forumInfo.title,
-                    style: TextStyle(color: textColor),
+                  title: ListTile(
+                    title: Text(
+                      initData.forumInfo.title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: textColor, fontSize: 20),
+                    ),
+                    subtitle: pageIndex == 0 ? SizedBox(
+                      height: 24,
+                      child: FlatButton(
+                          splashColor: Colors.white54,
+                          onPressed: () {},
+                          child: Text(
+                            "Latest",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white70),
+                          )),
+                    ) : null,
                   ),
                   centerTitle: true,
                   leading: IconButton(
@@ -257,8 +271,9 @@ class _MainPageState extends State<MainPage> {
             contentPadding: EdgeInsets.all(20),
             children: <Widget>[
               Text(
-                firstAdd ?
-                S.of(context).title_welcome :S.of(context).title_addSite,
+                firstAdd
+                    ? S.of(context).title_welcome
+                    : S.of(context).title_addSite,
                 style: TextStyle(fontSize: 32),
                 textAlign: TextAlign.center,
               ),

@@ -1,6 +1,8 @@
 import 'package:core/api/data.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets.dart';
+
 class HomePage extends StatefulWidget {
   final InitData initData;
 
@@ -16,9 +18,8 @@ class _HomeState extends State<HomePage> {
     return ListView.builder(
         itemCount: widget.initData.discussions.list.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text(widget.initData.discussions.list[index].title),
-          );
+          var d = widget.initData.discussions.list[index];
+          return ListTile(title: Text(d.title), leading: Avatar(d.user));
         });
   }
 }
