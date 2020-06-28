@@ -88,9 +88,11 @@ class _TagsPageState extends State<TagsPage> {
           color: backgroundColor,
           child: Padding(
             padding: EdgeInsets.all(10),
-            child: Text(
-              t.name,
-              style: TextStyle(color: titleColor, fontWeight: FontWeight.bold),
+            child: Center(
+              child: Text(
+                t.name,
+                style: TextStyle(color: titleColor, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ),

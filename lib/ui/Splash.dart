@@ -30,19 +30,23 @@ class _SplashPage extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        bottomNavigationBar: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        SiteIcon(widget.info),
-        ListTile(
-          title: Text(
-            widget.info.title,
-            textAlign: TextAlign.center,
-          ),
-          subtitle: Text(widget.info.baseUrl, textAlign: TextAlign.center),
-        )
-      ],
-    ));
+    return WillPopScope(
+        child: Scaffold(
+            bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SiteIcon(widget.info),
+            ListTile(
+              title: Text(
+                widget.info.title,
+                textAlign: TextAlign.center,
+              ),
+              subtitle: Text(widget.info.baseUrl, textAlign: TextAlign.center),
+            )
+          ],
+        )),
+        onWillPop: () {
+          return Future.value(false);
+        });
   }
 }

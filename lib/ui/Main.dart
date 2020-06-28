@@ -155,6 +155,9 @@ class _MainPageState extends State<MainPage> {
       info = await Api.checkUrl(
           AppConfig.getSiteList()[AppConfig.getUrlIndex()].url);
     }
+    if (info == null) {
+      return null;
+    }
     var result = await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) {
       return Splash(info);
@@ -223,6 +226,7 @@ class _MainPageState extends State<MainPage> {
                         Navigator.pop(context);
                         AppConfig.setUrlIndex(0);
                         refreshUI();
+                        return;
                       }
                       if (AppConfig.getSiteList().length == 0) {
                         Navigator.pop(context);
@@ -253,7 +257,8 @@ class _MainPageState extends State<MainPage> {
             contentPadding: EdgeInsets.all(20),
             children: <Widget>[
               Text(
-                S.of(context).title_welcome,
+                firstAdd ?
+                S.of(context).title_welcome :S.of(context).title_addSite,
                 style: TextStyle(fontSize: 32),
                 textAlign: TextAlign.center,
               ),
