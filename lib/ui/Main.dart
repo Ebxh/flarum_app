@@ -22,11 +22,8 @@ class _MainPageState extends State<MainPage> {
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
   bool _isLoading = false;
   int pageIndex = 0;
+  String discussionSort = "";
   Color textColor;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,19 +70,45 @@ class _MainPageState extends State<MainPage> {
                     title: Text(
                       initData.forumInfo.title,
                       textAlign: TextAlign.center,
+                      maxLines: 1,
                       style: TextStyle(color: textColor, fontSize: 20),
                     ),
-                    subtitle: pageIndex == 0 ? SizedBox(
-                      height: 24,
-                      child: FlatButton(
-                          splashColor: Colors.white54,
-                          onPressed: () {},
-                          child: Text(
-                            "Latest",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white70),
-                          )),
-                    ) : null,
+                    subtitle: pageIndex == 0
+                        ? SizedBox(
+                            height: 24,
+                            child: PopupMenuButton(
+                              tooltip: S.of(context).title_sort,
+                              child: Text(
+                                AppConfig.getDiscussionSortInfo(
+                                    context)[discussionSort],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                              itemBuilder: (BuildContext context) {
+                                List<PopupMenuItem> list = [];
+                                AppConfig.getDiscussionSortInfo(context)
+                                    .forEach((key, value) {
+                                  if (key != discussionSort) {
+                                    list.add(PopupMenuItem(
+                                      child: Text(value),
+                                      value: key,
+                                    ));
+                                  }
+                                });
+                                return list;
+                              },
+                              onSelected: (key) async {
+                                setState(() {
+                                  discussionSort = key;
+                                  initData.discussions = null;
+                                });
+                                initData.discussions =
+                                    await Api.getDiscussions(key);
+                                setState(() {});
+                              },
+                            ),
+                          )
+                        : null,
                   ),
                   centerTitle: true,
                   leading: IconButton(
@@ -332,6 +355,7 @@ class _MainPageState extends State<MainPage> {
 
   void refreshUI() {
     setState(() {
+      discussionSort = "";
       initData = null;
     });
   }

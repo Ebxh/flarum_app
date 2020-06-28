@@ -5,5 +5,10 @@
   "button_done": "Done",
   "error_url": "URL Error!",
   "title_switchSite":"Switch Site",
-  "title_addSite":"Add Site"
+  "title_addSite":"Add Site",
+  "title_sort": "Sort",
+  "subtitle_latest": "Latest",
+  "subtitle_top": "Top",
+  "subtitle_newest": "Newest",
+  "subtitle_oldest": "Oldest"
 }

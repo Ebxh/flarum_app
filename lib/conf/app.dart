@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:core/generated/l10n.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConfig {
@@ -65,6 +67,25 @@ class AppConfig {
   static int getUrlIndex() {
     return _prefs.getInt("url_index");
   }
+
+
+  /// Discussion Sort keys
+  static const String SortLatest = "";
+  static const String SortTop = "-commentCount";
+  static const String SortNewest = "-createdAt";
+  static const String SortOldest = "createdAt";
+
+  /// return <id,i10n_name>
+  static Map<String, String> getDiscussionSortInfo(BuildContext context) {
+    return {
+      SortLatest: S.of(context).subtitle_latest,
+      SortTop: S.of(context).subtitle_top,
+      SortNewest: S.of(context).subtitle_newest,
+      SortOldest: S.of(context).subtitle_oldest,
+    };
+  }
+
+
 }
 
 class UrlInfo {

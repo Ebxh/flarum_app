@@ -92,6 +92,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Sort`
+  String get title_sort {
+    return Intl.message(
+      'Sort',
+      name: 'title_sort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Latest`
+  String get subtitle_latest {
+    return Intl.message(
+      'Latest',
+      name: 'subtitle_latest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Top`
+  String get subtitle_top {
+    return Intl.message(
+      'Top',
+      name: 'subtitle_top',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Newest`
+  String get subtitle_newest {
+    return Intl.message(
+      'Newest',
+      name: 'subtitle_newest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Oldest`
+  String get subtitle_oldest {
+    return Intl.message(
+      'Oldest',
+      name: 'subtitle_oldest',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -24,7 +24,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "button_done" : MessageLookupByLibrary.simpleMessage("Done"),
     "content_add_flarum" : MessageLookupByLibrary.simpleMessage("Please enter a flarum site to continue:"),
     "error_url" : MessageLookupByLibrary.simpleMessage("URL Error!"),
+    "subtitle_latest" : MessageLookupByLibrary.simpleMessage("Latest"),
+    "subtitle_newest" : MessageLookupByLibrary.simpleMessage("Newest"),
+    "subtitle_oldest" : MessageLookupByLibrary.simpleMessage("Oldest"),
+    "subtitle_top" : MessageLookupByLibrary.simpleMessage("Top"),
     "title_addSite" : MessageLookupByLibrary.simpleMessage("Add Site"),
+    "title_sort" : MessageLookupByLibrary.simpleMessage("Sort"),
     "title_switchSite" : MessageLookupByLibrary.simpleMessage("Switch Site"),
     "title_welcome" : MessageLookupByLibrary.simpleMessage("Welcome!")
   };

@@ -114,8 +114,16 @@ class Discussions {
       d.user = users[int.parse(data.relationships["user"]["data"]["id"])];
       d.lastPostedUser =
           users[int.parse(data.relationships["lastPostedUser"]["data"]["id"])];
-      d.firstPost =
-          posts[int.parse(data.relationships["firstPost"]["data"]["id"])];
+
+      /// in https://discuss.flarum.org/?sort=oldest , some old discussions not have firstPost .
+      if (data.relationships["firstPost"] != null) {
+        d.firstPost =
+            posts[int.parse(data.relationships["firstPost"]["data"]["id"])];
+      }else {
+        print(d.title);
+        d.firstPost = null;
+      }
+
       List<TagInfo> t = [];
       (data.relationships["tags"]["data"] as List).forEach((m) {
         Map map = m;

@@ -1,6 +1,7 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/forums.dart';
+import 'package:core/conf/app.dart';
 import 'package:core/ui/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class _SplashPage extends State<Splash> {
     Api.apiUrl = widget.info.apiUrl;
     Future.wait([
       Api.getTags(),
-      Api.getDiscussionsTest(),
+      Api.getDiscussions(AppConfig.SortLatest),
     ]).then((results) {
       Navigator.pop(context, InitData(widget.info, results[0], results[1]));
     });

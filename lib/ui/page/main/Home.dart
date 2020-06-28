@@ -15,7 +15,11 @@ class HomePage extends StatefulWidget {
 class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return widget.initData.discussions == null ?
+        Center(
+          child: CircularProgressIndicator(),
+        )
+        : ListView.builder(
         itemCount: widget.initData.discussions.list.length,
         itemBuilder: (BuildContext context, int index) {
           var d = widget.initData.discussions.list[index];

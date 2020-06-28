@@ -30,14 +30,10 @@ class Api {
     }
   }
 
-  static Future<Discussions> getDiscussionsTest() async {
-    try {
-      return Discussions.formJson((await _dio.get(
-              "$apiUrl/discussions?include=user%2ClastPostedUser%2CfirstPost%2Ctags&"))
-          .data);
-    } catch (e) {
-      print(e);
-      return null;
-    }
+  static Future<Discussions> getDiscussions(String sortKey) async {
+    return Discussions.formJson((await _dio.get(
+            "$apiUrl//discussions?include=user%2ClastPostedUser%2CfirstPost%2Ctags"
+            "&sort=$sortKey&"))
+        .data);
   }
 }

@@ -91,7 +91,8 @@ class _TagsPageState extends State<TagsPage> {
             child: Center(
               child: Text(
                 t.name,
-                style: TextStyle(color: titleColor, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: titleColor, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -101,12 +102,12 @@ class _TagsPageState extends State<TagsPage> {
     return Padding(
       padding: EdgeInsets.only(bottom: 25),
       child: SizedBox(
-        height: 50,
+        height: miniTags.length != 0 ? 50 : 0,
         child: Center(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SizedBox(
-              height: 50,
+              height: miniTags.length != 0 ? 50 : 0,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,

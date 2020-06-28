@@ -5,5 +5,10 @@
   "button_done": "完成",
   "error_url": "链接有误!",
   "title_switchSite":"切换站点",
-  "title_addSite":"添加站点"
+  "title_addSite":"添加站点",
+  "title_sort": "排序方式",
+  "subtitle_latest": "最近回复",
+  "subtitle_top": "最多回复",
+  "subtitle_newest": "最新主题",
+  "subtitle_oldest": "最旧主题"
 }
