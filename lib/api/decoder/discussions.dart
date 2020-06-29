@@ -111,16 +111,23 @@ class Discussions {
     });
     base.data.list.forEach((data) {
       var d = DiscussionInfo.formMaoAndId(data.attributes, data.id);
-      d.user = users[int.parse(data.relationships["user"]["data"]["id"])];
-      d.lastPostedUser =
-          users[int.parse(data.relationships["lastPostedUser"]["data"]["id"])];
+      if (data.relationships["user"] == null) {
+        d.user = UserInfo.makeDeletedUser();
+      } else {
+        d.user = users[int.parse(data.relationships["user"]["data"]["id"])];
+      }
+      if (data.relationships["lastPostedUser"] == null) {
+        d.lastPostedUser = UserInfo.makeDeletedUser();
+      } else {
+        d.lastPostedUser = users[
+            int.parse(data.relationships["lastPostedUser"]["data"]["id"])];
+      }
 
       /// in https://discuss.flarum.org/?sort=oldest , some old discussions not have firstPost .
       if (data.relationships["firstPost"] != null) {
         d.firstPost =
             posts[int.parse(data.relationships["firstPost"]["data"]["id"])];
-      }else {
-        print(d.title);
+      } else {
         d.firstPost = null;
       }
 

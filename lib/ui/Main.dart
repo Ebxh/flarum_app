@@ -104,7 +104,9 @@ class _MainPageState extends State<MainPage> {
                                 });
                                 initData.discussions =
                                     await Api.getDiscussions(key);
-                                setState(() {});
+                                if (initData.discussions != null) {
+                                  setState(() {});
+                                }
                               },
                             ),
                           )

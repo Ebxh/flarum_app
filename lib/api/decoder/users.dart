@@ -49,4 +49,9 @@ class UserInfo {
         m["canSuspend"],
         m["groups"]);
   }
+
+  factory UserInfo.makeDeletedUser() {
+    return UserInfo(-1, "[deleted]", "[deleted]", "", "", 0, 0, false, false,
+        "", false, "", false, null);
+  }
 }

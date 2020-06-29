@@ -30,6 +30,16 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (user.avatarUrl == "") {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(1000),
+        child: Container(
+          height: 48,
+          width: 48,
+          color: Colors.grey,
+        ),
+      );
+    }
     return SizedBox(
       height: 48,
       width: 48,
@@ -37,19 +47,22 @@ class Avatar extends StatelessWidget {
           borderRadius: BorderRadius.circular(1000),
           child: user.avatarUrl != null
               ? CachedNetworkImage(
-            imageUrl: user.avatarUrl,
-          )
+                  imageUrl: user.avatarUrl,
+                )
               : Container(
-            height: 48,
-            width: 48,
-            color: Theme.of(context).primaryColor,
-            child: Center(
-              child: Text(
-                user.username[0].toUpperCase(),
-                style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),
-              ),
-            ),
-          )),
+                  height: 48,
+                  width: 48,
+                  color: Theme.of(context).primaryColor,
+                  child: Center(
+                    child: Text(
+                      user.username[0].toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                )),
     );
   }
 }
