@@ -1,6 +1,6 @@
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/tags.dart';
-import 'package:core/util/HexColor.dart';
+import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
 class TagsPage extends StatefulWidget {

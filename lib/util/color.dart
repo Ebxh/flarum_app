@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 extension HexColor on Color {
-
   /// https://stackoverflow.com/questions/50081213/how-do-i-use-hexadecimal-color-strings-in-flutter
 
   /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
@@ -12,7 +11,7 @@ extension HexColor on Color {
       if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
       buffer.write(hexString.replaceFirst('#', ''));
       return Color(int.parse(buffer.toString(), radix: 16));
-    }catch (_){
+    } catch (_) {
       return Colors.white;
     }
   }
@@ -23,4 +22,10 @@ extension HexColor on Color {
       '${red.toRadixString(16).padLeft(2, '0')}'
       '${green.toRadixString(16).padLeft(2, '0')}'
       '${blue.toRadixString(16).padLeft(2, '0')}';
+}
+
+class TextColor {
+  static Color getTitleFormBackGround(Color color) {
+    return color.computeLuminance() < 0.5 ? Colors.white : Colors.black;
+  }
 }

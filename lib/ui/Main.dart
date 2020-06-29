@@ -7,7 +7,7 @@ import 'package:core/generated/l10n.dart';
 import 'package:core/ui/Splash.dart';
 import 'package:core/ui/page/main/Home.dart';
 import 'package:core/ui/page/main/Tags.dart';
-import 'package:core/util/HexColor.dart';
+import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -46,9 +46,8 @@ class _MainPageState extends State<MainPage> {
         const Locale('zh', 'CN'),
       ],
       home: Builder(builder: (BuildContext context) {
-        textColor = Theme.of(context).primaryColor.computeLuminance() < 0.5
-            ? Colors.white
-            : Colors.black;
+        textColor =
+            TextColor.getTitleFormBackGround(Theme.of(context).primaryColor);
 
         if (initData == null && !_isLoading) {
           initApp(context).then((result) {

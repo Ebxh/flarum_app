@@ -1,5 +1,5 @@
 import 'package:core/api/decoder/base.dart';
-import 'package:core/util/HexColor.dart';
+import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
 class GroupInfo {
