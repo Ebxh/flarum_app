@@ -118,8 +118,9 @@ class _MainPageState extends State<MainPage> {
                         Icons.keyboard_arrow_down,
                         color: textColor,
                       ),
-                      onPressed: () {
-                        showSites(context);
+                      onPressed: () async {
+                        var sites = await AppConfig.getSiteList();
+                        showSites(context, sites);
                       }),
                   actions: <Widget>[
                     IconButton(
@@ -135,7 +136,7 @@ class _MainPageState extends State<MainPage> {
                   children: <Widget>[HomePage(initData), TagsPage(initData)],
                 ),
                 floatingActionButton: FloatingActionButton(
-                  tooltip: S.of(context).title_new_post,
+                    tooltip: S.of(context).title_new_post,
                     backgroundColor: Theme.of(context).primaryColor,
                     child: Icon(
                       Icons.add,
@@ -185,16 +186,17 @@ class _MainPageState extends State<MainPage> {
   Future<InitData> initApp(BuildContext context) async {
     _isLoading = true;
     await AppConfig.init();
+    var sites = await AppConfig.getSiteList();
     ForumInfo info;
-    if (AppConfig.getSiteList() == null ||
-        AppConfig.getSiteList().length == 0) {
+    if (sites == null || sites.length == 0) {
       info = await addSite(context, true);
     } else {
-      if (AppConfig.getSiteList().length < AppConfig.getUrlIndex()) {
-        AppConfig.setUrlIndex(0);
+      if (sites.length < (await AppConfig.getSiteIndex())) {
+        await AppConfig.setSiteIndex(0);
       }
-      info = await Api.checkUrl(
-          AppConfig.getSiteList()[AppConfig.getUrlIndex()].url);
+      var site =
+          (await AppConfig.getSiteList())[await AppConfig.getSiteIndex()];
+      info = await Api.checkUrl(site.url);
     }
     if (info == null) {
       return null;
@@ -209,11 +211,10 @@ class _MainPageState extends State<MainPage> {
     return null;
   }
 
-  void showSites(BuildContext ctx) {
+  void showSites(BuildContext ctx, List<SiteInfo> sites) async {
     showModalBottomSheet(
         context: ctx,
         builder: (BuildContext context) {
-          var sites = AppConfig.getSiteList();
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.white,
@@ -237,7 +238,7 @@ class _MainPageState extends State<MainPage> {
                     Navigator.pop(context);
                     var info = await addSite(context, false);
                     if (info != null) {
-                      showSites(ctx);
+                      showSites(ctx, await AppConfig.getSiteList());
                     }
                   },
                   color: Colors.black,
@@ -249,27 +250,28 @@ class _MainPageState extends State<MainPage> {
                 itemCount: sites.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Dismissible(
-                    key: Key(sites[index].url),
+                    key: Key(sites[index].url + "-$index"),
                     child: ListTile(
                       title: Text(sites[index].title),
                       subtitle: Text(sites[index].url.replaceAll("/api", "")),
                       leading: CachedNetworkImage(
                           height: 42, imageUrl: sites[index].faviconUrl),
                       onTap: () {
-                        AppConfig.setUrlIndex(index);
+                        AppConfig.setSiteIndex(index);
                         refreshUI();
                         Navigator.pop(context);
                       },
                     ),
-                    onDismissed: (DismissDirection direction) {
-                      AppConfig.removeSite(index);
-                      if (index == AppConfig.getUrlIndex()) {
+                    onDismissed: (DismissDirection direction) async {
+                      sites.removeAt(index);
+                      await AppConfig.removeSite(index);
+                      if (index == await AppConfig.getSiteIndex()) {
                         Navigator.pop(context);
-                        AppConfig.setUrlIndex(0);
+                        await AppConfig.setSiteIndex(0);
                         refreshUI();
                         return;
                       }
-                      if (AppConfig.getSiteList().length == 0) {
+                      if ((await AppConfig.getSiteList()).length == 0) {
                         Navigator.pop(context);
                         refreshUI();
                       }
@@ -328,12 +330,13 @@ class _MainPageState extends State<MainPage> {
                           var url = "${urlInput.text}/api";
                           var f = await Api.checkUrl(url);
                           if (f != null) {
-                            AppConfig.addSite(f.title, f.apiUrl, f.faviconUrl);
-                            var index = AppConfig.getUrlIndex();
-                            if (index == null) {
+                            AppConfig.addSite(
+                                SiteInfo(f.apiUrl, f.title, f.faviconUrl));
+                            var index = await AppConfig.getSiteIndex();
+                            if (index == -1) {
                               index = 0;
                             }
-                            AppConfig.setUrlIndex(index);
+                            await AppConfig.setSiteIndex(index);
                             Navigator.pop(context, f);
                           } else {
                             err = S.of(context).error_url;
