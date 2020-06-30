@@ -73,6 +73,36 @@ class S {
     );
   }
 
+  /// `Home`
+  String get title_home {
+    return Intl.message(
+      'Home',
+      name: 'title_home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tags`
+  String get title_tags {
+    return Intl.message(
+      'Tags',
+      name: 'title_tags',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NewPost`
+  String get title_new_post {
+    return Intl.message(
+      'NewPost',
+      name: 'title_new_post',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Switch Site`
   String get title_switchSite {
     return Intl.message(

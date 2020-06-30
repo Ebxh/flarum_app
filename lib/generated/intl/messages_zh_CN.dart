@@ -29,8 +29,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "subtitle_oldest" : MessageLookupByLibrary.simpleMessage("最旧主题"),
     "subtitle_top" : MessageLookupByLibrary.simpleMessage("最多回复"),
     "title_addSite" : MessageLookupByLibrary.simpleMessage("添加站点"),
+    "title_home" : MessageLookupByLibrary.simpleMessage("首页"),
+    "title_new_post" : MessageLookupByLibrary.simpleMessage("发帖"),
     "title_sort" : MessageLookupByLibrary.simpleMessage("排序方式"),
     "title_switchSite" : MessageLookupByLibrary.simpleMessage("切换站点"),
+    "title_tags" : MessageLookupByLibrary.simpleMessage("板块"),
     "title_welcome" : MessageLookupByLibrary.simpleMessage("欢迎！")
   };
 }

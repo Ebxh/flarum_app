@@ -135,6 +135,7 @@ class _MainPageState extends State<MainPage> {
                   children: <Widget>[HomePage(initData), TagsPage(initData)],
                 ),
                 floatingActionButton: FloatingActionButton(
+                  tooltip: S.of(context).title_new_post,
                     backgroundColor: Theme.of(context).primaryColor,
                     child: Icon(
                       Icons.add,
@@ -151,6 +152,7 @@ class _MainPageState extends State<MainPage> {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       IconButton(
+                        tooltip: S.of(context).title_home,
                         icon: Icon(
                           Icons.home,
                           color: textColor,
@@ -162,6 +164,7 @@ class _MainPageState extends State<MainPage> {
                         },
                       ),
                       IconButton(
+                          tooltip: S.of(context).title_tags,
                           icon: Icon(
                             Icons.apps,
                             color: textColor,

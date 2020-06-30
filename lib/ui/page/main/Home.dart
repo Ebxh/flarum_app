@@ -59,7 +59,6 @@ class _HomeState extends State<HomePage> {
                   onNotification: (ScrollNotification notification) {
                     if (notification.metrics.pixels ==
                         notification.metrics.maxScrollExtent) {
-                      print("down");
                       if (!isLoading) {
                         loadMore(context, widget.initData);
                       }
