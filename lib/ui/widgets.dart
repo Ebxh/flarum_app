@@ -1,8 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:core/api/data.dart';
 import 'package:core/api/decoder/forums.dart';
+import 'package:core/api/decoder/tags.dart';
 import 'package:core/api/decoder/users.dart';
+import 'package:core/conf/app.dart';
+import 'package:core/generated/l10n.dart';
 import 'package:core/util/String.dart';
+import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
+
+import 'TagInfoPage.dart';
 
 class SiteIcon extends StatelessWidget {
   final ForumInfo info;
@@ -65,4 +72,86 @@ class Avatar extends StatelessWidget {
                 )),
     );
   }
+}
+
+Widget makeMiniCards(BuildContext context, List<TagInfo> tags,InitData initData) {
+  if (tags.length == 0) {
+    return null;
+  }
+  return NotificationListener<ScrollNotification>(
+    child: SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+          children: tags
+              .map((t) => SizedBox(
+            height: 32,
+            child: InkWell(
+              child: Card(
+                color: HexColor.fromHex(t.color),
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 5,
+                      right: 5,
+                    ),
+                    child: Text(
+                      t.name,
+                      style: TextStyle(
+                          color: TextColor.getTitleFormBackGround(
+                              HexColor.fromHex(t.color))),
+                    ),
+                  ),
+                ),
+              ),
+              onTap: () {
+                var tag;
+                if (t.isChild) {
+                  tag = t;
+                } else if (t.position != null) {
+                  tag = initData.tags.tags[t.position];
+                } else {
+                  tag = initData.tags.miniTags[t.id];
+                }
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return TagInfoPage(tag,initData);
+                    }));
+              },
+            ),
+          ))
+              .toList()),
+    ),
+    onNotification: (ScrollNotification notification) {
+      return true;
+    },
+  );
+}
+
+Widget makeSortPopupMenu(BuildContext context,String discussionSort,PopupMenuItemSelected<String> onSelected) {
+  return SizedBox(
+    height: 24,
+    child: PopupMenuButton<String>(
+      tooltip: S.of(context).title_sort,
+      child: Text(
+        AppConfig.getDiscussionSortInfo(
+            context)[discussionSort],
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white70),
+      ),
+      itemBuilder: (BuildContext context) {
+        List<PopupMenuItem<String>> list = [];
+        AppConfig.getDiscussionSortInfo(context)
+            .forEach((key, value) {
+          if (key != discussionSort) {
+            list.add(PopupMenuItem(
+              child: Text(value),
+              value: key,
+            ));
+          }
+        });
+        return list;
+      },
+      onSelected: onSelected,
+    ),
+  );
 }

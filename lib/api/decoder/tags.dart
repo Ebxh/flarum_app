@@ -71,11 +71,12 @@ class TagInfo {
   static Tags getListFormBase(BaseListBean base) {
     Map<int, TagInfo> tags = {};
     List<TagInfo> children = [];
-    List<TagInfo> miniTags = [];
+    Map<int, TagInfo> miniTags = {};
     base.data.list.forEach((m) {
       var t = TagInfo.formMapAndId(m.attributes, m.id);
       if (t.position == null) {
-        miniTags.add(t);
+        t.children = null;
+        miniTags.addAll({t.id: t});
       } else if (t.isChild) {
         int parentId = int.parse(m.relationships["parent"]["data"]["id"]);
         t.parent = parentId;
@@ -96,6 +97,9 @@ class TagInfo {
     SplayTreeMap<int, TagInfo> positionFixedSplayTreeListList = SplayTreeMap();
     var i = 0;
     splayTreeList.forEach((position, t) {
+      if (t.children.length == 0) {
+        t.children = null;
+      }
       positionFixedSplayTreeListList.addAll({i: t});
       i++;
     });
@@ -106,7 +110,7 @@ class TagInfo {
 
 class Tags {
   SplayTreeMap<int, TagInfo> tags;
-  List<TagInfo> miniTags;
+  Map<int, TagInfo> miniTags;
 
   Tags(this.tags, this.miniTags);
 }

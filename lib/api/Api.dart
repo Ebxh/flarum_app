@@ -30,10 +30,17 @@ class Api {
     }
   }
 
-  static Future<Discussions> getDiscussions(String sortKey) async {
-    return getDiscussionsByUrl(
-        "$apiUrl//discussions?include=user%2ClastPostedUser%2CfirstPost%2Ctags"
-        "&sort=$sortKey&");
+  static Future<Discussions> getDiscussions(String sortKey,
+      {String tagSlug}) async {
+    String url;
+    if (tagSlug == null) {
+      url = "$apiUrl//discussions?include=user,lastPostedUser,firstPost,tags"
+          "&sort=$sortKey&";
+    } else {
+      url = "$apiUrl//discussions?include=user,lastPostedUser,firstPost,tags"
+          "&sort=$sortKey&filter[q]= tag:$tagSlug&";
+    }
+    return getDiscussionsByUrl(url);
   }
 
   static Future<Discussions> getDiscussionsByUrl(String url) async {

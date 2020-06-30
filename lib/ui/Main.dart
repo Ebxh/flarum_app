@@ -5,8 +5,9 @@ import 'package:core/api/decoder/forums.dart';
 import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/Splash.dart';
-import 'package:core/ui/page/main/Home.dart';
+import 'file:///C:/Users/me/AndroidStudioProjects/flarum_app/lib/ui/page/List.dart';
 import 'package:core/ui/page/main/Tags.dart';
+import 'package:core/ui/widgets.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -73,42 +74,18 @@ class _MainPageState extends State<MainPage> {
                       style: TextStyle(color: textColor, fontSize: 20),
                     ),
                     subtitle: pageIndex == 0
-                        ? SizedBox(
-                            height: 24,
-                            child: PopupMenuButton(
-                              tooltip: S.of(context).title_sort,
-                              child: Text(
-                                AppConfig.getDiscussionSortInfo(
-                                    context)[discussionSort],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white70),
-                              ),
-                              itemBuilder: (BuildContext context) {
-                                List<PopupMenuItem> list = [];
-                                AppConfig.getDiscussionSortInfo(context)
-                                    .forEach((key, value) {
-                                  if (key != discussionSort) {
-                                    list.add(PopupMenuItem(
-                                      child: Text(value),
-                                      value: key,
-                                    ));
-                                  }
-                                });
-                                return list;
-                              },
-                              onSelected: (key) async {
-                                setState(() {
-                                  discussionSort = key;
-                                  initData.discussions = null;
-                                });
-                                initData.discussions =
-                                    await Api.getDiscussions(key);
-                                if (initData.discussions != null) {
-                                  setState(() {});
-                                }
-                              },
-                            ),
-                          )
+                        ? makeSortPopupMenu(context, discussionSort,
+                            (key) async {
+                            setState(() {
+                              discussionSort = key;
+                              initData.discussions = null;
+                            });
+                            initData.discussions =
+                                await Api.getDiscussions(key);
+                            if (initData.discussions != null) {
+                              setState(() {});
+                            }
+                          })
                         : null,
                   ),
                   centerTitle: true,
@@ -133,7 +110,7 @@ class _MainPageState extends State<MainPage> {
                 ),
                 body: IndexedStack(
                   index: pageIndex,
-                  children: <Widget>[HomePage(initData), TagsPage(initData)],
+                  children: <Widget>[ListPage(initData), TagsPage(initData)],
                 ),
                 floatingActionButton: FloatingActionButton(
                     tooltip: S.of(context).title_new_post,

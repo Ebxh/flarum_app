@@ -1,21 +1,19 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
-import 'package:core/api/decoder/tags.dart';
-import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
-import '../../widgets.dart';
+import '../widgets.dart';
 
-class HomePage extends StatefulWidget {
+class ListPage extends StatefulWidget {
   final InitData initData;
 
-  HomePage(this.initData);
+  ListPage(this.initData);
 
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<HomePage> {
+class _HomeState extends State<ListPage> {
   bool isLoading = false;
 
   @override
@@ -53,7 +51,25 @@ class _HomeState extends State<HomePage> {
                         return ListTile(
                           title: Text(d.title),
                           leading: Avatar(d.user),
-                          subtitle: makeMiniCards(context, d.tags),
+                          trailing: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                height: 30,
+                                constraints: BoxConstraints(maxWidth: 50),
+                                color: Colors.black12,
+                                child: Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 5,
+                                      right: 5,
+                                    ),
+                                    child: Text("${d.commentCount - 1}"),
+                                  ),
+                                ),
+                              )),
+                          onTap: () {},
+                          subtitle:
+                              makeMiniCards(context, d.tags, widget.initData),
                         );
                       }),
                   onNotification: (ScrollNotification notification) {
@@ -73,43 +89,6 @@ class _HomeState extends State<HomePage> {
                   return;
                 }),
           );
-  }
-
-  Widget makeMiniCards(BuildContext context, List<TagInfo> tags) {
-    if (tags.length == 0) {
-      return null;
-    }
-    return NotificationListener<ScrollNotification>(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-            children: tags
-                .map((t) => SizedBox(
-                      height: 32,
-                      child: Card(
-                        color: HexColor.fromHex(t.color),
-                        child: Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 5,
-                              right: 5,
-                            ),
-                            child: Text(
-                              t.name,
-                              style: TextStyle(
-                                  color: TextColor.getTitleFormBackGround(
-                                      HexColor.fromHex(t.color))),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ))
-                .toList()),
-      ),
-      onNotification: (ScrollNotification notification) {
-        return true;
-      },
-    );
   }
 
   loadMore(BuildContext context, InitData initData) async {
