@@ -45,11 +45,11 @@ class Api {
       {String tagSlug}) async {
     String url;
     if (tagSlug == null) {
-      url = "$apiUrl//discussions?include=user,lastPostedUser,firstPost,tags"
+      url = "$apiUrl/discussions?include=user,lastPostedUser,firstPost,tags"
           "&sort=$sortKey&";
     } else {
-      url = "$apiUrl//discussions?include=user,lastPostedUser,firstPost,tags"
-          "&sort=$sortKey&filter[q]= tag:$tagSlug&";
+      url = "$apiUrl/discussions?include=user,lastPostedUser,firstPost,tags"
+          "&sort=$sortKey&filter[q]=tag:${Uri.encodeComponent(tagSlug)}&";
     }
     return getDiscussionsByUrl(url);
   }
