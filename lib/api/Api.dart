@@ -8,6 +8,8 @@ import 'decoder/tags.dart';
 class Api {
   static Dio _dio = Dio();
   static String apiUrl = "";
+  static Map<int, TagInfo> _tags;
+
   static Future<ForumInfo> checkUrl(String url) async {
     if (StringCheck(url).isUrl()) {
       try {
@@ -22,12 +24,21 @@ class Api {
   }
 
   static Future<Tags> getTags() async {
+    _tags = {};
     try {
-      return TagInfo.getListFormJson((await _dio.get("$apiUrl/tags")).data);
+      var t = TagInfo.getListFormJson((await _dio.get("$apiUrl/tags")).data);
+      t.tags.forEach((_, tag) {
+        _tags.addAll({tag.id: tag});
+      });
+      return t;
     } catch (e) {
       print(e);
       return null;
     }
+  }
+
+  static TagInfo getTag(int id) {
+    return _tags[id];
   }
 
   static Future<Discussions> getDiscussions(String sortKey,

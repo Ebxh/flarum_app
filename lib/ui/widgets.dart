@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/forums.dart';
 import 'package:core/api/decoder/tags.dart';
@@ -74,7 +75,8 @@ class Avatar extends StatelessWidget {
   }
 }
 
-Widget makeMiniCards(BuildContext context, List<TagInfo> tags,InitData initData) {
+Widget makeMiniCards(
+    BuildContext context, List<TagInfo> tags, InitData initData) {
   if (tags.length == 0) {
     return null;
   }
@@ -84,41 +86,41 @@ Widget makeMiniCards(BuildContext context, List<TagInfo> tags,InitData initData)
       child: Row(
           children: tags
               .map((t) => SizedBox(
-            height: 32,
-            child: InkWell(
-              child: Card(
-                color: HexColor.fromHex(t.color),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: 5,
-                      right: 5,
+                    height: 32,
+                    child: InkWell(
+                      child: Card(
+                        color: HexColor.fromHex(t.color),
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: 5,
+                              right: 5,
+                            ),
+                            child: Text(
+                              t.name,
+                              style: TextStyle(
+                                  color: TextColor.getTitleFormBackGround(
+                                      HexColor.fromHex(t.color))),
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        var tag;
+                        if (t.isChild) {
+                          tag = t;
+                        } else if (t.position != null) {
+                          tag = Api.getTag(t.id);
+                        } else {
+                          tag = initData.tags.miniTags[t.id];
+                        }
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return TagInfoPage(tag, initData);
+                        }));
+                      },
                     ),
-                    child: Text(
-                      t.name,
-                      style: TextStyle(
-                          color: TextColor.getTitleFormBackGround(
-                              HexColor.fromHex(t.color))),
-                    ),
-                  ),
-                ),
-              ),
-              onTap: () {
-                var tag;
-                if (t.isChild) {
-                  tag = t;
-                } else if (t.position != null) {
-                  tag = initData.tags.tags[t.position];
-                } else {
-                  tag = initData.tags.miniTags[t.id];
-                }
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return TagInfoPage(tag,initData);
-                    }));
-              },
-            ),
-          ))
+                  ))
               .toList()),
     ),
     onNotification: (ScrollNotification notification) {
@@ -127,21 +129,20 @@ Widget makeMiniCards(BuildContext context, List<TagInfo> tags,InitData initData)
   );
 }
 
-Widget makeSortPopupMenu(BuildContext context,String discussionSort,PopupMenuItemSelected<String> onSelected) {
+Widget makeSortPopupMenu(BuildContext context, String discussionSort,
+    PopupMenuItemSelected<String> onSelected) {
   return SizedBox(
     height: 24,
     child: PopupMenuButton<String>(
       tooltip: S.of(context).title_sort,
       child: Text(
-        AppConfig.getDiscussionSortInfo(
-            context)[discussionSort],
+        AppConfig.getDiscussionSortInfo(context)[discussionSort],
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.white70),
       ),
       itemBuilder: (BuildContext context) {
         List<PopupMenuItem<String>> list = [];
-        AppConfig.getDiscussionSortInfo(context)
-            .forEach((key, value) {
+        AppConfig.getDiscussionSortInfo(context).forEach((key, value) {
           if (key != discussionSort) {
             list.add(PopupMenuItem(
               child: Text(value),
