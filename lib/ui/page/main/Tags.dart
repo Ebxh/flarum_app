@@ -49,7 +49,7 @@ class _TagsPageState extends State<TagsPage> {
                   padding: EdgeInsets.only(left: 30, top: 6, bottom: 8),
                   child: Text(
                     t.name,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -65,7 +65,7 @@ class _TagsPageState extends State<TagsPage> {
       });
     }
     return Padding(
-      padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+      padding: EdgeInsets.only(left: 8, right: 8, top: 5),
       child: Card(
         color: backgroundColor,
         child: Column(
@@ -73,7 +73,7 @@ class _TagsPageState extends State<TagsPage> {
             ListTile(
               title: Text(
                 tag.name,
-                style: TextStyle(color: titleColor, fontSize: 20),
+                style: TextStyle(color: titleColor, fontSize: 18),
               ),
               onTap: () {
                 Navigator.push(context,

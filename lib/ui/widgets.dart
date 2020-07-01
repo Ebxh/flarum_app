@@ -99,6 +99,7 @@ Widget makeMiniCards(
                             child: Text(
                               t.name,
                               style: TextStyle(
+                                fontSize: 12,
                                   color: TextColor.getTitleFormBackGround(
                                       HexColor.fromHex(t.color))),
                             ),
