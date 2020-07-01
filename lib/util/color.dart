@@ -5,12 +5,16 @@ extension HexColor on Color {
 
   /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
   ///
-  static Color fromHex(String hexString) {
+  static Color fromHex(String hexString, {bool transparent}) {
     try {
       final buffer = StringBuffer();
       if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
       buffer.write(hexString.replaceFirst('#', ''));
-      return Color(int.parse(buffer.toString(), radix: 16));
+      var c = Color(int.parse(buffer.toString(), radix: 16));
+      if ((transparent == null || !transparent) && c == Colors.transparent) {
+        return Colors.black;
+      }
+      return c;
     } catch (_) {
       return Colors.white;
     }
@@ -27,5 +31,9 @@ extension HexColor on Color {
 class TextColor {
   static Color getTitleFormBackGround(Color color) {
     return color.computeLuminance() < 0.5 ? Colors.white : Colors.black;
+  }
+
+  static Color getSubtitleFormBackGround(Color color) {
+    return color.computeLuminance() < 0.5 ? Colors.white54 : Colors.black54;
   }
 }

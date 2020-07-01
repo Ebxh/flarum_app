@@ -29,11 +29,12 @@ class _TagInfoPageState extends State<TagInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor =
-        TextColor.getTitleFormBackGround(Theme.of(context).primaryColor);
+    Color backgroundColor = HexColor.fromHex(widget.tagInfo.color);
+    Color textColor = TextColor.getTitleFormBackGround(backgroundColor);
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: backgroundColor,
         centerTitle: true,
         title: ListTile(
           title: Text(
@@ -41,7 +42,7 @@ class _TagInfoPageState extends State<TagInfoPage> {
             textAlign: TextAlign.center,
             style: TextStyle(color: textColor, fontSize: 20),
           ),
-          subtitle: makeSortPopupMenu(context, discussionSort, (key) async {
+          subtitle: makeSortPopupMenu(context, discussionSort,TextColor.getSubtitleFormBackGround(backgroundColor), (key) async {
             setState(() {
               discussionSort = key;
               initData.discussions = null;
@@ -51,6 +52,7 @@ class _TagInfoPageState extends State<TagInfoPage> {
         ),
         leading: IconButton(
             icon: Icon(Icons.keyboard_arrow_left),
+            color: textColor,
             onPressed: () {
               Navigator.pop(context);
             }),
@@ -63,6 +65,7 @@ class _TagInfoPageState extends State<TagInfoPage> {
                   width: 48,
                 )
               : PopupMenuButton(
+                  color: textColor,
                   itemBuilder: (BuildContext context) {
                     List<PopupMenuItem<TagInfo>> list = [];
                     widget.tagInfo.children.forEach((_, tag) {
@@ -82,7 +85,7 @@ class _TagInfoPageState extends State<TagInfoPage> {
                 )
         ],
       ),
-      body: ListPage(initData),
+      body: ListPage(initData, backgroundColor),
     );
   }
 

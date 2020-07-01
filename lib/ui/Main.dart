@@ -74,8 +74,11 @@ class _MainPageState extends State<MainPage> {
                       style: TextStyle(color: textColor, fontSize: 20),
                     ),
                     subtitle: pageIndex == 0
-                        ? makeSortPopupMenu(context, discussionSort,
-                            (key) async {
+                        ? makeSortPopupMenu(
+                            context,
+                            discussionSort,
+                            TextColor.getSubtitleFormBackGround(
+                                Theme.of(context).primaryColor), (key) async {
                             setState(() {
                               discussionSort = key;
                               initData.discussions = null;
@@ -110,7 +113,10 @@ class _MainPageState extends State<MainPage> {
                 ),
                 body: IndexedStack(
                   index: pageIndex,
-                  children: <Widget>[ListPage(initData), TagsPage(initData)],
+                  children: <Widget>[
+                    ListPage(initData, Theme.of(context).primaryColor),
+                    TagsPage(initData)
+                  ],
                 ),
                 floatingActionButton: FloatingActionButton(
                     tooltip: S.of(context).title_new_post,

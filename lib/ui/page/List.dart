@@ -6,8 +6,8 @@ import '../widgets.dart';
 
 class ListPage extends StatefulWidget {
   final InitData initData;
-
-  ListPage(this.initData);
+  final Color backgroundColor;
+  ListPage(this.initData, this.backgroundColor);
 
   @override
   _HomeState createState() => _HomeState();
@@ -50,7 +50,7 @@ class _HomeState extends State<ListPage> {
                         var d = widget.initData.discussions.list[index];
                         return ListTile(
                           title: Text(d.title),
-                          leading: Avatar(d.user),
+                          leading: Avatar(d.user,widget.backgroundColor),
                           trailing: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Container(

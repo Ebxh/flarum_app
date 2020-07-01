@@ -33,8 +33,9 @@ class SiteIcon extends StatelessWidget {
 
 class Avatar extends StatelessWidget {
   final UserInfo user;
+  final Color backgroundColor;
 
-  Avatar(this.user);
+  Avatar(this.user,this.backgroundColor);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class Avatar extends StatelessWidget {
               : Container(
                   height: 48,
                   width: 48,
-                  color: Theme.of(context).primaryColor,
+                  color: backgroundColor,
                   child: Center(
                     child: Text(
                       user.username[0].toUpperCase(),
@@ -130,7 +131,7 @@ Widget makeMiniCards(
   );
 }
 
-Widget makeSortPopupMenu(BuildContext context, String discussionSort,
+Widget makeSortPopupMenu(BuildContext context, String discussionSort,Color textColor,
     PopupMenuItemSelected<String> onSelected) {
   return SizedBox(
     height: 24,
@@ -139,7 +140,7 @@ Widget makeSortPopupMenu(BuildContext context, String discussionSort,
       child: Text(
         AppConfig.getDiscussionSortInfo(context)[discussionSort],
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white70),
+        style: TextStyle(color: textColor),
       ),
       itemBuilder: (BuildContext context) {
         List<PopupMenuItem<String>> list = [];
