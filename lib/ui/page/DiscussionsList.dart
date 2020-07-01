@@ -10,10 +10,10 @@ class ListPage extends StatefulWidget {
   ListPage(this.initData, this.backgroundColor);
 
   @override
-  _HomeState createState() => _HomeState();
+  _ListPageState createState() => _ListPageState();
 }
 
-class _HomeState extends State<ListPage> {
+class _ListPageState extends State<ListPage> {
   bool isLoading = false;
 
   @override

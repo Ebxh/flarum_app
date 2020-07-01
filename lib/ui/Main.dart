@@ -5,7 +5,7 @@ import 'package:core/api/decoder/forums.dart';
 import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/Splash.dart';
-import 'file:///C:/Users/me/AndroidStudioProjects/flarum_app/lib/ui/page/List.dart';
+import 'file:///C:/Users/me/AndroidStudioProjects/flarum_app/lib/ui/page/DiscussionsList.dart';
 import 'package:core/ui/page/main/Tags.dart';
 import 'package:core/ui/widgets.dart';
 import 'package:core/util/color.dart';
@@ -239,8 +239,8 @@ class _MainPageState extends State<MainPage> {
                       subtitle: Text(sites[index].url.replaceAll("/api", "")),
                       leading: CachedNetworkImage(
                           height: 42, imageUrl: sites[index].faviconUrl),
-                      onTap: () {
-                        AppConfig.setSiteIndex(index);
+                      onTap: () async {
+                        await AppConfig.setSiteIndex(index);
                         refreshUI();
                         Navigator.pop(context);
                       },

@@ -1,7 +1,7 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/tags.dart';
-import 'package:core/ui/page/List.dart';
+import 'package:core/ui/page/DiscussionsList.dart';
 import 'package:core/ui/widgets.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +59,7 @@ class _TagInfoPageState extends State<TagInfoPage> {
                           ),
                           subtitle: Text(
                             widget.tagInfo.description,
+                            maxLines: 3,
                             style: TextStyle(color: subTextColor),
                           ),
                         ),
