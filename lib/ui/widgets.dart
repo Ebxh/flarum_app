@@ -10,7 +10,7 @@ import 'package:core/util/String.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
-import 'TagInfoPage.dart';
+import 'page/TagPage.dart';
 
 class SiteIcon extends StatelessWidget {
   final ForumInfo info;

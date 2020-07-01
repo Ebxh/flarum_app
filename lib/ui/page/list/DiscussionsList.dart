@@ -2,7 +2,7 @@ import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets.dart';
+import '../../widgets.dart';
 
 class ListPage extends StatefulWidget {
   final InitData initData;

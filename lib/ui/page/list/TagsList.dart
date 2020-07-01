@@ -3,7 +3,7 @@ import 'package:core/api/decoder/tags.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
-import '../../TagInfoPage.dart';
+import '../TagPage.dart';
 
 class TagsPage extends StatefulWidget {
   final InitData initData;
