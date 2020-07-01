@@ -135,6 +135,7 @@ Widget makeSortPopupMenu(BuildContext context, String discussionSort,Color textC
     PopupMenuItemSelected<String> onSelected) {
   return SizedBox(
     height: 24,
+    width: 10,
     child: PopupMenuButton<String>(
       tooltip: S.of(context).title_sort,
       child: Text(

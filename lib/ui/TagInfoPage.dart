@@ -31,62 +31,105 @@ class _TagInfoPageState extends State<TagInfoPage> {
   Widget build(BuildContext context) {
     Color backgroundColor = HexColor.fromHex(widget.tagInfo.color);
     Color textColor = TextColor.getTitleFormBackGround(backgroundColor);
-
+    Color subTextColor = TextColor.getSubtitleFormBackGround(backgroundColor);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: backgroundColor,
-        centerTitle: true,
-        title: ListTile(
-          title: Text(
-            widget.tagInfo.name,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: textColor, fontSize: 20),
-          ),
-          subtitle: makeSortPopupMenu(context, discussionSort,TextColor.getSubtitleFormBackGround(backgroundColor), (key) async {
-            setState(() {
-              discussionSort = key;
-              initData.discussions = null;
-            });
-            loadData();
-          }),
-        ),
-        leading: IconButton(
-            icon: Icon(Icons.keyboard_arrow_left),
-            color: textColor,
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        actions: <Widget>[
-          widget.tagInfo.isChild ||
-                  widget.tagInfo.children == null ||
-                  widget.tagInfo.children.length == 0
-              ? SizedBox(
-                  height: 48,
-                  width: 48,
-                )
-              : PopupMenuButton(
-                  color: textColor,
-                  itemBuilder: (BuildContext context) {
-                    List<PopupMenuItem<TagInfo>> list = [];
-                    widget.tagInfo.children.forEach((_, tag) {
-                      list.add(PopupMenuItem(
-                        child: Text(tag.name),
-                        value: tag,
-                      ));
-                    });
-                    return list;
-                  },
-                  onSelected: (TagInfo tag) {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return TagInfoPage(tag, initData);
-                    }));
-                  },
-                )
-        ],
-      ),
-      body: ListPage(initData, backgroundColor),
+      body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                pinned: true,
+                forceElevated: true,
+                backgroundColor: backgroundColor,
+                centerTitle: true,
+                expandedHeight: 200,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: 100,
+                        left: 10,
+                        right: 10,
+                      ),
+                      child: SizedBox(
+                        height: 200,
+                        child: ListTile(
+                          title: Text(
+                            widget.tagInfo.name,
+                            style: TextStyle(color: textColor, fontSize: 26),
+                          ),
+                          subtitle: Text(
+                            widget.tagInfo.description,
+                            style: TextStyle(color: subTextColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  title: SizedBox(
+                    height: 48,
+                    child: ListTile(
+                        title: Text(
+                          innerBoxIsScrolled ? widget.tagInfo.name : "",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: textColor, fontSize: 20),
+                        ),
+                        subtitle: _sortPopupMenu(context, subTextColor)),
+                  ),
+                  centerTitle: true,
+                ),
+                leading: IconButton(
+                    icon: Icon(Icons.keyboard_arrow_left),
+                    color: textColor,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+                actions: <Widget>[
+                  widget.tagInfo.isChild ||
+                          widget.tagInfo.children == null ||
+                          widget.tagInfo.children.length == 0
+                      ? SizedBox(
+                          height: 48,
+                          width: 48,
+                        )
+                      : PopupMenuButton(
+                          color: textColor,
+                          itemBuilder: (BuildContext context) {
+                            List<PopupMenuItem<TagInfo>> list = [];
+                            widget.tagInfo.children.forEach((_, tag) {
+                              list.add(PopupMenuItem(
+                                child: Text(tag.name),
+                                value: tag,
+                              ));
+                            });
+                            return list;
+                          },
+                          onSelected: (TagInfo tag) {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return TagInfoPage(tag, initData);
+                            }));
+                          },
+                        )
+                ],
+              )
+            ];
+          },
+          body: ListPage(
+            initData,
+            backgroundColor,
+          )),
     );
+  }
+
+  Widget _sortPopupMenu(BuildContext context, Color subTextColor) {
+    return makeSortPopupMenu(context, discussionSort, subTextColor,
+        (key) async {
+      setState(() {
+        discussionSort = key;
+        initData.discussions = null;
+      });
+      loadData();
+    });
   }
 
   loadData() async {

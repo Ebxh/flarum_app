@@ -32,6 +32,7 @@ class _HomeState extends State<ListPage> {
             child: RefreshIndicator(
                 child: NotificationListener<ScrollNotification>(
                   child: ListView.builder(
+                    padding: EdgeInsets.only(top: 0),
                       itemCount: end
                           ? widget.initData.discussions.list.length + 1
                           : widget.initData.discussions.list.length,
