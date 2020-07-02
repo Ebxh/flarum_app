@@ -25,6 +25,9 @@ class DiscussionInfo {
   UserInfo user;
   UserInfo lastPostedUser;
   PostInfo firstPost;
+  List<int> postsIdList;
+  Map<int, PostInfo> posts;
+  Map<int, UserInfo> users;
   List<TagInfo> tags;
 
   DiscussionInfo(
@@ -49,6 +52,9 @@ class DiscussionInfo {
       this.user,
       this.lastPostedUser,
       this.firstPost,
+      this.postsIdList,
+      this.posts,
+      this.users,
       this.tags);
 
   factory DiscussionInfo.formMaoAndId(Map m, int id) {
@@ -74,7 +80,55 @@ class DiscussionInfo {
         null,
         null,
         null,
+        null,
+        null,
+        null,
         null);
+  }
+
+  static bool isInitDiscussion(DiscussionInfo discussionInfo) {
+    return discussionInfo.firstPost != null ||
+        discussionInfo.posts == null ||
+        discussionInfo.postsIdList == null;
+  }
+
+  factory DiscussionInfo.formJson(String j) {
+    return DiscussionInfo.formBase(BaseBean.formJson(j));
+  }
+
+  factory DiscussionInfo.formBase(BaseBean base) {
+    Map<int, PostInfo> posts = {};
+    List<int> postsId = [];
+    List<TagInfo> tags = [];
+    Map<int, UserInfo> users = {};
+    var d = DiscussionInfo.formMaoAndId(base.data.attributes, base.data.id);
+
+    base.included.data.forEach((data) {
+      switch (data.type) {
+        case "posts":
+          var p = PostInfo.formBaseData(data);
+          posts.addAll({p.id: p});
+          break;
+        case "tags":
+          var t = TagInfo.formMapAndId(data.attributes, data.id);
+          tags.add(t);
+          break;
+        case "users":
+          var u = UserInfo.formMapAndId(data.attributes, data.id);
+          users.addAll({u.id: u});
+          break;
+      }
+    });
+    (base.data.relationships["posts"]["data"] as List).forEach((data) {
+      postsId.add(int.parse(data["id"]));
+    });
+
+
+
+    d.posts = posts;
+    d.postsIdList = postsId;
+    d.users = users;
+    return d;
   }
 }
 

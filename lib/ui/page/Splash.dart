@@ -22,7 +22,7 @@ class _SplashPage extends State<Splash> {
     Api.apiUrl = widget.info.apiUrl;
     Future.wait([
       Api.getTags(),
-      Api.getDiscussions(AppConfig.SortLatest),
+      Api.getDiscussionList(AppConfig.SortLatest),
     ]).then((results) {
       Navigator.pop(context, InitData(widget.info, results[0], results[1]));
     });

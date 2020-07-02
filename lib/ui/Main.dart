@@ -48,7 +48,7 @@ class _MainPageState extends State<MainPage> {
       ],
       home: Builder(builder: (BuildContext context) {
         textColor =
-            TextColor.getTitleFormBackGround(Theme.of(context).primaryColor);
+            ColorUtil.getTitleFormBackGround(Theme.of(context).primaryColor);
 
         if (initData == null && !_isLoading) {
           initApp(context).then((result) {
@@ -77,14 +77,14 @@ class _MainPageState extends State<MainPage> {
                         ? makeSortPopupMenu(
                             context,
                             discussionSort,
-                            TextColor.getSubtitleFormBackGround(
+                            ColorUtil.getSubtitleFormBackGround(
                                 Theme.of(context).primaryColor), (key) async {
                             setState(() {
                               discussionSort = key;
                               initData.discussions = null;
                             });
                             initData.discussions =
-                                await Api.getDiscussions(key);
+                                await Api.getDiscussionList(key);
                             if (initData.discussions != null) {
                               setState(() {});
                             }

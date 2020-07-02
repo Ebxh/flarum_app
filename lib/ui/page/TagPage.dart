@@ -30,8 +30,8 @@ class _TagInfoPageState extends State<TagInfoPage> {
   @override
   Widget build(BuildContext context) {
     Color backgroundColor = HexColor.fromHex(widget.tagInfo.color);
-    Color textColor = TextColor.getTitleFormBackGround(backgroundColor);
-    Color subTextColor = TextColor.getSubtitleFormBackGround(backgroundColor);
+    Color textColor = ColorUtil.getTitleFormBackGround(backgroundColor);
+    Color subTextColor = ColorUtil.getSubtitleFormBackGround(backgroundColor);
     return Scaffold(
       body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -134,8 +134,8 @@ class _TagInfoPageState extends State<TagInfoPage> {
   }
 
   loadData() async {
-    var d =
-        await Api.getDiscussions(discussionSort, tagSlug: widget.tagInfo.slug);
+    var d = await Api.getDiscussionList(discussionSort,
+        tagSlug: widget.tagInfo.slug);
     if (d != null) {
       setState(() {
         initData.discussions = d;

@@ -1,3 +1,4 @@
+import 'package:core/api/decoder/base.dart';
 import 'package:core/api/decoder/discussions.dart';
 import 'package:core/api/decoder/users.dart';
 
@@ -15,11 +16,11 @@ class PostInfo {
   bool canApprove;
   bool canFlag;
   bool canLike;
-  UserInfo user;
-  UserInfo editedUser;
-  DiscussionInfo discussion;
-  List<UserInfo> likes;
-  List<PostInfo> mentionedBy;
+  int user;
+  int editedUser;
+  int discussion;
+  List<int> likes;
+  List<int> mentionedBy;
 
   PostInfo(
       this.id,
@@ -61,5 +62,36 @@ class PostInfo {
         null,
         null,
         null);
+  }
+
+  factory PostInfo.formBaseData(BaseData data) {
+    var p = PostInfo.formMapAndId(data.attributes, data.id);
+    List<int> likes = [];
+    List<int> mentionedBy = [];
+    var discussion = int.parse(data.relationships["discussion"]["data"]["id"]);
+    var user = int.parse(data.relationships["user"]["data"]["id"]);
+    var editedUser;
+    if (data.relationships["editedUser"] != null) {
+      editedUser = int.parse(data.relationships["editedUser"]["data"]["id"]);
+    }
+    if (data.relationships["likes"] != null) {
+      (data.relationships["likes"]["data"] as List).forEach((m) {
+        m = m as Map;
+        likes.add(int.parse(m["id"]));
+      });
+    }
+    if (data.relationships["mentionedBy"] != null) {
+      (data.relationships["mentionedBy"]["data"] as List).forEach((m) {
+        m = m as Map;
+        mentionedBy.add(int.parse(m["id"]));
+      });
+    }
+
+    p.likes = likes;
+    p.discussion = discussion;
+    p.editedUser = editedUser;
+    p.user = user;
+    p.mentionedBy = mentionedBy;
+    return p;
   }
 }

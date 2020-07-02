@@ -1,5 +1,6 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
+import 'package:core/ui/page/DiscussionPage.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets.dart';
@@ -68,7 +69,11 @@ class _ListPageState extends State<ListPage> {
                                   ),
                                 ),
                               )),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+                              return DiscussionPage(widget.initData, d);
+                            }));
+                          },
                           subtitle:
                               makeMiniCards(context, d.tags, widget.initData),
                         );
@@ -84,7 +89,7 @@ class _ListPageState extends State<ListPage> {
                   },
                 ),
                 onRefresh: () async {
-                  widget.initData.discussions = await Api.getDiscussionsByUrl(
+                  widget.initData.discussions = await Api.getDiscussionListByUrl(
                       widget.initData.discussions.links.first);
                   setState(() {});
                   return;
@@ -96,7 +101,7 @@ class _ListPageState extends State<ListPage> {
     if (initData.discussions.links.next != null) {
       isLoading = true;
       var result =
-          await Api.getDiscussionsByUrl(initData.discussions.links.next);
+          await Api.getDiscussionListByUrl(initData.discussions.links.next);
       if (result != null) {
         setState(() {
           initData.discussions.list.addAll(result.list);

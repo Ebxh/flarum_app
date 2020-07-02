@@ -41,20 +41,24 @@ class Api {
     return _tags[id];
   }
 
-  static Future<Discussions> getDiscussions(String sortKey,
+  static Future<DiscussionInfo> getDiscussion(int id) async {
+    return DiscussionInfo.formJson((await _dio.get("$apiUrl/discussions/$id")).data);
+  }
+
+  static Future<Discussions> getDiscussionList(String sortKey,
       {String tagSlug}) async {
     String url;
     if (tagSlug == null) {
-      url = "$apiUrl/discussions?include=user,lastPostedUser,firstPost,tags"
+      url = "$apiUrl/discussions?include=user,tags"
           "&sort=$sortKey&";
     } else {
-      url = "$apiUrl/discussions?include=user,lastPostedUser,firstPost,tags"
+      url = "$apiUrl/discussions?include=user,tags"
           "&sort=$sortKey&filter[q]=tag:${Uri.encodeComponent(tagSlug)}&";
     }
-    return getDiscussionsByUrl(url);
+    return getDiscussionListByUrl(url);
   }
 
-  static Future<Discussions> getDiscussionsByUrl(String url) async {
+  static Future<Discussions> getDiscussionListByUrl(String url) async {
     try {
       return Discussions.formJson((await _dio.get(url)).data);
     } catch (e) {

@@ -28,12 +28,16 @@ extension HexColor on Color {
       '${blue.toRadixString(16).padLeft(2, '0')}';
 }
 
-class TextColor {
+class ColorUtil {
   static Color getTitleFormBackGround(Color color) {
     return color.computeLuminance() < 0.5 ? Colors.white : Colors.black;
   }
 
   static Color getSubtitleFormBackGround(Color color) {
     return color.computeLuminance() < 0.5 ? Colors.white54 : Colors.black54;
+  }
+
+  static Brightness getBrightnessFromBackground(Color color) {
+    return color.computeLuminance() < 0.5 ? Brightness.light : Brightness.dark;
   }
 }
