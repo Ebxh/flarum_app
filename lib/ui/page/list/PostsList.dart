@@ -1,6 +1,7 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/discussions.dart';
+import 'package:core/ui/html/html.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets.dart';
@@ -51,8 +52,7 @@ class _PostsListState extends State<PostsList> {
                       Padding(
                         padding:
                             EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                        child: Text(
-                            p.contentHtml != null ? p.contentHtml : "null"),
+                        child: HtmlView(p.contentHtml),
                       )
                     ],
                   ));

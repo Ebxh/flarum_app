@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_addSite" : MessageLookupByLibrary.simpleMessage("Add Site"),
     "title_home" : MessageLookupByLibrary.simpleMessage("Home"),
     "title_new_post" : MessageLookupByLibrary.simpleMessage("NewPost"),
+    "title_show_details" : MessageLookupByLibrary.simpleMessage("Show Details"),
     "title_sort" : MessageLookupByLibrary.simpleMessage("Sort"),
     "title_switchSite" : MessageLookupByLibrary.simpleMessage("Switch Site"),
     "title_tags" : MessageLookupByLibrary.simpleMessage("Tags"),

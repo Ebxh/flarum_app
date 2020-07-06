@@ -1,0 +1,142 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:core/generated/l10n.dart';
+import 'package:core/util/color.dart';
+import 'package:flutter/material.dart';
+import 'package:html/parser.dart' show parse;
+import 'package:html/dom.dart' as dom;
+
+class HtmlView extends StatelessWidget {
+  final String content;
+
+  HtmlView(this.content);
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> widgets = [];
+    parse(content).body.children.forEach((element) {
+      widgets.add(getWidget(context, element));
+    });
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: widgets),
+    );
+  }
+
+  Widget getWidget(BuildContext context, dom.Element element) {
+    switch (element.localName) {
+      case "p":
+        if (element.children != null && element.children.length != 0) {
+          List<Widget> children = [];
+          element.children.forEach((element) {
+            if (element.localName == "img") {
+              children.add(getWidget(context, element));
+            }
+          });
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: children,
+          );
+        }
+        return contentPadding(Text(
+          element.text,
+          style: TextStyle(fontSize: 18),
+        ));
+      case "h1":
+        return contentPadding(Text(
+          element.text,
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ));
+      case "h2":
+        return contentPadding(Text(
+          element.text,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ));
+      case "h3":
+        return contentPadding(Text(
+          element.text,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ));
+      case "h4":
+        return contentPadding(Text(
+          element.text,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ));
+      case "h5":
+        return contentPadding(Text(
+          element.text,
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ));
+      case "h6":
+        return contentPadding(Text(
+          element.text,
+          style: TextStyle(
+              fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
+        ));
+      case "hr":
+        return contentPadding(Divider(
+          height: 1.0,
+          color: Colors.grey,
+        ));
+      case "img":
+        return contentPadding(Center(
+          child: SizedBox(
+            height: 200,
+            width: MediaQuery.of(context).size.width,
+            child: CachedNetworkImage(
+              imageUrl: element.attributes["src"],
+              placeholder: (BuildContext context, String url) {
+                return Icon(
+                  Icons.image,
+                  size: 64,
+                  color: Colors.grey,
+                );
+              },
+            ),
+          ),
+        ));
+      case "details":
+        return contentPadding(SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: RaisedButton(
+              color: Theme.of(context).primaryColor,
+              child: Text(
+                S.of(context).title_show_details,
+                style: TextStyle(
+                    color: ColorUtil.getTitleFormBackGround(
+                        Theme.of(context).primaryColor)),
+              ),
+              onPressed: () {}),
+        ));
+      default:
+        return contentPadding(contentPadding(SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: RaisedButton(
+              color: Colors.red,
+              child: Text(
+                "UnimplementedClass",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    child: Builder(builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Source"),
+                        content: Text(element.toString()),
+                      );
+                    }));
+              }),
+        )));
+    }
+  }
+
+  Widget contentPadding(Widget child) {
+    return Padding(
+      padding: EdgeInsets.only(top: 5, bottom: 5),
+      child: child,
+    );
+  }
+}

@@ -133,6 +133,16 @@ class S {
     );
   }
 
+  /// `Show Details`
+  String get title_show_details {
+    return Intl.message(
+      'Show Details',
+      name: 'title_show_details',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Latest`
   String get subtitle_latest {
     return Intl.message(
