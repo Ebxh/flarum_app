@@ -150,6 +150,7 @@ class HtmlView extends StatelessWidget {
       case "blockquote":
         Color background = HexColor.fromHex("#e7edf3");
         return Card(
+          elevation: 0,
           color: background,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(0))),
@@ -165,6 +166,7 @@ class HtmlView extends StatelessWidget {
       case "pre":
         Color backGroundColor = Colors.black87;
         return contentPadding(Card(
+          elevation: 0,
           color: backGroundColor,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(0))),
