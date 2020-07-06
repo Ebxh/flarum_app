@@ -29,6 +29,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "subtitle_oldest" : MessageLookupByLibrary.simpleMessage("最旧主题"),
     "subtitle_top" : MessageLookupByLibrary.simpleMessage("最多回复"),
     "title_addSite" : MessageLookupByLibrary.simpleMessage("添加站点"),
+    "title_close" : MessageLookupByLibrary.simpleMessage("关闭"),
+    "title_details" : MessageLookupByLibrary.simpleMessage("详情"),
     "title_home" : MessageLookupByLibrary.simpleMessage("首页"),
     "title_new_post" : MessageLookupByLibrary.simpleMessage("发帖"),
     "title_show_details" : MessageLookupByLibrary.simpleMessage("查看详情"),

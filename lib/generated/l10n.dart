@@ -133,6 +133,26 @@ class S {
     );
   }
 
+  /// `Details`
+  String get title_details {
+    return Intl.message(
+      'Details',
+      name: 'title_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get title_close {
+    return Intl.message(
+      'Close',
+      name: 'title_close',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Show Details`
   String get title_show_details {
     return Intl.message(

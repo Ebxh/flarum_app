@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/util/color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
@@ -77,7 +78,7 @@ class HtmlView extends StatelessWidget {
         ));
       case "hr":
         return contentPadding(Divider(
-          height: 1.0,
+          height: 1,
           color: Colors.grey,
         ));
       case "img":
@@ -108,7 +109,73 @@ class HtmlView extends StatelessWidget {
                     color: ColorUtil.getTitleFormBackGround(
                         Theme.of(context).primaryColor)),
               ),
-              onPressed: () {}),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    child: Builder(builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(S.of(context).title_details),
+                        content: Scrollbar(child: SingleChildScrollView(
+                          child: Text(element.text),
+                        )),
+                        actions: <Widget>[
+                          FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(S.of(context).title_close))
+                        ],
+                      );
+                    }));
+              }),
+        ));
+      case "ul":
+        List<Widget> list = [];
+        element.children.forEach((c) {
+          list.add(Text("• ${c.text}",style: TextStyle(
+            fontSize: 18
+          ),));
+        });
+        return Padding(
+          padding: EdgeInsets.all(10),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: list,
+            ),
+          ),
+        );
+      case "blockquote":
+        Color background = HexColor.fromHex("#e7edf3");
+        return Card(
+          color: background,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(0))),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              element.text,
+              style: TextStyle(
+                  color: ColorUtil.getTitleFormBackGround(background)),
+            ),
+          ),
+        );
+      case "pre":
+        Color backGroundColor = Colors.black87;
+        return contentPadding(Card(
+          color: backGroundColor,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(0))),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              element.text,
+              style: TextStyle(
+                  color: ColorUtil.getTitleFormBackGround(backGroundColor)),
+            ),
+          ),
         ));
       default:
         return contentPadding(contentPadding(SizedBox(
