@@ -37,7 +37,7 @@ class HtmlView extends StatelessWidget {
           if (element.children.length == 1 &&
               element.children[0].localName == "img") {
             return getWidget(context, element.children[0]);
-          }else {
+          } else {
             /// TODO RichText
             return contentPadding(Text(
               element.text,
@@ -183,9 +183,7 @@ class HtmlView extends StatelessWidget {
             color: background,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(0))),
-            child: contentPadding(Text(
-                element.text
-            )),
+            child: contentPadding(Text(element.text)),
           ),
         );
       case "pre":
