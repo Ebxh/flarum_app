@@ -42,61 +42,63 @@ class _PostsListState extends State<PostsList> {
                       switch (p.contentType) {
                         case "comment":
                           return Card(
-                            elevation: 0.1,
+                              elevation: 0.1,
                               child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                title: Text(
-                                    discussionInfo.users[p.user].displayName),
-                                leading: Avatar(discussionInfo.users[p.user],
-                                    Theme.of(context).primaryColor),
-                                subtitle: Text(p.createdAt),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 15, right: 15, bottom: 15),
-                                child: SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: HtmlView(
-                                    p.contentHtml,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Text(discussionInfo
+                                        .users[p.user].displayName),
+                                    leading: Avatar(
+                                        discussionInfo.users[p.user],
+                                        Theme.of(context).primaryColor),
+                                    subtitle: Text(p.createdAt),
                                   ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 40, bottom: 10, right: 40),
-                                      child: IconButton(
-                                          icon:
-                                              FaIcon(FontAwesomeIcons.thumbsUp),
-                                          onPressed: () {}),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 15, right: 15, bottom: 15),
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: HtmlView(
+                                        p.contentHtml,
+                                      ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 40, bottom: 10, right: 40),
-                                      child: IconButton(
-                                          icon: FaIcon(
-                                              FontAwesomeIcons.commentAlt),
-                                          onPressed: () {}),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 40, bottom: 10, right: 40),
+                                          child: IconButton(
+                                              icon: FaIcon(
+                                                  FontAwesomeIcons.thumbsUp),
+                                              onPressed: () {}),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 40, bottom: 10, right: 40),
+                                          child: IconButton(
+                                              icon: FaIcon(
+                                                  FontAwesomeIcons.commentAlt),
+                                              onPressed: () {}),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 40, bottom: 10, right: 40),
+                                          child: IconButton(
+                                              icon: FaIcon(Icons.more_horiz),
+                                              onPressed: () {}),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 40, bottom: 10, right: 40),
-                                      child: IconButton(
-                                          icon: FaIcon(Icons.more_horiz),
-                                          onPressed: () {}),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ));
+                                  )
+                                ],
+                              ));
                           break;
                         default:
                           return Card(
@@ -118,7 +120,7 @@ class _PostsListState extends State<PostsList> {
       if (d.posts.length > 20) {
         count = 20;
       } else {
-        count = d.posts.length;
+        count = d.posts.length - 1;
       }
       discussionInfo = d;
     });
