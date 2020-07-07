@@ -2,7 +2,9 @@ import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/discussions.dart';
 import 'package:core/ui/html/html.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../widgets.dart';
 
@@ -53,6 +55,36 @@ class _PostsListState extends State<PostsList> {
                         padding:
                             EdgeInsets.only(left: 15, right: 15, bottom: 15),
                         child: HtmlView(p.contentHtml),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 40, bottom: 10, right: 40),
+                              child: IconButton(
+                                  icon: FaIcon(FontAwesomeIcons.thumbsUp),
+                                  onPressed: () {}),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 40, bottom: 10, right: 40),
+                              child: IconButton(
+                                  icon: FaIcon(FontAwesomeIcons.commentAlt),
+                                  onPressed: () {}),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 40, bottom: 10, right: 40),
+                              child: IconButton(
+                                  icon: FaIcon(Icons.more_horiz),
+                                  onPressed: () {}),
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ));

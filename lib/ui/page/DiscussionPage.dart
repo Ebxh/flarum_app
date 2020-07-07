@@ -24,7 +24,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
         backgroundColor: backgroundColor,
         brightness: Brightness.light,
         title: Text(
-          widget.discussionInfo.title,
+          "",
           style: TextStyle(color: textColor),
         ),
         leading: IconButton(

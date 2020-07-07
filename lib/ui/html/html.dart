@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/util/color.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
@@ -29,22 +28,24 @@ class HtmlView extends StatelessWidget {
   Widget getWidget(BuildContext context, dom.Element element) {
     switch (element.localName) {
       case "p":
-        if (element.children != null && element.children.length != 0) {
-          List<Widget> children = [];
-          element.children.forEach((element) {
-            if (element.localName == "img") {
-              children.add(getWidget(context, element));
-            }
-          });
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: children,
-          );
+        if (element.children == null || element.children.length == 0) {
+          return contentPadding(Text(
+            element.text,
+            style: TextStyle(fontSize: 18),
+          ));
+        } else {
+          if (element.children.length == 1 &&
+              element.children[0].localName == "img") {
+            return getWidget(context, element.children[0]);
+          }else {
+            /// TODO RichText
+            return contentPadding(Text(
+              element.text,
+              style: TextStyle(fontSize: 18),
+            ));
+          }
         }
-        return contentPadding(Text(
-          element.text,
-          style: TextStyle(fontSize: 18),
-        ));
+        break;
       case "h1":
         return contentPadding(Text(
           element.text,
@@ -81,6 +82,8 @@ class HtmlView extends StatelessWidget {
           height: 1,
           color: Colors.grey,
         ));
+      case "br":
+        return contentPadding(SizedBox());
       case "img":
         return contentPadding(Center(
           child: SizedBox(
@@ -115,7 +118,8 @@ class HtmlView extends StatelessWidget {
                     child: Builder(builder: (BuildContext context) {
                       return AlertDialog(
                         title: Text(S.of(context).title_details),
-                        content: Scrollbar(child: SingleChildScrollView(
+                        content: Scrollbar(
+                            child: SingleChildScrollView(
                           child: Text(element.text),
                         )),
                         actions: <Widget>[
@@ -129,12 +133,35 @@ class HtmlView extends StatelessWidget {
                     }));
               }),
         ));
+      case "ol":
+        List<Widget> list = [];
+        int index = 1;
+        element.children.forEach((c) {
+          list.add(Text(
+            "$index.${c.text}",
+            style: TextStyle(fontSize: 18),
+          ));
+          index++;
+        });
+        return Padding(
+          padding: EdgeInsets.all(10),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: list,
+            ),
+          ),
+        );
+        break;
       case "ul":
         List<Widget> list = [];
         element.children.forEach((c) {
-          list.add(Text("• ${c.text}",style: TextStyle(
-            fontSize: 18
-          ),));
+          list.add(Text(
+            "• ${c.text}",
+            style: TextStyle(fontSize: 18),
+          ));
         });
         return Padding(
           padding: EdgeInsets.all(10),
@@ -149,33 +176,34 @@ class HtmlView extends StatelessWidget {
         );
       case "blockquote":
         Color background = HexColor.fromHex("#e7edf3");
-        return Card(
-          elevation: 0,
-          color: background,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(0))),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Text(
-              element.text,
-              style: TextStyle(
-                  color: ColorUtil.getTitleFormBackGround(background)),
-            ),
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Card(
+            elevation: 0,
+            color: background,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(0))),
+            child: contentPadding(Text(
+                element.text
+            )),
           ),
         );
       case "pre":
         Color backGroundColor = Colors.black87;
-        return contentPadding(Card(
-          elevation: 0,
-          color: backGroundColor,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(0))),
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Text(
-              element.text,
-              style: TextStyle(
-                  color: ColorUtil.getTitleFormBackGround(backGroundColor)),
+        return contentPadding(SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Card(
+            elevation: 0,
+            color: backGroundColor,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(0))),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                element.text,
+                style: TextStyle(
+                    color: ColorUtil.getTitleFormBackGround(backGroundColor)),
+              ),
             ),
           ),
         ));
@@ -204,7 +232,7 @@ class HtmlView extends StatelessWidget {
 
   Widget contentPadding(Widget child) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5),
+      padding: EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
       child: child,
     );
   }

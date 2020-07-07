@@ -1,6 +1,4 @@
 import 'package:core/api/decoder/base.dart';
-import 'package:core/api/decoder/discussions.dart';
-import 'package:core/api/decoder/users.dart';
 
 class PostInfo {
   int id;

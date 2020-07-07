@@ -12,6 +12,7 @@ import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -121,8 +122,8 @@ class _MainPageState extends State<MainPage> {
                 floatingActionButton: FloatingActionButton(
                     tooltip: S.of(context).title_new_post,
                     backgroundColor: Theme.of(context).primaryColor,
-                    child: Icon(
-                      Icons.add,
+                    child: FaIcon(
+                      FontAwesomeIcons.pen,
                       color: textColor,
                     ),
                     onPressed: () {}),

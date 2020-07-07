@@ -93,7 +93,12 @@ class _TagInfoPageState extends State<TagInfoPage> {
                           width: 48,
                         )
                       : PopupMenuButton(
-                          color: textColor,
+                          child: IconButton(
+                              icon: Icon(
+                                Icons.more_vert,
+                                color: textColor,
+                              ),
+                              onPressed: null),
                           itemBuilder: (BuildContext context) {
                             List<PopupMenuItem<TagInfo>> list = [];
                             widget.tagInfo.children.forEach((_, tag) {

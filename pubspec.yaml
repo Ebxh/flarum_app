@@ -17,6 +17,7 @@ dependencies:
   cached_network_image: ^2.2.0+1
   path_provider: ^1.6.11
   html: ^0.14.0+3
+  font_awesome_flutter: ^8.8.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
