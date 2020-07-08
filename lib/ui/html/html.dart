@@ -40,19 +40,15 @@ class HtmlView extends StatelessWidget {
             if (n.toString() == "<html img>") {
               span.add(WidgetSpan(
                   child: contentPadding(Center(
-                child: SizedBox(
-                  height: 200,
-                  width: MediaQuery.of(context).size.width,
-                  child: CachedNetworkImage(
-                    imageUrl: n.attributes["src"],
-                    placeholder: (BuildContext context, String url) {
-                      return Icon(
-                        Icons.image,
-                        size: 64,
-                        color: Colors.grey,
-                      );
-                    },
-                  ),
+                child: CachedNetworkImage(
+                  imageUrl: n.attributes["src"],
+                  placeholder: (BuildContext context, String url) {
+                    return Icon(
+                      Icons.image,
+                      size: 64,
+                      color: Colors.grey,
+                    );
+                  },
                 ),
               ))));
             } else {

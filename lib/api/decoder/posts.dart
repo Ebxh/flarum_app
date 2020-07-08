@@ -67,7 +67,11 @@ class PostInfo {
     List<int> likes = [];
     List<int> mentionedBy = [];
     var discussion = int.parse(data.relationships["discussion"]["data"]["id"]);
-    var user = int.parse(data.relationships["user"]["data"]["id"]);
+    var user;
+    /// https://discuss.flarum.org/api/discussions/18316
+    if (data.relationships["user"] != null) {
+      user = int.parse(data.relationships["user"]["data"]["id"]);
+    }
     var editedUser;
     if (data.relationships["editedUser"] != null) {
       editedUser = int.parse(data.relationships["editedUser"]["data"]["id"]);
