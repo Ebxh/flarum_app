@@ -43,7 +43,7 @@ class _PostsListState extends State<PostsList> {
                       switch (p.contentType) {
                         case "comment":
                           card = Card(
-                              elevation: 0.1,
+                              elevation: 0,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
