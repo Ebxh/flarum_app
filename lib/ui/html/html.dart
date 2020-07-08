@@ -9,6 +9,9 @@ import 'package:html/dom.dart' as dom;
 class HtmlView extends StatelessWidget {
   final String content;
 
+  static double textSize = 16;
+
+  
   HtmlView(this.content);
 
   @override
@@ -53,7 +56,7 @@ class HtmlView extends StatelessWidget {
               ))));
             } else {
               span.add(
-                  TextSpan(text: "${n.text}", style: TextStyle(fontSize: 18)));
+                  TextSpan(text: "${n.text}", style: TextStyle(fontSize: textSize)));
             }
             break;
           case "a":
@@ -63,7 +66,7 @@ class HtmlView extends StatelessWidget {
                     child: InkWell(
                   child: Text("${n.text}",
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: textSize,
                           color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold)),
                   onTap: () {},
@@ -80,12 +83,12 @@ class HtmlView extends StatelessWidget {
                         child: FaIcon(
                           FontAwesomeIcons.reply,
                           color: Colors.blue,
-                          size: 18,
+                          size: textSize,
                         ),
                       ),
                       Text("${n.text}",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: textSize,
                               color: Colors.blue,
                               fontWeight: FontWeight.bold))
                     ],
@@ -98,7 +101,7 @@ class HtmlView extends StatelessWidget {
                     child: InkWell(
                   child: Text("${n.text}",
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: textSize,
                           color: Theme.of(context).primaryColor,
                           decoration: TextDecoration.underline,
                           fontWeight: FontWeight.bold)),
@@ -113,7 +116,7 @@ class HtmlView extends StatelessWidget {
           case "strong":
             span.add(TextSpan(
                 text: "${n.text}",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)));
+                style: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold)));
             break;
             break;
           case "br":
@@ -123,7 +126,7 @@ class HtmlView extends StatelessWidget {
             span.add(TextSpan(
                 text: n.text,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: textSize,
                   fontStyle: FontStyle.italic,
                 )));
             break;
@@ -138,7 +141,7 @@ class HtmlView extends StatelessWidget {
             span.add(WidgetSpan(
                 child: Text(
               "${n.text}",
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: textSize),
             )));
             break;
         }
@@ -147,7 +150,7 @@ class HtmlView extends StatelessWidget {
     return RichText(
         text: TextSpan(
             children: span,
-            style: TextStyle(fontSize: 18, color: Colors.black)));
+            style: TextStyle(fontSize: textSize, color: Colors.black)));
   }
 
   Widget getWidget(BuildContext context, dom.Element element) {
@@ -168,7 +171,7 @@ class HtmlView extends StatelessWidget {
       case "h3":
         return contentPadding(Text(
           element.text,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold),
         ));
       case "h4":
         return contentPadding(Text(
@@ -232,7 +235,7 @@ class HtmlView extends StatelessWidget {
         element.children.forEach((c) {
           list.add(Text(
             "$index.${c.text}",
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: textSize),
           ));
           index++;
         });
@@ -253,7 +256,7 @@ class HtmlView extends StatelessWidget {
         element.children.forEach((c) {
           list.add(Text(
             "• ${c.text}",
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: textSize),
           ));
         });
         return Padding(
