@@ -32,7 +32,7 @@ class _PostsListState extends State<PostsList> {
     return discussionInfo != null
         ? Center(
             child: Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+              padding: const EdgeInsets.only(left: 8, right: 8),
               child: Center(
                 child: ListView.builder(
                     itemCount: count,
