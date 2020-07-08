@@ -32,16 +32,18 @@ class _PostsListState extends State<PostsList> {
     return discussionInfo != null
         ? Center(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
               child: Center(
                 child: ListView.builder(
                     itemCount: count,
                     itemBuilder: (BuildContext context, int index) {
+                      print("${index} / ${count}");
+                      var card;
                       var p = discussionInfo
                           .posts[discussionInfo.postsIdList[index]];
                       switch (p.contentType) {
                         case "comment":
-                          return Card(
+                          card = Card(
                               elevation: 0.1,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -101,10 +103,17 @@ class _PostsListState extends State<PostsList> {
                               ));
                           break;
                         default:
-                          return Card(
+                          card = Card(
                             child: Text("UnimplementedTypes:" + p.contentType),
                           );
                       }
+                      if (index == 0) {
+                        return Padding(
+                          padding: EdgeInsets.only(top: 8),
+                          child: card,
+                        );
+                      }
+                      return card;
                     }),
               ),
             ),
@@ -116,11 +125,14 @@ class _PostsListState extends State<PostsList> {
 
   loadData() async {
     var d = await Api.getDiscussion(widget.discussionInfo.id);
+   d.posts.forEach((key, value) {
+     print(value.id);
+   });
     setState(() {
-      if (d.posts.length > 20) {
+      if (d.posts.length >= 20) {
         count = 20;
       } else {
-        count = d.posts.length - 1;
+        count = d.posts.length;
       }
       discussionInfo = d;
     });

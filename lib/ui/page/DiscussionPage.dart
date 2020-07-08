@@ -36,6 +36,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
               Navigator.pop(context);
             }),
       ),
+      backgroundColor: Color.fromARGB(255, 242,241,246),
       body: PostsList(widget.initData, widget.discussionInfo),
     );
   }
