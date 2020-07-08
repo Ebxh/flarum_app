@@ -37,7 +37,6 @@ class _PostsListState extends State<PostsList> {
                 child: ListView.builder(
                     itemCount: count,
                     itemBuilder: (BuildContext context, int index) {
-                      print("${index} / ${count}");
                       var card;
                       var p = discussionInfo
                           .posts[discussionInfo.postsIdList[index]];
@@ -125,9 +124,6 @@ class _PostsListState extends State<PostsList> {
 
   loadData() async {
     var d = await Api.getDiscussion(widget.discussionInfo.id);
-   d.posts.forEach((key, value) {
-     print(value.id);
-   });
     setState(() {
       if (d.posts.length >= 20) {
         count = 20;

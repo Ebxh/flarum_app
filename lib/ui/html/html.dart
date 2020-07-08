@@ -67,7 +67,9 @@ class HtmlView extends StatelessWidget {
                     child: InkWell(
                   child: Text("${n.text}",
                       style: TextStyle(
-                          fontSize: 18, color: Theme.of(context).primaryColor)),
+                          fontSize: 18,
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold)),
                   onTap: () {},
                 )));
                 break;
@@ -86,7 +88,10 @@ class HtmlView extends StatelessWidget {
                         ),
                       ),
                       Text("${n.text}",
-                          style: TextStyle(fontSize: 18, color: Colors.blue))
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold))
                     ],
                   ),
                   onTap: () {},
@@ -99,7 +104,8 @@ class HtmlView extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).primaryColor,
-                          decoration: TextDecoration.underline)),
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.bold)),
                   onTap: () {},
                 )));
                 if (n.parent.className != "") {

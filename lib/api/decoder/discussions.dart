@@ -97,6 +97,7 @@ class DiscussionInfo {
   }
 
   factory DiscussionInfo.formBase(BaseBean base) {
+    Map<int, PostInfo> allPosts = {};
     Map<int, PostInfo> posts = {};
     List<int> postsId = [];
     List<TagInfo> tags = [];
@@ -107,7 +108,7 @@ class DiscussionInfo {
       switch (data.type) {
         case "posts":
           var p = PostInfo.formBaseData(data);
-          posts.addAll({p.id: p});
+          allPosts.addAll({p.id: p});
           break;
         case "tags":
           var t = TagInfo.formMapAndId(data.attributes, data.id);
@@ -123,7 +124,12 @@ class DiscussionInfo {
       postsId.add(int.parse(data["id"]));
     });
 
-
+    postsId.forEach((id) {
+      var p = allPosts[id];
+      if (p != null) {
+        posts.addAll({id: p});
+      }
+    });
 
     d.posts = posts;
     d.postsIdList = postsId;
