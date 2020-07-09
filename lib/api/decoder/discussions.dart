@@ -114,11 +114,11 @@ class DiscussionInfo {
           allPosts.addAll({p.id: p});
           break;
         case "tags":
-          var t = TagInfo.formMapAndId(data.attributes, data.id);
+          var t = TagInfo.formBaseData(data);
           tags.add(t);
           break;
         case "users":
-          var u = UserInfo.formMapAndId(data.attributes, data.id);
+          var u = UserInfo.formBaseData(data);
           users.addAll({u.id: u});
           break;
       }
@@ -159,15 +159,15 @@ class Discussions {
     base.included.data.forEach((data) {
       switch (data.type) {
         case "users":
-          var u = UserInfo.formMapAndId(data.attributes, data.id);
+          var u = UserInfo.formBaseData(data);
           users.addAll({u.id: u});
           break;
         case "posts":
-          var p = PostInfo.formMapAndId(data.attributes, data.id);
+          var p = PostInfo.formBaseData(data);
           posts.addAll({p.id: p});
           break;
         case "tags":
-          var t = TagInfo.formMapAndId(data.attributes, data.id);
+          var t = TagInfo.formBaseData(data);
           tags.addAll({t.id: t});
           break;
       }

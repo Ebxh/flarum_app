@@ -46,8 +46,9 @@ class BaseData {
   int id;
   Map<String, dynamic> attributes;
   Map<String, dynamic> relationships;
+  Map source;
 
-  BaseData(this.type, this.id, this.attributes, this.relationships);
+  BaseData(this.type, this.id, this.attributes, this.relationships,this.source);
 
   factory BaseData.formBase(_BaseBean baseBean) {
     Map j = baseBean.data;
@@ -56,7 +57,7 @@ class BaseData {
 
   factory BaseData.formMap(Map j) {
     return BaseData(
-        j["type"], int.parse(j["id"]), j["attributes"], j["relationships"]);
+        j["type"], int.parse(j["id"]), j["attributes"], j["relationships"],j);
   }
 }
 

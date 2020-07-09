@@ -10,15 +10,18 @@ class GroupInfo {
   String icon;
   Map source;
 
-  GroupInfo(this.id, this.nameSingular, this.namePlural, this.color, this.icon,this.source);
+  GroupInfo(this.id, this.nameSingular, this.namePlural, this.color, this.icon,
+      this.source);
 
-  factory GroupInfo.formMapAndId(Map m, int id) {
+  factory GroupInfo.formBaseData(BaseData data) {
+    var m = data.attributes;
     return GroupInfo(
-        id,
+        data.id,
         m["nameSingular"],
         m["namePlural"],
         m["color"] == null ? Colors.white : HexColor.fromHex(m["color"]),
-        m["icon"],m);
+        m["icon"],
+        data.source);
   }
 }
 
@@ -30,7 +33,7 @@ class Groups {
   factory Groups.formBase(BaseListBean base) {
     List<GroupInfo> list = [];
     base.data.list.forEach((m) {
-      var g = GroupInfo.formMapAndId(m.attributes, m.id);
+      var g = GroupInfo.formBaseData(m);
       list.add(g);
     });
     return Groups(list);

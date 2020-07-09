@@ -44,10 +44,11 @@ class TagInfo {
       this.parent,
       this.source);
 
-  factory TagInfo.formMapAndId(Map m, int id) {
+  factory TagInfo.formBaseData(BaseData data) {
+    var m = data.attributes;
     return TagInfo(
         m["name"],
-        id,
+        data.id,
         m["description"],
         m["slug"],
         m["color"],
@@ -64,7 +65,7 @@ class TagInfo {
         m["canAddToDiscussion"],
         SplayTreeMap(),
         -1,
-        m);
+        data.source);
   }
 
   static Tags getListFormJson(String data) {
@@ -76,7 +77,7 @@ class TagInfo {
     List<TagInfo> children = [];
     Map<int, TagInfo> miniTags = {};
     base.data.list.forEach((m) {
-      var t = TagInfo.formMapAndId(m.attributes, m.id);
+      var t = TagInfo.formBaseData(m);
       if (t.position == null) {
         t.children = null;
         miniTags.addAll({t.id: t});

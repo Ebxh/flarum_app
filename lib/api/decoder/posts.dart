@@ -42,9 +42,10 @@ class PostInfo {
       this.mentionedBy,
       this.source);
 
-  factory PostInfo.formMapAndId(Map m, int id) {
-    return PostInfo(
-        id,
+  factory PostInfo.formBaseData(BaseData data) {
+    var m = data.attributes;
+    var p = PostInfo(
+        data.id,
         m["number"],
         m["createdAt"],
         m["contentType"],
@@ -62,11 +63,7 @@ class PostInfo {
         null,
         null,
         null,
-        m);
-  }
-
-  factory PostInfo.formBaseData(BaseData data) {
-    var p = PostInfo.formMapAndId(data.attributes, data.id);
+        data.source);
     List<int> likes = [];
     List<int> mentionedBy = [];
     var discussion = int.parse(data.relationships["discussion"]["data"]["id"]);

@@ -1,3 +1,4 @@
+import 'package:core/api/decoder/base.dart';
 import 'package:core/api/decoder/groups.dart';
 
 class UserInfo {
@@ -34,9 +35,10 @@ class UserInfo {
       this.groups,
       this.source);
 
-  factory UserInfo.formMapAndId(Map m, int id) {
+  factory UserInfo.formBaseData(BaseData data) {
+    Map m = data.attributes;
     return UserInfo(
-        id,
+        data.id,
         m["username"],
         m["displayName"],
         m["avatarUrl"],
@@ -50,7 +52,7 @@ class UserInfo {
         m["email"],
         m["canSuspend"],
         m["groups"],
-        m);
+        data.source);
   }
 
   static UserInfo deletedUser = UserInfo(-1, "[deleted]", "[deleted]", "", "",
