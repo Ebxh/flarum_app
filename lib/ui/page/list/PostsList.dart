@@ -2,6 +2,7 @@ import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/discussions.dart';
 import 'package:core/ui/html/html.dart';
+import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -33,8 +34,50 @@ class _PostsListState extends State<PostsList> {
         ? Center(
             child: Center(
               child: ListView.builder(
-                  itemCount: count,
+                  itemCount: count + 1,
                   itemBuilder: (BuildContext context, int index) {
+                    index = index - 1;
+                    if (index == -1) {
+                      Color backGroundColor;
+                      if (widget.discussionInfo.tags == null ||
+                          widget.discussionInfo.tags.length == 0) {
+                        backGroundColor = Theme.of(context).primaryColor;
+                      } else {
+                        for (var t in widget.discussionInfo.tags) {
+                          if (!t.isChild) {
+                            backGroundColor =
+                                backGroundColor = HexColor.fromHex(t.color);
+                            break;
+                          }
+                        }
+                        if (backGroundColor == null) {
+                          backGroundColor = Theme.of(context).primaryColor;
+                        }
+                      }
+                      Color textColor =
+                          ColorUtil.getTitleFormBackGround(backGroundColor);
+                      return Container(
+                        height: 120,
+                        color: backGroundColor,
+                        child: Center(
+                          child: ListTile(
+                            title: Text(
+                              discussionInfo.title,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              style: TextStyle(color: textColor, fontSize: 20),
+                            ),
+                            subtitle: SizedBox(
+                              height: 48,
+                              child: Center(
+                                child: makeMiniCards(
+                                    context, widget.discussionInfo.tags, widget.initData),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
                     var card;
                     var p =
                         discussionInfo.posts[discussionInfo.postsIdList[index]];
@@ -99,6 +142,7 @@ class _PostsListState extends State<PostsList> {
                             ));
                         break;
                       default:
+                        print("UnimplementedTypes:" + p.contentType);
                         card = Card(
                           child: Text("UnimplementedTypes:" + p.contentType),
                         );
