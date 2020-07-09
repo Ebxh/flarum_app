@@ -38,6 +38,7 @@ class HtmlView extends StatelessWidget {
         getRichTextSpan(context, n.nodes, span: span);
       } else {
         switch (n.parent.localName) {
+          case "div":
           case "span":
             getRichTextSpan(context, n.nodes).forEach((s) {
               span.add(s);
@@ -219,9 +220,6 @@ class HtmlView extends StatelessWidget {
         ));
       case "br":
         return contentPadding(SizedBox());
-      case "div":
-        return HtmlView(element.outerHtml.replaceAll("<div", "<p"));
-        break;
       case "details":
         return contentPadding(SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -334,6 +332,9 @@ class HtmlView extends StatelessWidget {
             ),
           ),
         ));
+      case "div":
+        return HtmlView(element.outerHtml.replaceAll("<div", "<p"));
+        break;
       case "script":
         return SizedBox();
         break;
