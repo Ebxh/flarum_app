@@ -16,5 +16,9 @@
   "subtitle_latest": "最近回复",
   "subtitle_top": "最多回复",
   "subtitle_newest": "最新主题",
-  "subtitle_oldest": "最旧主题"
+  "subtitle_oldest": "最旧主题",
+  "c_stickied_the_discussion": "置顶该主题",
+  "c_unstickied_the_discussion": "取消置顶该主题",
+  "c_locked_the_discussion": "锁定该主题",
+  "c_unlocked_the_discussion": "取消锁定该主题"
 }

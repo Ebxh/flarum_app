@@ -22,6 +22,10 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "button_done" : MessageLookupByLibrary.simpleMessage("完成"),
+    "c_locked_the_discussion" : MessageLookupByLibrary.simpleMessage("锁定该主题"),
+    "c_stickied_the_discussion" : MessageLookupByLibrary.simpleMessage("置顶该主题"),
+    "c_unlocked_the_discussion" : MessageLookupByLibrary.simpleMessage("取消锁定该主题"),
+    "c_unstickied_the_discussion" : MessageLookupByLibrary.simpleMessage("取消置顶该主题"),
     "content_add_flarum" : MessageLookupByLibrary.simpleMessage("请添加一个 flarum 站点以继续："),
     "error_url" : MessageLookupByLibrary.simpleMessage("链接有误!"),
     "subtitle_latest" : MessageLookupByLibrary.simpleMessage("最近回复"),

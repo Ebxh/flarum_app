@@ -4,15 +4,16 @@ import 'package:core/api/data.dart';
 import 'package:core/api/decoder/forums.dart';
 import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
-import 'file:///C:/Users/me/AndroidStudioProjects/flarum_app/lib/ui/page/Splash.dart';
-import 'file:///C:/Users/me/AndroidStudioProjects/flarum_app/lib/ui/page/list/DiscussionsList.dart';
-import 'file:///C:/Users/me/AndroidStudioProjects/flarum_app/lib/ui/page/list/TagsList.dart';
 import 'package:core/ui/widgets.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'page/Splash.dart';
+import 'page/list/DiscussionsList.dart';
+import 'page/list/TagsList.dart';
 
 class MainPage extends StatefulWidget {
   @override

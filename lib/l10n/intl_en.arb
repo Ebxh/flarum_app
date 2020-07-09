@@ -16,5 +16,9 @@
   "subtitle_latest": "Latest",
   "subtitle_top": "Top",
   "subtitle_newest": "Newest",
-  "subtitle_oldest": "Oldest"
+  "subtitle_oldest": "Oldest",
+  "c_stickied_the_discussion": "stickied the discussion.",
+  "c_unstickied_the_discussion": "unstickied the discussion.",
+  "c_locked_the_discussion": "locked the discussion.",
+  "c_unlocked_the_discussion": "unlocked the discussion."
 }

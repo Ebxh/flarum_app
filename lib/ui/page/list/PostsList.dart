@@ -1,6 +1,8 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/discussions.dart';
+import 'package:core/api/decoder/users.dart';
+import 'package:core/generated/l10n.dart';
 import 'package:core/ui/html/html.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +73,9 @@ class _PostsListState extends State<PostsList> {
                               height: 48,
                               child: Center(
                                 child: makeMiniCards(
-                                    context, widget.discussionInfo.tags, widget.initData),
+                                    context,
+                                    widget.discussionInfo.tags,
+                                    widget.initData),
                               ),
                             ),
                           ),
@@ -141,13 +145,46 @@ class _PostsListState extends State<PostsList> {
                               ],
                             ));
                         break;
+                      case "discussionStickied":
+                        var sticky =
+                            p.source["attributes"]["content"]["sticky"];
+                        UserInfo u = discussionInfo.users[int.parse(
+                            p.source["relationships"]["user"]["data"]["id"])];
+                        Color textColor = Color.fromARGB(255, 209, 62, 50);
+                        card = makeMessageCard(
+                            textColor,
+                            FontAwesomeIcons.thumbtack,
+                            u.displayName,
+                            sticky
+                                ? S.of(context).c_stickied_the_discussion
+                                : S.of(context).c_unstickied_the_discussion);
+                        break;
+                      case "discussionLocked":
+                        var locked =
+                            p.source["attributes"]["content"]["locked"];
+                        UserInfo u = discussionInfo.users[int.parse(
+                            p.source["relationships"]["user"]["data"]["id"])];
+                        Color textColor = Color.fromARGB(255, 136, 136, 136);
+                        card = makeMessageCard(
+                            textColor,
+                            FontAwesomeIcons.lock,
+                            u.displayName,
+                            locked
+                                ? S.of(context).c_locked_the_discussion
+                                : S.of(context).c_unlocked_the_discussion);
+                        break;
+                      case "discussionTagged":
+                        List content = p.source["attributes"]["content"];
+                        UserInfo u = discussionInfo.users[int.parse(
+                            p.source["relationships"]["user"]["data"]["id"])];
+                        card = makeTaggedCard(u.displayName);
+                        break;
                       default:
                         print("UnimplementedTypes:" + p.contentType);
                         card = Card(
                           child: Text("UnimplementedTypes:" + p.contentType),
                         );
                     }
-
                     return Padding(
                       padding: EdgeInsets.only(left: 8, right: 8, top: 6),
                       child: card,
@@ -158,6 +195,75 @@ class _PostsListState extends State<PostsList> {
         : Center(
             child: CircularProgressIndicator(),
           );
+  }
+
+  Widget makeMessageCard(
+      Color textColor, IconData icon, String userName, String text) {
+    return Card(
+        child: Padding(
+      padding: EdgeInsets.only(left: 15, right: 15, top: 4, bottom: 4),
+      child: RichText(
+          text: TextSpan(children: [
+        WidgetSpan(
+            child: FaIcon(
+          icon,
+          color: textColor,
+          size: 18,
+        )),
+        WidgetSpan(child: Padding(padding: EdgeInsets.only(right: 10))),
+        WidgetSpan(
+            child: InkWell(
+          child: Text(
+            userName,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: textColor, fontSize: 18),
+          ),
+          onTap: () {},
+        )),
+        TextSpan(
+          text: " ",
+          style: TextStyle(fontSize: 18),
+        ),
+        TextSpan(
+          text: text,
+          style: TextStyle(fontSize: 18, color: textColor),
+        )
+      ])),
+    ));
+  }
+
+  Widget makeTaggedCard(String userName) {
+    Color textColor = Color.fromARGB(255, 102, 125, 153);
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.only(left: 15, right: 15, top: 4, bottom: 4),
+        child: RichText(
+            text: TextSpan(children: [
+          WidgetSpan(
+              child: FaIcon(
+            FontAwesomeIcons.tag,
+            color: textColor,
+            size: 18,
+          )),
+          WidgetSpan(child: Padding(padding: EdgeInsets.only(right: 10))),
+          WidgetSpan(
+              child: InkWell(
+            child: Text(
+              userName,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: textColor, fontSize: 18),
+            ),
+            onTap: () {},
+          )),
+          TextSpan(
+            text: " ",
+            style: TextStyle(fontSize: 18),
+          ),
+          TextSpan(
+              text: "TODO", style: TextStyle(color: textColor, fontSize: 18))
+        ])),
+      ),
+    );
   }
 
   loadData() async {

@@ -202,6 +202,46 @@ class S {
       args: [],
     );
   }
+
+  /// `stickied the discussion.`
+  String get c_stickied_the_discussion {
+    return Intl.message(
+      'stickied the discussion.',
+      name: 'c_stickied_the_discussion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `unstickied the discussion.`
+  String get c_unstickied_the_discussion {
+    return Intl.message(
+      'unstickied the discussion.',
+      name: 'c_unstickied_the_discussion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `locked the discussion.`
+  String get c_locked_the_discussion {
+    return Intl.message(
+      'locked the discussion.',
+      name: 'c_locked_the_discussion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `unlocked the discussion.`
+  String get c_unlocked_the_discussion {
+    return Intl.message(
+      'unlocked the discussion.',
+      name: 'c_unlocked_the_discussion',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

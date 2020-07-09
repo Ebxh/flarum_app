@@ -22,6 +22,10 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "button_done" : MessageLookupByLibrary.simpleMessage("Done"),
+    "c_locked_the_discussion" : MessageLookupByLibrary.simpleMessage("locked the discussion."),
+    "c_stickied_the_discussion" : MessageLookupByLibrary.simpleMessage("stickied the discussion."),
+    "c_unlocked_the_discussion" : MessageLookupByLibrary.simpleMessage("unlocked the discussion."),
+    "c_unstickied_the_discussion" : MessageLookupByLibrary.simpleMessage("unstickied the discussion."),
     "content_add_flarum" : MessageLookupByLibrary.simpleMessage("Please enter a flarum site to continue:"),
     "error_url" : MessageLookupByLibrary.simpleMessage("URL Error!"),
     "subtitle_latest" : MessageLookupByLibrary.simpleMessage("Latest"),
