@@ -15,6 +15,7 @@ class UserInfo {
   String email;
   bool canSuspend;
   Groups groups;
+  Map source;
 
   UserInfo(
       this.id,
@@ -30,7 +31,8 @@ class UserInfo {
       this.isEmailConfirmed,
       this.email,
       this.canSuspend,
-      this.groups);
+      this.groups,
+      this.source);
 
   factory UserInfo.formMapAndId(Map m, int id) {
     return UserInfo(
@@ -47,11 +49,10 @@ class UserInfo {
         m["isEmailConfirmed"],
         m["email"],
         m["canSuspend"],
-        m["groups"]);
+        m["groups"],
+        m);
   }
 
-  factory UserInfo.makeDeletedUser() {
-    return UserInfo(-1, "[deleted]", "[deleted]", "", "", 0, 0, false, false,
-        "", false, "", false, null);
-  }
+  static UserInfo deletedUser = UserInfo(-1, "[deleted]", "[deleted]", "", "",
+      0, 0, false, false, "", false, "", false, null, null);
 }

@@ -21,6 +21,7 @@ class TagInfo {
   bool canAddToDiscussion;
   SplayTreeMap<int, TagInfo> children;
   int parent;
+  Map source;
 
   TagInfo(
       this.name,
@@ -40,7 +41,8 @@ class TagInfo {
       this.canStartDiscussion,
       this.canAddToDiscussion,
       this.children,
-      this.parent);
+      this.parent,
+      this.source);
 
   factory TagInfo.formMapAndId(Map m, int id) {
     return TagInfo(
@@ -61,7 +63,8 @@ class TagInfo {
         m["canStartDiscussion"],
         m["canAddToDiscussion"],
         SplayTreeMap(),
-        -1);
+        -1,
+        m);
   }
 
   static Tags getListFormJson(String data) {

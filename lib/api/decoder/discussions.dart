@@ -29,6 +29,7 @@ class DiscussionInfo {
   Map<int, PostInfo> posts;
   Map<int, UserInfo> users;
   List<TagInfo> tags;
+  Map source;
 
   DiscussionInfo(
       this.id,
@@ -55,7 +56,8 @@ class DiscussionInfo {
       this.postsIdList,
       this.posts,
       this.users,
-      this.tags);
+      this.tags,
+      this.source);
 
   factory DiscussionInfo.formMaoAndId(Map m, int id) {
     return DiscussionInfo(
@@ -83,7 +85,8 @@ class DiscussionInfo {
         null,
         null,
         null,
-        null);
+        null,
+        m);
   }
 
   static bool isInitDiscussion(DiscussionInfo discussionInfo) {
@@ -172,12 +175,12 @@ class Discussions {
     base.data.list.forEach((data) {
       var d = DiscussionInfo.formMaoAndId(data.attributes, data.id);
       if (data.relationships["user"] == null) {
-        d.user = UserInfo.makeDeletedUser();
+        d.user = UserInfo.deletedUser;
       } else {
         d.user = users[int.parse(data.relationships["user"]["data"]["id"])];
       }
       if (data.relationships["lastPostedUser"] == null) {
-        d.lastPostedUser = UserInfo.makeDeletedUser();
+        d.lastPostedUser = UserInfo.deletedUser;
       } else {
         d.lastPostedUser = users[
             int.parse(data.relationships["lastPostedUser"]["data"]["id"])];

@@ -19,6 +19,7 @@ class PostInfo {
   int discussion;
   List<int> likes;
   List<int> mentionedBy;
+  Map source;
 
   PostInfo(
       this.id,
@@ -38,7 +39,8 @@ class PostInfo {
       this.editedUser,
       this.discussion,
       this.likes,
-      this.mentionedBy);
+      this.mentionedBy,
+      this.source);
 
   factory PostInfo.formMapAndId(Map m, int id) {
     return PostInfo(
@@ -59,7 +61,8 @@ class PostInfo {
         null,
         null,
         null,
-        null);
+        null,
+        m);
   }
 
   factory PostInfo.formBaseData(BaseData data) {
@@ -68,6 +71,7 @@ class PostInfo {
     List<int> mentionedBy = [];
     var discussion = int.parse(data.relationships["discussion"]["data"]["id"]);
     var user;
+
     /// https://discuss.flarum.org/api/discussions/18316
     if (data.relationships["user"] != null) {
       user = int.parse(data.relationships["user"]["data"]["id"]);

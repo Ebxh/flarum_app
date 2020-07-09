@@ -8,8 +8,9 @@ class GroupInfo {
   String namePlural;
   Color color;
   String icon;
+  Map source;
 
-  GroupInfo(this.id, this.nameSingular, this.namePlural, this.color, this.icon);
+  GroupInfo(this.id, this.nameSingular, this.namePlural, this.color, this.icon,this.source);
 
   factory GroupInfo.formMapAndId(Map m, int id) {
     return GroupInfo(
@@ -17,7 +18,7 @@ class GroupInfo {
         m["nameSingular"],
         m["namePlural"],
         m["color"] == null ? Colors.white : HexColor.fromHex(m["color"]),
-        m["icon"]);
+        m["icon"],m);
   }
 }
 

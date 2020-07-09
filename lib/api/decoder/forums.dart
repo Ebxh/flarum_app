@@ -27,6 +27,7 @@ class ForumInfo {
   String maxPrimaryTags;
   String minSecondaryTags;
   String maxSecondaryTags;
+  Map source;
 
   ForumInfo(
       this.title,
@@ -54,7 +55,8 @@ class ForumInfo {
       this.minPrimaryTags,
       this.maxPrimaryTags,
       this.minSecondaryTags,
-      this.maxSecondaryTags);
+      this.maxSecondaryTags,
+      this.source);
 
   factory ForumInfo.formJson(String data) {
     var base = BaseBean.formJson(data);
@@ -90,7 +92,7 @@ class ForumInfo {
           info["minPrimaryTags"],
           info["maxPrimaryTags"],
           info["minSecondaryTags"],
-          info["maxSecondaryTags"]);
+          info["maxSecondaryTags"],info);
     }
     return null;
   }
