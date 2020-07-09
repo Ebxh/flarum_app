@@ -11,7 +11,6 @@ class HtmlView extends StatelessWidget {
 
   static double textSize = 16;
 
-  
   HtmlView(this.content);
 
   @override
@@ -29,16 +28,21 @@ class HtmlView extends StatelessWidget {
     );
   }
 
-  Widget getRichText(BuildContext context, dom.NodeList nodes,
+  List<InlineSpan> getRichTextSpan(BuildContext context, dom.NodeList nodes,
       {List<InlineSpan> span}) {
     if (span == null) {
       span = <InlineSpan>[];
     }
     nodes.forEach((n) {
       if (n.hasChildNodes()) {
-        getRichText(context, n.nodes, span: span);
+        getRichTextSpan(context, n.nodes, span: span);
       } else {
         switch (n.parent.localName) {
+          case "span":
+            getRichTextSpan(context, n.nodes).forEach((s) {
+              span.add(s);
+            });
+            break;
           case "p":
             if (n.toString() == "<html img>") {
               span.add(WidgetSpan(
@@ -52,11 +56,19 @@ class HtmlView extends StatelessWidget {
                       color: Colors.grey,
                     );
                   },
+                  errorWidget:
+                      (BuildContext context, String url, dynamic error) {
+                    return Icon(
+                      Icons.warning,
+                      size: 64,
+                      color: Colors.grey,
+                    );
+                  },
                 ),
               ))));
             } else {
-              span.add(
-                  TextSpan(text: "${n.text}", style: TextStyle(fontSize: textSize)));
+              span.add(TextSpan(
+                  text: "${n.text}", style: TextStyle(fontSize: textSize)));
             }
             break;
           case "a":
@@ -113,10 +125,12 @@ class HtmlView extends StatelessWidget {
                 break;
             }
             break;
+          case "b":
           case "strong":
             span.add(TextSpan(
                 text: "${n.text}",
-                style: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold)));
+                style: TextStyle(
+                    fontSize: textSize, fontWeight: FontWeight.bold)));
             break;
             break;
           case "br":
@@ -136,6 +150,15 @@ class HtmlView extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.black54, backgroundColor: Colors.white)));
             break;
+          case "s":
+          case "del":
+            span.add(TextSpan(
+                text: "${n.text}",
+                style: TextStyle(
+                  fontSize: textSize,
+                  decoration: TextDecoration.lineThrough,
+                )));
+            break;
           default:
             print("UnimplementedNode:${n.parent.localName}");
             span.add(WidgetSpan(
@@ -147,16 +170,16 @@ class HtmlView extends StatelessWidget {
         }
       }
     });
-    return RichText(
-        text: TextSpan(
-            children: span,
-            style: TextStyle(fontSize: textSize, color: Colors.black)));
+    return span;
   }
 
   Widget getWidget(BuildContext context, dom.Element element) {
     switch (element.localName) {
       case "p":
-        return contentPadding(getRichText(context, element.nodes));
+        return contentPadding(RichText(
+            text: TextSpan(
+                children: getRichTextSpan(context, element.nodes),
+                style: TextStyle(fontSize: textSize, color: Colors.black))));
         break;
       case "h1":
         return contentPadding(Text(
@@ -196,6 +219,9 @@ class HtmlView extends StatelessWidget {
         ));
       case "br":
         return contentPadding(SizedBox());
+      case "div":
+        return HtmlView(element.outerHtml.replaceAll("<div", "<p"));
+        break;
       case "details":
         return contentPadding(SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -281,7 +307,11 @@ class HtmlView extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(0))),
             child: Padding(
               padding: EdgeInsets.all(15),
-              child: getRichText(context, element.nodes),
+              child: RichText(
+                  text: TextSpan(
+                      children: getRichTextSpan(context, element.nodes),
+                      style:
+                          TextStyle(fontSize: textSize, color: Colors.black))),
             ),
           ),
         );
@@ -304,6 +334,9 @@ class HtmlView extends StatelessWidget {
             ),
           ),
         ));
+      case "script":
+        return SizedBox();
+        break;
       default:
         return contentPadding(contentPadding(SizedBox(
           width: MediaQuery.of(context).size.width,
