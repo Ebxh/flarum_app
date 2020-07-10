@@ -242,6 +242,36 @@ class S {
       args: [],
     );
   }
+
+  /// `added`
+  String get c_tag_added {
+    return Intl.message(
+      'added',
+      name: 'c_tag_added',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `and`
+  String get c_tag_and {
+    return Intl.message(
+      'and',
+      name: 'c_tag_and',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `removed`
+  String get c_tag_removed {
+    return Intl.message(
+      'removed',
+      name: 'c_tag_removed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

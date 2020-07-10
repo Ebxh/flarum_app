@@ -28,6 +28,14 @@ class Api {
     try {
       var t = TagInfo.getListFormJson((await _dio.get("$apiUrl/tags")).data);
       t.tags.forEach((_, tag) {
+        if (tag.children != null) {
+          tag.children.forEach((id, t) {
+            _tags.addAll({t.id: t});
+          });
+        }
+        _tags.addAll({tag.id: tag});
+      });
+      t.miniTags.forEach((id, tag) {
         _tags.addAll({tag.id: tag});
       });
       return t;
@@ -42,7 +50,8 @@ class Api {
   }
 
   static Future<DiscussionInfo> getDiscussion(int id) async {
-    return DiscussionInfo.formJson((await _dio.get("$apiUrl/discussions/$id")).data);
+    return DiscussionInfo.formJson(
+        (await _dio.get("$apiUrl/discussions/$id")).data);
   }
 
   static Future<Discussions> getDiscussionList(String sortKey,

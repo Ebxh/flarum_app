@@ -20,5 +20,8 @@
   "c_stickied_the_discussion": "stickied the discussion.",
   "c_unstickied_the_discussion": "unstickied the discussion.",
   "c_locked_the_discussion": "locked the discussion.",
-  "c_unlocked_the_discussion": "unlocked the discussion."
+  "c_unlocked_the_discussion": "unlocked the discussion.",
+  "c_tag_added": "added",
+  "c_tag_and": "and",
+  "c_tag_removed": "removed"
 }

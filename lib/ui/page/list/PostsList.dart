@@ -1,10 +1,12 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/discussions.dart';
+import 'package:core/api/decoder/tags.dart';
 import 'package:core/api/decoder/users.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/html/html.dart';
 import 'package:core/util/color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -174,10 +176,26 @@ class _PostsListState extends State<PostsList> {
                                 : S.of(context).c_unlocked_the_discussion);
                         break;
                       case "discussionTagged":
-                        List content = p.source["attributes"]["content"];
+                        List before = p.source["attributes"]["content"][0];
+                        List after = p.source["attributes"]["content"][1];
                         UserInfo u = discussionInfo.users[int.parse(
                             p.source["relationships"]["user"]["data"]["id"])];
-                        card = makeTaggedCard(u.displayName);
+                        List<TagInfo> removed = [];
+                        List<TagInfo> added = [];
+
+                        before.forEach((id) {
+                          if (!after.contains(id)) {
+                            removed.add(Api.getTag(id));
+                          }
+                        });
+                        after.forEach((id) {
+                          if (!before.contains(id)) {
+                            added.add(Api.getTag(id));
+                          }
+                        });
+
+                        card = makeTaggedCard(
+                            context, u.displayName, added, removed);
                         break;
                       default:
                         print("UnimplementedTypes:" + p.contentType);
@@ -232,8 +250,15 @@ class _PostsListState extends State<PostsList> {
     ));
   }
 
-  Widget makeTaggedCard(String userName) {
+  Widget makeTaggedCard(BuildContext context, String userName,
+      List<TagInfo> added, List<TagInfo> removed) {
     Color textColor = Color.fromARGB(255, 102, 125, 153);
+    InlineSpan centerWidget = WidgetSpan(child: SizedBox());
+    if (added.length != 0 && removed.length != 0) {
+      centerWidget = TextSpan(
+          text: S.of(context).c_tag_and,
+          style: TextStyle(color: textColor, fontSize: 18));
+    }
     return Card(
       child: Padding(
         padding: EdgeInsets.only(left: 15, right: 15, top: 4, bottom: 4),
@@ -260,8 +285,47 @@ class _PostsListState extends State<PostsList> {
             style: TextStyle(fontSize: 18),
           ),
           TextSpan(
-              text: "TODO", style: TextStyle(color: textColor, fontSize: 18))
+              text: S.of(context).c_tag_added,
+              style: TextStyle(color: textColor, fontSize: 18)),
+          WidgetSpan(child: makeMiniTagCards(context, added, widget.initData)),
+          centerWidget,
+          TextSpan(
+              text: S.of(context).c_tag_removed,
+              style: TextStyle(color: textColor, fontSize: 18)),
+          WidgetSpan(
+              child: makeMiniTagCards(context, removed, widget.initData)),
         ])),
+      ),
+    );
+  }
+
+  Widget makeMiniTagCards(
+      BuildContext context, List<TagInfo> tags, InitData initData) {
+    List<Widget> cards = [];
+    tags.forEach((t) {
+      Color backGroundColor = HexColor.fromHex(t.color);
+      Color textColor = ColorUtil.getTitleFormBackGround(backGroundColor);
+      cards.add(Padding(
+        padding: EdgeInsets.only(left: 5),
+        child: Container(
+          color: backGroundColor,
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.only(left: 2, right: 2),
+              child: Text(
+                t.name,
+                style: TextStyle(color: textColor),
+              ),
+            ),
+          ),
+        ),
+      ));
+    });
+    return SizedBox(
+      height: 20,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: cards,
       ),
     );
   }
