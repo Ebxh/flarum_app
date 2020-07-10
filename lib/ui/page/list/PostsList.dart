@@ -290,7 +290,15 @@ class _PostsListState extends State<PostsList> {
                   style: TextStyle(color: textColor, fontSize: 18))
               : WidgetSpan(child: SizedBox()),
           WidgetSpan(child: makeMiniTagCards(context, added, widget.initData)),
+          TextSpan(
+            text: " ",
+            style: TextStyle(fontSize: 18),
+          ),
           centerWidget,
+          TextSpan(
+            text: " ",
+            style: TextStyle(fontSize: 18),
+          ),
           removed.length != 0
               ? TextSpan(
                   text: S.of(context).c_tag_removed,
