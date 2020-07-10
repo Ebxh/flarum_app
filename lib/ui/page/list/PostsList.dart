@@ -284,14 +284,18 @@ class _PostsListState extends State<PostsList> {
             text: " ",
             style: TextStyle(fontSize: 18),
           ),
-          TextSpan(
-              text: S.of(context).c_tag_added,
-              style: TextStyle(color: textColor, fontSize: 18)),
+          added.length != 0
+              ? TextSpan(
+                  text: S.of(context).c_tag_added,
+                  style: TextStyle(color: textColor, fontSize: 18))
+              : WidgetSpan(child: SizedBox()),
           WidgetSpan(child: makeMiniTagCards(context, added, widget.initData)),
           centerWidget,
-          TextSpan(
-              text: S.of(context).c_tag_removed,
-              style: TextStyle(color: textColor, fontSize: 18)),
+          removed.length != 0
+              ? TextSpan(
+                  text: S.of(context).c_tag_removed,
+                  style: TextStyle(color: textColor, fontSize: 18))
+              : WidgetSpan(child: SizedBox()),
           WidgetSpan(
               child: makeMiniTagCards(context, removed, widget.initData)),
         ])),
