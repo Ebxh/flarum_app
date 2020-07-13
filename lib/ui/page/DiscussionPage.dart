@@ -1,5 +1,6 @@
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/discussions.dart';
+import 'package:core/generated/l10n.dart';
 import 'package:core/ui/page/list/PostsList.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +25,10 @@ class _DiscussionPageState extends State<DiscussionPage> {
         backgroundColor: backgroundColor,
         brightness: Brightness.light,
         title: Text(
-          "",
+          S.of(context).title_discussion_detail,
           style: TextStyle(color: textColor),
         ),
+        centerTitle: true,
         leading: IconButton(
             icon: Icon(
               Icons.keyboard_arrow_left,
@@ -36,7 +38,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
               Navigator.pop(context);
             }),
       ),
-      backgroundColor: Color.fromARGB(255, 242,241,246),
+      backgroundColor: Color.fromARGB(255, 242, 241, 246),
       body: PostsList(widget.initData, widget.discussionInfo),
     );
   }

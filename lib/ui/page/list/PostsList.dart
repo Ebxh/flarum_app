@@ -6,7 +6,6 @@ import 'package:core/api/decoder/users.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/html/html.dart';
 import 'package:core/util/color.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -26,6 +25,8 @@ class _PostsListState extends State<PostsList> {
   DiscussionInfo discussionInfo;
   int count = 0;
 
+  bool isLoading = false;
+
   @override
   void initState() {
     loadData();
@@ -37,177 +38,194 @@ class _PostsListState extends State<PostsList> {
     return discussionInfo != null
         ? Center(
             child: Center(
-              child: ListView.builder(
-                  itemCount: count + 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    index = index - 1;
-                    if (index == -1) {
-                      Color backGroundColor;
-                      if (widget.discussionInfo.tags == null ||
-                          widget.discussionInfo.tags.length == 0) {
-                        backGroundColor = Theme.of(context).primaryColor;
-                      } else {
-                        for (var t in widget.discussionInfo.tags) {
-                          if (!t.isChild) {
-                            backGroundColor =
-                                backGroundColor = HexColor.fromHex(t.color);
-                            break;
+              child: NotificationListener<ScrollNotification>(
+                child: ListView.builder(
+                    itemCount: count + 1,
+                    itemBuilder: (BuildContext context, int index) {
+                      index = index - 1;
+                      if (index == -1) {
+                        Color backGroundColor;
+                        if (widget.discussionInfo.tags == null ||
+                            widget.discussionInfo.tags.length == 0) {
+                          backGroundColor = Theme.of(context).primaryColor;
+                        } else {
+                          for (var t in widget.discussionInfo.tags) {
+                            if (!t.isChild) {
+                              backGroundColor =
+                                  backGroundColor = HexColor.fromHex(t.color);
+                              break;
+                            }
+                          }
+                          if (backGroundColor == null) {
+                            backGroundColor = Theme.of(context).primaryColor;
                           }
                         }
-                        if (backGroundColor == null) {
-                          backGroundColor = Theme.of(context).primaryColor;
-                        }
-                      }
-                      Color textColor =
-                          ColorUtil.getTitleFormBackGround(backGroundColor);
-                      return Container(
-                        height: 120,
-                        color: backGroundColor,
-                        child: Center(
-                          child: ListTile(
-                            title: Text(
-                              discussionInfo.title,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              style: TextStyle(color: textColor, fontSize: 20),
-                            ),
-                            subtitle: SizedBox(
-                              height: 48,
-                              child: Center(
-                                child: makeMiniCards(
-                                    context,
-                                    widget.discussionInfo.tags,
-                                    widget.initData),
+                        Color textColor =
+                            ColorUtil.getTitleFormBackGround(backGroundColor);
+                        return Container(
+                          height: 120,
+                          color: backGroundColor,
+                          child: Center(
+                            child: ListTile(
+                              title: Text(
+                                discussionInfo.title,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                style:
+                                    TextStyle(color: textColor, fontSize: 20),
+                              ),
+                              subtitle: SizedBox(
+                                height: 48,
+                                child: Center(
+                                  child: makeMiniCards(
+                                      context,
+                                      widget.discussionInfo.tags,
+                                      widget.initData),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    }
-                    var card;
-                    var p =
-                        discussionInfo.posts[discussionInfo.postsIdList[index]];
-                    switch (p.contentType) {
-                      case "comment":
-                        card = Card(
-                            elevation: 0,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text(
-                                      discussionInfo.users[p.user].displayName),
-                                  leading: Avatar(discussionInfo.users[p.user],
-                                      Theme.of(context).primaryColor),
-                                  subtitle: Text(p.createdAt),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 15, right: 15, bottom: 15),
-                                  child: HtmlView(
-                                    p.contentHtml,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 40, bottom: 10, right: 40),
-                                        child: IconButton(
-                                            icon: FaIcon(
-                                              FontAwesomeIcons.thumbsUp,
-                                              size: 18,
-                                            ),
-                                            onPressed: () {}),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 40, bottom: 10, right: 40),
-                                        child: IconButton(
-                                            icon: FaIcon(
-                                                FontAwesomeIcons.commentAlt,
-                                                size: 18),
-                                            onPressed: () {}),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 40, bottom: 10, right: 40),
-                                        child: IconButton(
-                                            icon: FaIcon(Icons.more_horiz,
-                                                size: 18),
-                                            onPressed: () {}),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ));
-                        break;
-                      case "discussionStickied":
-                        var sticky =
-                            p.source["attributes"]["content"]["sticky"];
-                        UserInfo u = discussionInfo.users[int.parse(
-                            p.source["relationships"]["user"]["data"]["id"])];
-                        Color textColor = Color.fromARGB(255, 209, 62, 50);
-                        card = makeMessageCard(
-                            textColor,
-                            FontAwesomeIcons.thumbtack,
-                            u.displayName,
-                            sticky
-                                ? S.of(context).c_stickied_the_discussion
-                                : S.of(context).c_unstickied_the_discussion);
-                        break;
-                      case "discussionLocked":
-                        var locked =
-                            p.source["attributes"]["content"]["locked"];
-                        UserInfo u = discussionInfo.users[int.parse(
-                            p.source["relationships"]["user"]["data"]["id"])];
-                        Color textColor = Color.fromARGB(255, 136, 136, 136);
-                        card = makeMessageCard(
-                            textColor,
-                            FontAwesomeIcons.lock,
-                            u.displayName,
-                            locked
-                                ? S.of(context).c_locked_the_discussion
-                                : S.of(context).c_unlocked_the_discussion);
-                        break;
-                      case "discussionTagged":
-                        List before = p.source["attributes"]["content"][0];
-                        List after = p.source["attributes"]["content"][1];
-                        UserInfo u = discussionInfo.users[int.parse(
-                            p.source["relationships"]["user"]["data"]["id"])];
-                        List<TagInfo> removed = [];
-                        List<TagInfo> added = [];
-
-                        before.forEach((id) {
-                          if (!after.contains(id)) {
-                            removed.add(Api.getTag(id));
-                          }
-                        });
-                        after.forEach((id) {
-                          if (!before.contains(id)) {
-                            added.add(Api.getTag(id));
-                          }
-                        });
-
-                        card = makeTaggedCard(
-                            context, u.displayName, added, removed);
-                        break;
-                      default:
-                        print("UnimplementedTypes:" + p.contentType);
-                        card = Card(
-                          child: Text("UnimplementedTypes:" + p.contentType),
                         );
+                      }
+                      var card;
+                      var p = discussionInfo
+                          .posts[discussionInfo.postsIdList[index]];
+                      if (p == null) {
+                        print(index);
+                      }
+                      switch (p.contentType) {
+                        case "comment":
+                          card = Card(
+                              elevation: 0,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Text(discussionInfo
+                                        .users[p.user].displayName),
+                                    leading: Avatar(
+                                        discussionInfo.users[p.user],
+                                        Theme.of(context).primaryColor),
+                                    subtitle: Text(p.createdAt),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 15, right: 15, bottom: 15),
+                                    child: HtmlView(
+                                      p.contentHtml,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 40, bottom: 10, right: 40),
+                                          child: IconButton(
+                                              icon: FaIcon(
+                                                FontAwesomeIcons.thumbsUp,
+                                                size: 18,
+                                              ),
+                                              onPressed: () {}),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 40, bottom: 10, right: 40),
+                                          child: IconButton(
+                                              icon: FaIcon(
+                                                  FontAwesomeIcons.commentAlt,
+                                                  size: 18),
+                                              onPressed: () {}),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 40, bottom: 10, right: 40),
+                                          child: IconButton(
+                                              icon: FaIcon(Icons.more_horiz,
+                                                  size: 18),
+                                              onPressed: () {}),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ));
+                          break;
+                        case "discussionStickied":
+                          var sticky =
+                              p.source["attributes"]["content"]["sticky"];
+                          UserInfo u = discussionInfo.users[int.parse(
+                              p.source["relationships"]["user"]["data"]["id"])];
+                          Color textColor = Color.fromARGB(255, 209, 62, 50);
+                          card = makeMessageCard(
+                              textColor,
+                              FontAwesomeIcons.thumbtack,
+                              u.displayName,
+                              sticky
+                                  ? S.of(context).c_stickied_the_discussion
+                                  : S.of(context).c_unstickied_the_discussion);
+                          break;
+                        case "discussionLocked":
+                          var locked =
+                              p.source["attributes"]["content"]["locked"];
+                          UserInfo u = discussionInfo.users[int.parse(
+                              p.source["relationships"]["user"]["data"]["id"])];
+                          Color textColor = Color.fromARGB(255, 136, 136, 136);
+                          card = makeMessageCard(
+                              textColor,
+                              FontAwesomeIcons.lock,
+                              u.displayName,
+                              locked
+                                  ? S.of(context).c_locked_the_discussion
+                                  : S.of(context).c_unlocked_the_discussion);
+                          break;
+                        case "discussionTagged":
+                          List before = p.source["attributes"]["content"][0];
+                          List after = p.source["attributes"]["content"][1];
+                          UserInfo u = discussionInfo.users[int.parse(
+                              p.source["relationships"]["user"]["data"]["id"])];
+                          List<TagInfo> removed = [];
+                          List<TagInfo> added = [];
+
+                          before.forEach((id) {
+                            if (!after.contains(id)) {
+                              removed.add(Api.getTag(id));
+                            }
+                          });
+                          after.forEach((id) {
+                            if (!before.contains(id)) {
+                              added.add(Api.getTag(id));
+                            }
+                          });
+
+                          card = makeTaggedCard(
+                              context, u.displayName, added, removed);
+                          break;
+                        default:
+                          print("UnimplementedTypes:" + p.contentType);
+                          card = Card(
+                            child: Text("UnimplementedTypes:" + p.contentType),
+                          );
+                      }
+                      return Padding(
+                        padding: EdgeInsets.only(left: 8, right: 8, top: 6),
+                        child: card,
+                      );
+                    }),
+                onNotification: (ScrollNotification notification) {
+                  if (notification.metrics.pixels ==
+                      notification.metrics.maxScrollExtent) {
+                    if (!isLoading) {
+                      loadMore();
                     }
-                    return Padding(
-                      padding: EdgeInsets.only(left: 8, right: 8, top: 6),
-                      child: card,
-                    );
-                  }),
+                  }
+                  return false;
+                },
+              ),
             ),
           )
         : Center(
@@ -343,14 +361,47 @@ class _PostsListState extends State<PostsList> {
   }
 
   loadData() async {
+    isLoading = true;
     var d = await Api.getDiscussion(widget.discussionInfo.id);
     setState(() {
+      isLoading = false;
       if (d.posts.length >= 20) {
         count = 20;
       } else {
         count = d.posts.length;
       }
       discussionInfo = d;
+    });
+  }
+
+  loadMore() async {
+    isLoading = true;
+    int c = 0;
+    if (count == discussionInfo.postsIdList.length) {
+      print("end");
+      return;
+    } else if (count + 20 > discussionInfo.postsIdList.length) {
+      c = count + (discussionInfo.postsIdList.length - count);
+    } else {
+      c = count + 20;
+    }
+
+    List<int> nl = [];
+    for (int i = count; i < c; i++) {
+      var p = discussionInfo.posts[i];
+      if (p == null) {
+        nl.add(discussionInfo.postsIdList[i]);
+      }
+    }
+
+    print(nl.length);
+
+    var posts = await Api.getPostsById(nl);
+    discussionInfo.posts.addAll(posts.posts);
+    discussionInfo.users.addAll(posts.users);
+    isLoading = false;
+    setState(() {
+      count = c;
     });
   }
 }

@@ -1,5 +1,6 @@
 import 'package:core/api/decoder/discussions.dart';
 import 'package:core/api/decoder/forums.dart';
+import 'package:core/api/decoder/posts.dart';
 import 'package:core/util/String.dart';
 import 'package:dio/dio.dart';
 
@@ -74,5 +75,13 @@ class Api {
       print("Url:$url : $e");
       return null;
     }
+  }
+
+  static Future<Posts> getPostsById(List<int> l) async {
+    var url = "$apiUrl/posts?filter[id]=";
+    l.forEach((id) {
+      url += "$id,";
+    });
+    return Posts.formJson((await _dio.get(url)).data);
   }
 }

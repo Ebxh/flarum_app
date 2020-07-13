@@ -143,6 +143,16 @@ class S {
     );
   }
 
+  /// `Details`
+  String get title_discussion_detail {
+    return Intl.message(
+      'Details',
+      name: 'title_discussion_detail',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Close`
   String get title_close {
     return Intl.message(

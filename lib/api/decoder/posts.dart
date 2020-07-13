@@ -1,4 +1,5 @@
 import 'package:core/api/decoder/base.dart';
+import 'package:core/api/decoder/users.dart';
 
 class PostInfo {
   int id;
@@ -96,5 +97,33 @@ class PostInfo {
     p.user = user;
     p.mentionedBy = mentionedBy;
     return p;
+  }
+}
+
+class Posts {
+  Map<int, PostInfo> posts;
+  Map<int, UserInfo> users;
+  Posts(this.posts, this.users);
+
+  factory Posts.formJson(String data) {
+    return Posts.formBaseList(BaseListBean.formJson(data));
+  }
+
+  factory Posts.formBaseList(BaseListBean baseBean) {
+    Map<int, PostInfo> posts = {};
+    Map<int, UserInfo> users = {};
+    baseBean.data.list.forEach((e) {
+      if (e.type == "posts") {
+        var p = PostInfo.formBaseData(e);
+        posts.addAll({p.id: p});
+      }
+    });
+    baseBean.included.data.forEach((e) {
+      if (e.type == "users") {
+        var u = UserInfo.formBaseData(e);
+        users.addAll({u.id: u});
+      }
+    });
+    return Posts(posts, users);
   }
 }
