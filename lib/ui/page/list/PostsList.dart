@@ -96,6 +96,7 @@ class _PostsListState extends State<PostsList> {
                               .posts[discussionInfo.postsIdList[index]];
                           if (p == null) {
                             print(index);
+                            print(discussionInfo.postsIdList[index]);
                           }
                           switch (p.contentType) {
                             case "comment":

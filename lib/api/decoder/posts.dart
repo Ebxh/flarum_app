@@ -119,9 +119,15 @@ class Posts {
       }
     });
     baseBean.included.data.forEach((e) {
-      if (e.type == "users") {
-        var u = UserInfo.formBaseData(e);
-        users.addAll({u.id: u});
+      switch (e.type) {
+        case "users":
+          var u = UserInfo.formBaseData(e);
+          users.addAll({u.id: u});
+          break;
+        case "posts":
+          var p = PostInfo.formBaseData(e);
+          posts.addAll({p.id: p});
+          break;
       }
     });
     return Posts(posts, users);
