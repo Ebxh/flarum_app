@@ -42,7 +42,6 @@ class _PostsListState extends State<PostsList> {
                 Center(
                   child: NotificationListener<ScrollNotification>(
                     child: ListView.builder(
-                        cacheExtent: 10000,
                         itemCount: count + 1,
                         itemBuilder: (BuildContext context, int index) {
                           index = index - 1;

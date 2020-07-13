@@ -32,7 +32,6 @@ class _ListPageState extends State<ListPage> {
         : RefreshIndicator(
         child: NotificationListener<ScrollNotification>(
           child: ListView.builder(
-              cacheExtent: 5000,
               padding: EdgeInsets.only(top: 0),
               itemCount: end
                   ? widget.initData.discussions.list.length + 1
