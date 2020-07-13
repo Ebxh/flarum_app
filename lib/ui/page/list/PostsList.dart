@@ -40,8 +40,7 @@ class _PostsListState extends State<PostsList> {
             child: Stack(
               children: <Widget>[
                 Center(
-                  child: Scrollbar(
-                      child: NotificationListener<ScrollNotification>(
+                  child: NotificationListener<ScrollNotification>(
                     child: ListView.builder(
                         cacheExtent: 10000,
                         itemCount: count + 1,
@@ -249,7 +248,7 @@ class _PostsListState extends State<PostsList> {
                       }
                       return false;
                     },
-                  )),
+                  ),
                 ),
                 Positioned(
                     bottom: 0,

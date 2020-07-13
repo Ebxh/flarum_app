@@ -29,73 +29,71 @@ class _ListPageState extends State<ListPage> {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : Scrollbar(
-      child: RefreshIndicator(
-          child: NotificationListener<ScrollNotification>(
-            child: ListView.builder(
-                cacheExtent: 5000,
-                padding: EdgeInsets.only(top: 0),
-                itemCount: end
-                    ? widget.initData.discussions.list.length + 1
-                    : widget.initData.discussions.list.length,
-                itemBuilder: (BuildContext context, int index) {
-                  if (end &&
-                      index == widget.initData.discussions.list.length) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: Text(
-                        "----end----",
-                        style: TextStyle(color: Colors.black38),
-                        textAlign: TextAlign.center,
-                      ),
-                    );
-                  }
-                  var d = widget.initData.discussions.list[index];
-                  return ListTile(
-                    title: Text(d.title),
-                    leading: Avatar(d.user,widget.backgroundColor),
-                    trailing: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          height: 30,
-                          constraints: BoxConstraints(maxWidth: 50),
-                          color: Colors.black12,
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 5,
-                                right: 5,
-                              ),
-                              child: Text("${d.commentCount - 1}"),
-                            ),
-                          ),
-                        )),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
-                        return DiscussionPage(widget.initData, d);
-                      }));
-                    },
-                    subtitle:
-                    makeMiniCards(context, d.tags, widget.initData),
+        : RefreshIndicator(
+        child: NotificationListener<ScrollNotification>(
+          child: ListView.builder(
+              cacheExtent: 5000,
+              padding: EdgeInsets.only(top: 0),
+              itemCount: end
+                  ? widget.initData.discussions.list.length + 1
+                  : widget.initData.discussions.list.length,
+              itemBuilder: (BuildContext context, int index) {
+                if (end &&
+                    index == widget.initData.discussions.list.length) {
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 30),
+                    child: Text(
+                      "----end----",
+                      style: TextStyle(color: Colors.black38),
+                      textAlign: TextAlign.center,
+                    ),
                   );
-                }),
-            onNotification: (ScrollNotification notification) {
-              if (notification.metrics.pixels ==
-                  notification.metrics.maxScrollExtent) {
-                if (!isLoading) {
-                  loadMore(context, widget.initData);
                 }
+                var d = widget.initData.discussions.list[index];
+                return ListTile(
+                  title: Text(d.title),
+                  leading: Avatar(d.user,widget.backgroundColor),
+                  trailing: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        height: 30,
+                        constraints: BoxConstraints(maxWidth: 50),
+                        color: Colors.black12,
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: 5,
+                              right: 5,
+                            ),
+                            child: Text("${d.commentCount - 1}"),
+                          ),
+                        ),
+                      )),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+                      return DiscussionPage(widget.initData, d);
+                    }));
+                  },
+                  subtitle:
+                  makeMiniCards(context, d.tags, widget.initData),
+                );
+              }),
+          onNotification: (ScrollNotification notification) {
+            if (notification.metrics.pixels ==
+                notification.metrics.maxScrollExtent) {
+              if (!isLoading) {
+                loadMore(context, widget.initData);
               }
-              return false;
-            },
-          ),
-          onRefresh: () async {
-            widget.initData.discussions = await Api.getDiscussionListByUrl(
-                widget.initData.discussions.links.first);
-            setState(() {});
-            return;
-          }),
-    );
+            }
+            return false;
+          },
+        ),
+        onRefresh: () async {
+          widget.initData.discussions = await Api.getDiscussionListByUrl(
+              widget.initData.discussions.links.first);
+          setState(() {});
+          return;
+        });
   }
 
   loadMore(BuildContext context, InitData initData) async {
