@@ -99,16 +99,24 @@ class _PostsListState extends State<PostsList> {
                           }
                           switch (p.contentType) {
                             case "comment":
+                              UserInfo u;
+                              if (p.user == null) {
+                                u = UserInfo.deletedUser;
+                              } else {
+                                u = discussionInfo.users[p.user];
+                              }
+                              if (u == null) {
+                                print("${p.user} ${p.id} $count");
+                              }
                               card = Card(
                                   elevation: 0,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       ListTile(
-                                        title: Text(discussionInfo
-                                            .users[p.user].displayName),
+                                        title: Text(u.displayName),
                                         leading: Avatar(
-                                            discussionInfo.users[p.user],
+                                            u,
                                             Theme.of(context).primaryColor),
                                         subtitle: Text(p.createdAt),
                                       ),
@@ -449,8 +457,6 @@ class _PostsListState extends State<PostsList> {
           nl.add(discussionInfo.postsIdList[i]);
         }
       }
-
-      print(nl.length);
 
       var posts = await Api.getPostsById(nl);
       discussionInfo.posts.addAll(posts.posts);
