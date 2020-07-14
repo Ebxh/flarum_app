@@ -227,6 +227,20 @@ class _PostsListState extends State<PostsList> {
                               card = makeTaggedCard(
                                   context, u.displayName, added, removed);
                               break;
+                            case "discussionRenamed":
+                              UserInfo u = discussionInfo.users[int.parse(
+                                  p.source["relationships"]["user"]["data"]
+                                      ["id"])];
+                              String before =
+                                  p.source["attributes"]["content"][0];
+                              String after =
+                                  p.source["attributes"]["content"][1];
+                              card = makeMessageCard(
+                                  Color.fromARGB(255, 102, 136, 153),
+                                  FontAwesomeIcons.pen,
+                                  u.displayName,
+                                  "${S.of(context).c_change_the_title_form} `$before` ${S.of(context).c_change_the_title_to} `$after`");
+                              break;
                             default:
                               print("UnimplementedTypes:" + p.contentType);
                               card = Card(
@@ -418,7 +432,6 @@ class _PostsListState extends State<PostsList> {
   loadMore() async {
     int c = 0;
     if (count == discussionInfo.postsIdList.length) {
-      print("end");
       return;
     } else {
       setState(() {

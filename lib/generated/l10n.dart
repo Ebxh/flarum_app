@@ -253,6 +253,26 @@ class S {
     );
   }
 
+  /// `Change the title from`
+  String get c_change_the_title_form {
+    return Intl.message(
+      'Change the title from',
+      name: 'c_change_the_title_form',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `to`
+  String get c_change_the_title_to {
+    return Intl.message(
+      'to',
+      name: 'c_change_the_title_to',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `added`
   String get c_tag_added {
     return Intl.message(

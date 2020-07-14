@@ -22,6 +22,8 @@
   "c_unstickied_the_discussion": "取消置顶该主题",
   "c_locked_the_discussion": "锁定该主题",
   "c_unlocked_the_discussion": "取消锁定该主题",
+  "c_change_the_title_form": "将标题从",
+  "c_change_the_title_to": "更改为",
   "c_tag_added": "添加了标签",
   "c_tag_and": "并",
   "c_tag_removed": "移除了标签"

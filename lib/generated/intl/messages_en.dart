@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "button_done" : MessageLookupByLibrary.simpleMessage("Done"),
+    "c_change_the_title_form" : MessageLookupByLibrary.simpleMessage("Change the title from"),
+    "c_change_the_title_to" : MessageLookupByLibrary.simpleMessage("to"),
     "c_locked_the_discussion" : MessageLookupByLibrary.simpleMessage("locked the discussion."),
     "c_stickied_the_discussion" : MessageLookupByLibrary.simpleMessage("stickied the discussion."),
     "c_tag_added" : MessageLookupByLibrary.simpleMessage("added"),
