@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/generated/l10n.dart';
+import 'package:core/ui/page/ImagesView.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -47,24 +48,37 @@ class HtmlView extends StatelessWidget {
             break;
           case "p":
             if (n.toString() == "<html img>") {
+              String url = n.attributes["src"];
               span.add(WidgetSpan(
                   child: contentPadding(Center(
-                child: CachedNetworkImage(
-                  imageUrl: n.attributes["src"],
-                  placeholder: (BuildContext context, String url) {
-                    return Icon(
-                      Icons.image,
-                      size: 64,
-                      color: Colors.grey,
-                    );
-                  },
-                  errorWidget:
-                      (BuildContext context, String url, dynamic error) {
-                    return Icon(
-                      Icons.warning,
-                      size: 64,
-                      color: Colors.grey,
-                    );
+                child: InkWell(
+                  child: Material(
+                    child: Hero(
+                        tag: url,
+                        child: CachedNetworkImage(
+                          imageUrl: url,
+                          placeholder: (BuildContext context, String url) {
+                            return Icon(
+                              Icons.image,
+                              size: 64,
+                              color: Colors.grey,
+                            );
+                          },
+                          errorWidget: (BuildContext context, String url,
+                              dynamic error) {
+                            return Icon(
+                              Icons.warning,
+                              size: 64,
+                              color: Colors.grey,
+                            );
+                          },
+                        )),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return ImagesVIew([n.attributes["src"]], 0);
+                    }));
                   },
                 ),
               ))));
@@ -120,7 +134,10 @@ class HtmlView extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(left: 5, right: 2),
-                        child: FaIcon(FontAwesomeIcons.github,size: 18,),
+                        child: FaIcon(
+                          FontAwesomeIcons.github,
+                          size: 18,
+                        ),
                       ),
                       Text("${n.text}",
                           style: TextStyle(
@@ -406,7 +423,12 @@ class HtmlView extends StatelessWidget {
           enableDefaultShare: true,
           enableUrlBarHiding: true,
           showPageTitle: true,
-          animation: CustomTabsAnimation.slideIn(),
+          animation: const CustomTabsAnimation(
+            startEnter: 'android:anim/slide_in_right',
+            startExit: 'android:anim/slide_out_left',
+            endEnter: 'android:anim/slide_in_left',
+            endExit: 'android:anim/slide_out_right',
+          ),
           extraCustomTabs: <String>[
             // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
             'org.mozilla.firefox',
