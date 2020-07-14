@@ -3,6 +3,7 @@ import 'package:core/generated/l10n.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
 
@@ -106,7 +107,33 @@ class HtmlView extends StatelessWidget {
                               fontWeight: FontWeight.bold))
                     ],
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    print(n.parent.attributes);
+                  },
+                )));
+                break;
+              case "github-issue-link":
+                span.add(WidgetSpan(
+                    child: InkWell(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 5, right: 2),
+                        child: FaIcon(FontAwesomeIcons.github,size: 18,),
+                      ),
+                      Text("${n.text}",
+                          style: TextStyle(
+                              fontSize: textSize,
+                              color: Colors.black,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.bold))
+                    ],
+                  ),
+                  onTap: () {
+                    String url = n.parent.attributes["href"];
+                    _launchURL(context, url);
+                  },
                 )));
                 break;
               default:
@@ -118,7 +145,9 @@ class HtmlView extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                           decoration: TextDecoration.underline,
                           fontWeight: FontWeight.bold)),
-                  onTap: () {},
+                  onTap: () {
+                    _launchURL(context, n.parent.attributes["href"]);
+                  },
                 )));
                 if (n.parent.className != "") {
                   print("UnimplementedUrlClass:${n.parent.className}");
@@ -366,5 +395,29 @@ class HtmlView extends StatelessWidget {
       padding: EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
       child: child,
     );
+  }
+
+  void _launchURL(BuildContext context, String url) async {
+    try {
+      await launch(
+        url,
+        option: CustomTabsOption(
+          toolbarColor: Colors.white,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          animation: CustomTabsAnimation.slideIn(),
+          extraCustomTabs: <String>[
+            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+            'org.mozilla.firefox',
+            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+            'com.microsoft.emmx',
+          ],
+        ),
+      );
+    } catch (e) {
+      // An exception is thrown if browser app is not installed on Android device.
+      debugPrint(e.toString());
+    }
   }
 }

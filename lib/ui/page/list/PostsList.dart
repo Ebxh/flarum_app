@@ -41,225 +41,241 @@ class _PostsListState extends State<PostsList> {
               children: <Widget>[
                 Center(
                   child: NotificationListener<ScrollNotification>(
-                    child: ListView.builder(
-                        itemCount: count + 1,
-                        itemBuilder: (BuildContext context, int index) {
-                          index = index - 1;
-                          if (index == -1) {
-                            Color backGroundColor;
-                            if (widget.discussionInfo.tags == null ||
-                                widget.discussionInfo.tags.length == 0) {
-                              backGroundColor = Theme.of(context).primaryColor;
-                            } else {
-                              for (var t in widget.discussionInfo.tags) {
-                                if (!t.isChild) {
-                                  backGroundColor = backGroundColor =
-                                      HexColor.fromHex(t.color);
-                                  break;
+                    child: RefreshIndicator(
+                        child: ListView.builder(
+                            itemCount: count + 1,
+                            itemBuilder: (BuildContext context, int index) {
+                              index = index - 1;
+                              if (index == -1) {
+                                Color backGroundColor;
+                                if (widget.discussionInfo.tags == null ||
+                                    widget.discussionInfo.tags.length == 0) {
+                                  backGroundColor =
+                                      Theme.of(context).primaryColor;
+                                } else {
+                                  for (var t in widget.discussionInfo.tags) {
+                                    if (!t.isChild) {
+                                      backGroundColor = backGroundColor =
+                                          HexColor.fromHex(t.color);
+                                      break;
+                                    }
+                                  }
+                                  if (backGroundColor == null) {
+                                    backGroundColor =
+                                        Theme.of(context).primaryColor;
+                                  }
                                 }
-                              }
-                              if (backGroundColor == null) {
-                                backGroundColor =
-                                    Theme.of(context).primaryColor;
-                              }
-                            }
-                            Color textColor = ColorUtil.getTitleFormBackGround(
-                                backGroundColor);
-                            return Container(
-                              height: 120,
-                              color: backGroundColor,
-                              child: Center(
-                                child: ListTile(
-                                  title: Text(
-                                    discussionInfo.title,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                        color: textColor, fontSize: 20),
-                                  ),
-                                  subtitle: SizedBox(
-                                    height: 48,
-                                    child: Center(
-                                      child: makeMiniCards(
-                                          context,
-                                          widget.discussionInfo.tags,
-                                          widget.initData),
+                                Color textColor =
+                                    ColorUtil.getTitleFormBackGround(
+                                        backGroundColor);
+                                return Container(
+                                  height: 120,
+                                  color: backGroundColor,
+                                  child: Center(
+                                    child: ListTile(
+                                      title: Text(
+                                        discussionInfo.title,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            color: textColor, fontSize: 20),
+                                      ),
+                                      subtitle: SizedBox(
+                                        height: 48,
+                                        child: Center(
+                                          child: makeMiniCards(
+                                              context,
+                                              widget.discussionInfo.tags,
+                                              widget.initData),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            );
-                          }
-                          var card;
-                          var p = discussionInfo
-                              .posts[discussionInfo.postsIdList[index]];
-                          if (p == null) {
-                            print(index);
-                            print(discussionInfo.postsIdList[index]);
-                          }
-                          switch (p.contentType) {
-                            case "comment":
-                              UserInfo u;
-                              if (p.user == null) {
-                                u = UserInfo.deletedUser;
-                              } else {
-                                u = discussionInfo.users[p.user];
+                                );
                               }
-                              if (u == null) {
-                                print("${p.user} ${p.id} $count");
+                              var card;
+                              var p = discussionInfo
+                                  .posts[discussionInfo.postsIdList[index]];
+                              if (p == null) {
+                                print(index);
+                                print(discussionInfo.postsIdList[index]);
                               }
-                              card = Card(
-                                  elevation: 0,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      ListTile(
-                                        title: Text(u.displayName),
-                                        leading: Avatar(
-                                            u,
-                                            Theme.of(context).primaryColor),
-                                        subtitle: Text(p.createdAt),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 15, right: 15, bottom: 15),
-                                        child: HtmlView(
-                                          p.contentHtml,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 40,
-                                                  bottom: 10,
-                                                  right: 40),
-                                              child: IconButton(
-                                                  icon: FaIcon(
-                                                    FontAwesomeIcons.thumbsUp,
-                                                    size: 18,
-                                                  ),
-                                                  onPressed: () {}),
+                              switch (p.contentType) {
+                                case "comment":
+                                  UserInfo u;
+                                  if (p.user == null) {
+                                    u = UserInfo.deletedUser;
+                                  } else {
+                                    u = discussionInfo.users[p.user];
+                                  }
+                                  if (u == null) {
+                                    print("${p.user} ${p.id} $count");
+                                  }
+                                  card = Card(
+                                      elevation: 0,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          ListTile(
+                                            title: Text(u.displayName),
+                                            leading: Avatar(u,
+                                                Theme.of(context).primaryColor),
+                                            subtitle: Text(p.createdAt),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 15,
+                                                right: 15,
+                                                bottom: 15),
+                                            child: HtmlView(
+                                              p.contentHtml,
                                             ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 40,
-                                                  bottom: 10,
-                                                  right: 40),
-                                              child: IconButton(
-                                                  icon: FaIcon(
-                                                      FontAwesomeIcons
-                                                          .commentAlt,
-                                                      size: 18),
-                                                  onPressed: () {}),
+                                          ),
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 40,
+                                                      bottom: 10,
+                                                      right: 40),
+                                                  child: IconButton(
+                                                      icon: FaIcon(
+                                                        FontAwesomeIcons
+                                                            .thumbsUp,
+                                                        size: 18,
+                                                      ),
+                                                      onPressed: () {}),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 40,
+                                                      bottom: 10,
+                                                      right: 40),
+                                                  child: IconButton(
+                                                      icon: FaIcon(
+                                                          FontAwesomeIcons
+                                                              .commentAlt,
+                                                          size: 18),
+                                                      onPressed: () {}),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 40,
+                                                      bottom: 10,
+                                                      right: 40),
+                                                  child: IconButton(
+                                                      icon: FaIcon(
+                                                          Icons.more_horiz,
+                                                          size: 18),
+                                                      onPressed: () {}),
+                                                ),
+                                              ],
                                             ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 40,
-                                                  bottom: 10,
-                                                  right: 40),
-                                              child: IconButton(
-                                                  icon: FaIcon(Icons.more_horiz,
-                                                      size: 18),
-                                                  onPressed: () {}),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ));
-                              break;
-                            case "discussionStickied":
-                              var sticky =
-                                  p.source["attributes"]["content"]["sticky"];
-                              UserInfo u = discussionInfo.users[int.parse(
-                                  p.source["relationships"]["user"]["data"]
-                                      ["id"])];
-                              Color textColor =
-                                  Color.fromARGB(255, 209, 62, 50);
-                              card = makeMessageCard(
-                                  textColor,
-                                  FontAwesomeIcons.thumbtack,
-                                  u.displayName,
-                                  sticky
-                                      ? S.of(context).c_stickied_the_discussion
-                                      : S
-                                          .of(context)
-                                          .c_unstickied_the_discussion);
-                              break;
-                            case "discussionLocked":
-                              var locked =
-                                  p.source["attributes"]["content"]["locked"];
-                              UserInfo u = discussionInfo.users[int.parse(
-                                  p.source["relationships"]["user"]["data"]
-                                      ["id"])];
-                              Color textColor =
-                                  Color.fromARGB(255, 136, 136, 136);
-                              card = makeMessageCard(
-                                  textColor,
-                                  FontAwesomeIcons.lock,
-                                  u.displayName,
-                                  locked
-                                      ? S.of(context).c_locked_the_discussion
-                                      : S
-                                          .of(context)
-                                          .c_unlocked_the_discussion);
-                              break;
-                            case "discussionTagged":
-                              List before =
-                                  p.source["attributes"]["content"][0];
-                              List after = p.source["attributes"]["content"][1];
-                              UserInfo u = discussionInfo.users[int.parse(
-                                  p.source["relationships"]["user"]["data"]
-                                      ["id"])];
-                              List<TagInfo> removed = [];
-                              List<TagInfo> added = [];
+                                          )
+                                        ],
+                                      ));
+                                  break;
+                                case "discussionStickied":
+                                  var sticky = p.source["attributes"]["content"]
+                                      ["sticky"];
+                                  UserInfo u = discussionInfo.users[int.parse(
+                                      p.source["relationships"]["user"]["data"]
+                                          ["id"])];
+                                  Color textColor =
+                                      Color.fromARGB(255, 209, 62, 50);
+                                  card = makeMessageCard(
+                                      textColor,
+                                      FontAwesomeIcons.thumbtack,
+                                      u.displayName,
+                                      sticky
+                                          ? S
+                                              .of(context)
+                                              .c_stickied_the_discussion
+                                          : S
+                                              .of(context)
+                                              .c_unstickied_the_discussion);
+                                  break;
+                                case "discussionLocked":
+                                  var locked = p.source["attributes"]["content"]
+                                      ["locked"];
+                                  UserInfo u = discussionInfo.users[int.parse(
+                                      p.source["relationships"]["user"]["data"]
+                                          ["id"])];
+                                  Color textColor =
+                                      Color.fromARGB(255, 136, 136, 136);
+                                  card = makeMessageCard(
+                                      textColor,
+                                      FontAwesomeIcons.lock,
+                                      u.displayName,
+                                      locked
+                                          ? S
+                                              .of(context)
+                                              .c_locked_the_discussion
+                                          : S
+                                              .of(context)
+                                              .c_unlocked_the_discussion);
+                                  break;
+                                case "discussionTagged":
+                                  List before =
+                                      p.source["attributes"]["content"][0];
+                                  List after =
+                                      p.source["attributes"]["content"][1];
+                                  UserInfo u = discussionInfo.users[int.parse(
+                                      p.source["relationships"]["user"]["data"]
+                                          ["id"])];
+                                  List<TagInfo> removed = [];
+                                  List<TagInfo> added = [];
 
-                              before.forEach((id) {
-                                if (!after.contains(id)) {
-                                  removed.add(Api.getTag(id));
-                                }
-                              });
-                              after.forEach((id) {
-                                if (!before.contains(id)) {
-                                  added.add(Api.getTag(id));
-                                }
-                              });
+                                  before.forEach((id) {
+                                    if (!after.contains(id)) {
+                                      removed.add(Api.getTag(id));
+                                    }
+                                  });
+                                  after.forEach((id) {
+                                    if (!before.contains(id)) {
+                                      added.add(Api.getTag(id));
+                                    }
+                                  });
 
-                              card = makeTaggedCard(
-                                  context, u.displayName, added, removed);
-                              break;
-                            case "discussionRenamed":
-                              UserInfo u = discussionInfo.users[int.parse(
-                                  p.source["relationships"]["user"]["data"]
-                                      ["id"])];
-                              String before =
-                                  p.source["attributes"]["content"][0];
-                              String after =
-                                  p.source["attributes"]["content"][1];
-                              card = makeMessageCard(
-                                  Color.fromARGB(255, 102, 136, 153),
-                                  FontAwesomeIcons.pen,
-                                  u.displayName,
-                                  "${S.of(context).c_change_the_title_form} `$before` ${S.of(context).c_change_the_title_to} `$after`");
-                              break;
-                            default:
-                              print("UnimplementedTypes:" + p.contentType);
-                              card = Card(
-                                child:
-                                    Text("UnimplementedTypes:" + p.contentType),
+                                  card = makeTaggedCard(
+                                      context, u.displayName, added, removed);
+                                  break;
+                                case "discussionRenamed":
+                                  UserInfo u = discussionInfo.users[int.parse(
+                                      p.source["relationships"]["user"]["data"]
+                                          ["id"])];
+                                  String before =
+                                      p.source["attributes"]["content"][0];
+                                  String after =
+                                      p.source["attributes"]["content"][1];
+                                  card = makeMessageCard(
+                                      Color.fromARGB(255, 102, 136, 153),
+                                      FontAwesomeIcons.pen,
+                                      u.displayName,
+                                      "${S.of(context).c_change_the_title_form} `$before` ${S.of(context).c_change_the_title_to} `$after`");
+                                  break;
+                                default:
+                                  print("UnimplementedTypes:" + p.contentType);
+                                  card = Card(
+                                    child: Text(
+                                        "UnimplementedTypes:" + p.contentType),
+                                  );
+                              }
+                              return Padding(
+                                padding:
+                                    EdgeInsets.only(left: 8, right: 8, top: 6),
+                                child: card,
                               );
-                          }
-                          return Padding(
-                            padding: EdgeInsets.only(left: 8, right: 8, top: 6),
-                            child: card,
-                          );
+                            }),
+                        onRefresh: () {
+                          return loadData();
                         }),
                     onNotification: (ScrollNotification notification) {
                       if (notification.metrics.pixels ==
