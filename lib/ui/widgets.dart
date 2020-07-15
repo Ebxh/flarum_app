@@ -6,6 +6,7 @@ import 'package:core/api/decoder/tags.dart';
 import 'package:core/api/decoder/users.dart';
 import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
+import 'package:core/ui/page/UserPage.dart';
 import 'package:core/util/String.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
@@ -34,13 +35,18 @@ class SiteIcon extends StatelessWidget {
 class Avatar extends StatelessWidget {
   final UserInfo user;
   final Color backgroundColor;
+  final Object heroKey;
 
-  Avatar(this.user,this.backgroundColor);
+  Avatar(this.user, this.backgroundColor, this.heroKey);
 
   @override
   Widget build(BuildContext context) {
+    Widget widget;
+
+    UniqueKey heroKey = UniqueKey();
+
     if (user.avatarUrl == "") {
-      return ClipRRect(
+      widget = ClipRRect(
         borderRadius: BorderRadius.circular(1000),
         child: Container(
           height: 48,
@@ -48,32 +54,59 @@ class Avatar extends StatelessWidget {
           color: Colors.grey,
         ),
       );
-    }
-    return SizedBox(
-      height: 48,
-      width: 48,
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(1000),
-          child: user.avatarUrl != null
-              ? CachedNetworkImage(
-                  imageUrl: user.avatarUrl,
-                )
-              : Container(
-                  height: 48,
-                  width: 48,
-                  color: backgroundColor,
-                  child: Center(
-                    child: Text(
-                      user.username[0].toUpperCase(),
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+    } else {
+      widget = SizedBox(
+        height: 48,
+        width: 48,
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(1000),
+            child: user.avatarUrl != null
+                ? CachedNetworkImage(
+                    imageUrl: user.avatarUrl,
+                  )
+                : Container(
+                    height: 48,
+                    width: 48,
+                    color: backgroundColor,
+                    child: Center(
+                      child: Text(
+                        user.username[0].toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
                     ),
-                  ),
-                )),
-    );
+                  )),
+      );
+    }
+
+    return Hero(
+        tag: heroKey,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            child: widget,
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return UserPage(user, heroKey);
+              }));
+            },
+          ),
+        ));
   }
+}
+
+Widget makeBackButton(BuildContext context, Color textColor) {
+  return IconButton(
+      icon: Icon(
+        Icons.keyboard_arrow_left,
+        color: textColor,
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      });
 }
 
 Widget makeMiniCards(
@@ -100,7 +133,7 @@ Widget makeMiniCards(
                             child: Text(
                               t.name,
                               style: TextStyle(
-                                fontSize: 12,
+                                  fontSize: 12,
                                   color: ColorUtil.getTitleFormBackGround(
                                       HexColor.fromHex(t.color))),
                             ),
@@ -131,8 +164,8 @@ Widget makeMiniCards(
   );
 }
 
-Widget makeSortPopupMenu(BuildContext context, String discussionSort,Color textColor,
-    PopupMenuItemSelected<String> onSelected) {
+Widget makeSortPopupMenu(BuildContext context, String discussionSort,
+    Color textColor, PopupMenuItemSelected<String> onSelected) {
   return SizedBox(
     height: 24,
     width: 10,

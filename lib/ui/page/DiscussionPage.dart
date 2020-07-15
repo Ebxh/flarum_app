@@ -5,6 +5,8 @@ import 'package:core/ui/page/list/PostsList.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets.dart';
+
 class DiscussionPage extends StatefulWidget {
   final InitData initData;
   final DiscussionInfo discussionInfo;
@@ -29,14 +31,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
           style: TextStyle(color: textColor),
         ),
         centerTitle: true,
-        leading: IconButton(
-            icon: Icon(
-              Icons.keyboard_arrow_left,
-              color: textColor,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
+        leading: makeBackButton(context, textColor),
       ),
       backgroundColor: Color.fromARGB(255, 242, 241, 246),
       body: PostsList(widget.initData, widget.discussionInfo),

@@ -163,6 +163,16 @@ class S {
     );
   }
 
+  /// `User Info`
+  String get title_user_info {
+    return Intl.message(
+      'User Info',
+      name: 'title_user_info',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Show Details`
   String get title_show_details {
     return Intl.message(

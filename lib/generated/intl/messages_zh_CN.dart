@@ -47,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_sort" : MessageLookupByLibrary.simpleMessage("排序方式"),
     "title_switchSite" : MessageLookupByLibrary.simpleMessage("切换站点"),
     "title_tags" : MessageLookupByLibrary.simpleMessage("板块"),
+    "title_user_info" : MessageLookupByLibrary.simpleMessage("用户信息"),
     "title_welcome" : MessageLookupByLibrary.simpleMessage("欢迎！")
   };
 }

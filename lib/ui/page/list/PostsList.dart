@@ -118,8 +118,10 @@ class _PostsListState extends State<PostsList> {
                                         children: <Widget>[
                                           ListTile(
                                             title: Text(u.displayName),
-                                            leading: Avatar(u,
-                                                Theme.of(context).primaryColor),
+                                            leading: Avatar(
+                                                u,
+                                                Theme.of(context).primaryColor,
+                                                UniqueKey()),
                                             subtitle: Text(p.createdAt),
                                           ),
                                           Padding(

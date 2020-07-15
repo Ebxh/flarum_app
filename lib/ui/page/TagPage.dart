@@ -78,12 +78,7 @@ class _TagInfoPageState extends State<TagInfoPage> {
                   ),
                   centerTitle: true,
                 ),
-                leading: IconButton(
-                    icon: Icon(Icons.keyboard_arrow_left),
-                    color: textColor,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
+                leading: makeBackButton(context, textColor),
                 actions: <Widget>[
                   widget.tagInfo.isChild ||
                           widget.tagInfo.children == null ||

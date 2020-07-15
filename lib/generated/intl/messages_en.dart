@@ -47,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_sort" : MessageLookupByLibrary.simpleMessage("Sort"),
     "title_switchSite" : MessageLookupByLibrary.simpleMessage("Switch Site"),
     "title_tags" : MessageLookupByLibrary.simpleMessage("Tags"),
+    "title_user_info" : MessageLookupByLibrary.simpleMessage("User Info"),
     "title_welcome" : MessageLookupByLibrary.simpleMessage("Welcome!")
   };
 }
