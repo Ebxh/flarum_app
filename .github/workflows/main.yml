@@ -1,0 +1,41 @@
+name: Build Action
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-android:
+    name: build android version
+    runs-on: ubuntu-latest
+    steps:
+      - name: check
+        uses: actions/checkout@v1
+      - name: read Cache
+        uses: actions/cache@v1
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-master
+      - name: install Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: "dev"
+      - name: go to stable
+        run: flutter channel stable
+      - name: flutter pub get
+        run: flutter pub get
+      - name: build Android
+        run: flutter build apk --release --target-platform android-arm,android-arm64,android-x64 --split-per-abi --shrink
+      - name: getTime
+        uses: srfrnk/current-time@master
+        id: current-time
+        with:
+          format: YYYY/MM/DD
+      - name: upload
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.RELEASE_TOKEN }}"
+          automatic_release_tag: "build_android_${{steps.current-time.outputs.formattedTime}}"
+          prerelease: true
+          files: build/app/outputs/apk/release/*.apk
