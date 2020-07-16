@@ -1,10 +1,11 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/tags.dart';
-import 'file:///C:/Users/me/AndroidStudioProjects/flarum_app/lib/ui/page/list/DiscussionsList.dart';
 import 'package:core/ui/widgets.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
+
+import 'list/DiscussionsList.dart';
 
 class TagInfoPage extends StatefulWidget {
   final TagInfo tagInfo;

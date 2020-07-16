@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/api/decoder/users.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/widgets.dart';
