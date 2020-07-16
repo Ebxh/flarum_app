@@ -41,45 +41,10 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget widget;
 
     UniqueKey heroKey = UniqueKey();
 
-    if (user.avatarUrl == "") {
-      widget = ClipRRect(
-        borderRadius: BorderRadius.circular(1000),
-        child: Container(
-          height: 48,
-          width: 48,
-          color: Colors.grey,
-        ),
-      );
-    } else {
-      widget = SizedBox(
-        height: 48,
-        width: 48,
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(1000),
-            child: user.avatarUrl != null
-                ? CachedNetworkImage(
-                    imageUrl: user.avatarUrl,
-                  )
-                : Container(
-                    height: 48,
-                    width: 48,
-                    color: backgroundColor,
-                    child: Center(
-                      child: Text(
-                        user.username[0].toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                    ),
-                  )),
-      );
-    }
+    Widget widget = makeUserAvatarImage(user, backgroundColor, 48, 20);
 
     return Hero(
         tag: heroKey,
@@ -95,6 +60,47 @@ class Avatar extends StatelessWidget {
             },
           ),
         ));
+  }
+}
+
+Widget makeUserAvatarImage(UserInfo user, Color backgroundColor, double size,double fontSize) {
+  if (user.avatarUrl == "") {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(1000),
+      child: Container(
+        height: size,
+        width: size,
+        color: Colors.grey,
+      ),
+    );
+  } else {
+    return SizedBox(
+      height: size,
+      width: size,
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(1000),
+          child: user.avatarUrl != null
+              ? CachedNetworkImage(
+            imageUrl: user.avatarUrl,
+          )
+              : Container(
+            height: size,
+            width: size,
+            color: backgroundColor,
+            child: Center(
+              child: Material(
+                color: Colors.transparent,
+                child: Text(
+                  user.username[0].toUpperCase(),
+                  style: TextStyle(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ),
+            ),
+          )),
+    );
   }
 }
 
