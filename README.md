@@ -21,5 +21,5 @@ A flarum application by Flutter.
 2. install Android-Studio (if macOS,you have to install xcode)
 3. install flutter plugin of Android-Studio
 4. install and configure [flutter](https://flutter.dev/docs/get-started/install)
-5. clone this Porject and open With Android-Studio
+5. clone this Project and open With Android-Studio
 6. get depend And run.
