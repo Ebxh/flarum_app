@@ -16,7 +16,11 @@ A flarum application by Flutter.
 - View the tag details and tag discussion  
 - ...TODO
 
+
 ## How to start ?
+
+[download](https://github.com/clinux-co/flarum_app/releases) or :
+
 1. A windows/linux/macOS 64bit device
 2. install Android-Studio (if macOS,you have to install xcode)
 3. install flutter plugin of Android-Studio
