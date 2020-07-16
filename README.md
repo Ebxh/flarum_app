@@ -22,4 +22,4 @@ A flarum application by Flutter.
 3. install flutter plugin of Android-Studio
 4. install and configure [flutter](https://flutter.dev/docs/get-started/install)
 5. clone this Porject and open With Android-Studio
-6. get depend Android run.
+6. get depend And run.
