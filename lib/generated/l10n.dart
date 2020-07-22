@@ -183,6 +183,16 @@ class S {
     );
   }
 
+  /// `Search`
+  String get title_search {
+    return Intl.message(
+      'Search',
+      name: 'title_search',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Latest`
   String get subtitle_latest {
     return Intl.message(

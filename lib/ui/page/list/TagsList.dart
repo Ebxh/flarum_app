@@ -1,5 +1,7 @@
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/tags.dart';
+import 'package:core/generated/l10n.dart';
+import 'package:core/ui/page/SearchPage.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
@@ -18,8 +20,28 @@ class _TagsPageState extends State<TagsPage> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.initData.tags.tags.length + 1,
+        itemCount: widget.initData.tags.tags.length + 2,
         itemBuilder: (BuildContext context, int index) {
+          index = index - 1;
+          if (index == -1) {
+            return Container(
+                height: 40,
+                padding: EdgeInsets.only(left: 10, right: 10, top: 5),
+                child: InkWell(
+                  child: TextField(
+                    enabled: false,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      hintText: S.of(context).title_search,
+                    ),
+                  ),
+                  onTap: () {
+                    showSearch(
+                        context: context,
+                        delegate: SearchPage(null, widget.initData));
+                  },
+                ));
+          }
           if (index == widget.initData.tags.tags.length) {
             return makeMiniCard(
                 widget.initData.tags.miniTags.values.toList(), context);
@@ -56,7 +78,7 @@ class _TagsPageState extends State<TagsPage> {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return TagInfoPage(t,widget.initData);
+                  return TagInfoPage(t, widget.initData);
                 }));
               },
             ),
@@ -78,7 +100,7 @@ class _TagsPageState extends State<TagsPage> {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
-                  return TagInfoPage(tag,widget.initData);
+                  return TagInfoPage(tag, widget.initData);
                 }));
               },
             ),
@@ -120,7 +142,7 @@ class _TagsPageState extends State<TagsPage> {
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (BuildContext context) {
-              return TagInfoPage(t,widget.initData);
+              return TagInfoPage(t, widget.initData);
             }));
           },
         ),

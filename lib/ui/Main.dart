@@ -11,7 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'page/Splash.dart';
+import 'page/SplashPage.dart';
 import 'page/list/DiscussionsList.dart';
 import 'page/list/TagsList.dart';
 

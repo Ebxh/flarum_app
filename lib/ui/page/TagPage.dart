@@ -1,6 +1,7 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/tags.dart';
+import 'package:core/ui/page/SearchPage.dart';
 import 'package:core/ui/widgets.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
@@ -84,10 +85,30 @@ class _TagInfoPageState extends State<TagInfoPage> {
                   widget.tagInfo.isChild ||
                           widget.tagInfo.children == null ||
                           widget.tagInfo.children.length == 0
-                      ? SizedBox(
-                          height: 48,
-                          width: 48,
-                        )
+                      ? SizedBox()
+                      : IconButton(
+                          icon: Icon(
+                            Icons.search,
+                            color: textColor,
+                          ),
+                          onPressed: () {
+                            showSearch(
+                                context: context,
+                                delegate: SearchPage(widget.tagInfo, initData));
+                          }),
+                  widget.tagInfo.isChild ||
+                          widget.tagInfo.children == null ||
+                          widget.tagInfo.children.length == 0
+                      ? IconButton(
+                          icon: Icon(
+                            Icons.search,
+                            color: textColor,
+                          ),
+                          onPressed: () {
+                            showSearch(
+                                context: context,
+                                delegate: SearchPage(widget.tagInfo, initData));
+                          })
                       : PopupMenuButton(
                           child: IconButton(
                               icon: Icon(

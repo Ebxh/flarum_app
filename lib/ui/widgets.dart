@@ -173,7 +173,7 @@ Widget makeMiniCards(
 Widget makeSortPopupMenu(BuildContext context, String discussionSort,
     Color textColor, PopupMenuItemSelected<String> onSelected) {
   return SizedBox(
-    height: 24,
+    height: 28,
     width: 10,
     child: PopupMenuButton<String>(
       tooltip: S.of(context).title_sort,
