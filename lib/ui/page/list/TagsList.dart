@@ -34,6 +34,9 @@ class _TagsPageState extends State<TagsPage> {
                       prefixIcon: Icon(Icons.search),
                       hintText: S.of(context).title_search,
                     ),
+                    style: TextStyle(
+                      fontSize: 14
+                    ),
                   ),
                   onTap: () {
                     showSearch(
