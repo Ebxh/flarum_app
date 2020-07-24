@@ -120,9 +120,11 @@ class SiteInfo {
   String url;
   String title;
   String faviconUrl;
+  int loggedInUserId;
   Map source;
 
-  SiteInfo(this.url, this.title, this.faviconUrl, {this.source});
+  SiteInfo(this.url, this.title, this.faviconUrl, this.loggedInUserId,
+      {this.source});
 
   factory SiteInfo.formMap(Map m) {
     return SiteInfo(
@@ -131,6 +133,7 @@ class SiteInfo {
         m["faviconUrl"] == null
             ? "https://discuss.flarum.org/assets/favicon-sltwadyk.png"
             : m["faviconUrl"],
+        m["loggedInUserId"] == null ? -1 : int.parse(m["loggedInUserId"]),
         source: m);
   }
 
@@ -139,6 +142,7 @@ class SiteInfo {
       "url": url,
       "title": title,
       "faviconUrl": faviconUrl,
+      "loggedInUserId": loggedInUserId.toString()
     };
   }
 }

@@ -317,7 +317,7 @@ class _MainPageState extends State<MainPage> {
                           var f = await Api.checkUrl(url);
                           if (f != null) {
                             AppConfig.addSite(
-                                SiteInfo(f.apiUrl, f.title, f.faviconUrl));
+                                SiteInfo(f.apiUrl, f.title, f.faviconUrl,-1));
                             var index = await AppConfig.getSiteIndex();
                             if (index == -1) {
                               index = 0;
