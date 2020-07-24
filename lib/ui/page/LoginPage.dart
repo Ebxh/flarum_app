@@ -62,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: isLoading
                             ? null
                             : () async {
+                                /*
                                 if (userNameController.text == "" ||
                                     passwordController.text == "") {
                                   return;
@@ -78,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                                 setState(() {
                                   isLoading = false;
                                 });
+                        */
                               }),
                     RaisedButton(
                         child: Text(S.of(context).title_singUp),

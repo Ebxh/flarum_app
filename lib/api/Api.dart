@@ -98,6 +98,7 @@ class Api {
     }
     _dio
       ..options.baseUrl = apiUrl
+      /// api is invalid?
       ..options.headers = {"Authentication": "Token ${t.token}"};
     return getUserInfoById(t.uid);
   }
