@@ -111,6 +111,10 @@ class _PostsListState extends State<PostsList> {
                                   if (u == null) {
                                     print("${p.user} ${p.id} $count");
                                   }
+
+                                  var buttonPadding =
+                                      MediaQuery.of(context).size.width / 12;
+
                                   card = Card(
                                       elevation: 0,
                                       child: Column(
@@ -144,9 +148,9 @@ class _PostsListState extends State<PostsList> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: EdgeInsets.only(
-                                                      left: 40,
+                                                      left: buttonPadding,
                                                       bottom: 10,
-                                                      right: 40),
+                                                      right: buttonPadding),
                                                   child: IconButton(
                                                       icon: FaIcon(
                                                         FontAwesomeIcons
@@ -157,9 +161,9 @@ class _PostsListState extends State<PostsList> {
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.only(
-                                                      left: 40,
+                                                      left: buttonPadding,
                                                       bottom: 10,
-                                                      right: 40),
+                                                      right: buttonPadding),
                                                   child: IconButton(
                                                       icon: FaIcon(
                                                           FontAwesomeIcons
@@ -169,9 +173,9 @@ class _PostsListState extends State<PostsList> {
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.only(
-                                                      left: 40,
+                                                      left: buttonPadding,
                                                       bottom: 10,
-                                                      right: 40),
+                                                      right: buttonPadding),
                                                   child: IconButton(
                                                       icon: FaIcon(
                                                           Icons.more_horiz,
