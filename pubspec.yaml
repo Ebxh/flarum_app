@@ -20,6 +20,8 @@ dependencies:
   html: ^0.14.0+3
   font_awesome_flutter: ^8.8.1
   flutter_custom_tabs: ^0.6.0
+  dio_cookie_manager: ^1.0.0
+  cookie_jar: ^1.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -11,7 +11,6 @@ class SearchPage extends SearchDelegate<String> {
   @override
   ThemeData appBarTheme(BuildContext context) {
     return ThemeData(primaryColor: Colors.white, brightness: Brightness.light);
-    return super.appBarTheme(context);
   }
 
   @override

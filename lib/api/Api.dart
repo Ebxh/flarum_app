@@ -1,15 +1,27 @@
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:core/api/decoder/discussions.dart';
 import 'package:core/api/decoder/forums.dart';
 import 'package:core/api/decoder/posts.dart';
 import 'package:core/util/String.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'decoder/tags.dart';
 
 class Api {
-  static Dio _dio = Dio();
+  static PersistCookieJar _cookieJar;
+  static Dio _dio ;
   static String apiUrl = "";
   static Map<int, TagInfo> _tags;
+
+  static init () async {
+    _cookieJar = PersistCookieJar(
+      dir: (await getApplicationDocumentsDirectory()).path +"/cookies"
+    );
+    _dio = Dio()..interceptors.add(CookieManager(_cookieJar));
+
+  }
 
   static Future<ForumInfo> checkUrl(String url) async {
     if (StringCheck(url).isUrl()) {

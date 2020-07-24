@@ -171,6 +171,7 @@ class _MainPageState extends State<MainPage> {
   Future<InitData> initApp(BuildContext context) async {
     _isLoading = true;
     await AppConfig.init();
+    await Api.init();
     var sites = await AppConfig.getSiteList();
     ForumInfo info;
     if (sites == null || sites.length == 0) {

@@ -10,16 +10,16 @@ class AppConfig {
 
   /// init confFile , first return true,else return false;
 
-  static Future<bool> init() async {
+  static Future<void> init() async {
     if (confFile == null) {
       var appDocDir = await getApplicationDocumentsDirectory();
       confFile = File(appDocDir.path + "/flarum_conf.json");
       if (!await confFile.exists()) {
         confFile = await confFile.create();
       }
-      return true;
+      return;
     }
-    return false;
+    return;
   }
 
   static Future<bool> addSite(SiteInfo info) async {
