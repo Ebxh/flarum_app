@@ -24,7 +24,8 @@ class _TagInfoPageState extends State<TagInfoPage> {
 
   @override
   void initState() {
-    initData = InitData(widget.initData.forumInfo, widget.initData.tags, null);
+    initData = InitData(widget.initData.forumInfo, widget.initData.tags, null,
+        widget.initData.loggedUser);
     loadData();
     super.initState();
   }
@@ -44,6 +45,8 @@ class _TagInfoPageState extends State<TagInfoPage> {
                 backgroundColor: backgroundColor,
                 centerTitle: true,
                 expandedHeight: 200,
+                brightness:
+                    ColorUtil.getBrightnessFromBackground(backgroundColor),
                 flexibleSpace: FlexibleSpaceBar(
                   background: Center(
                     child: Padding(

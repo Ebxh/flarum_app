@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:core/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AppConfig {
@@ -50,6 +51,21 @@ class AppConfig {
     return conf.siteIndex;
   }
 
+  static Future<bool> setLoggedInUser(int userId, String token) async {
+    int siteIndex = await getSiteIndex();
+    var conf = await getConf();
+    conf.sites[siteIndex].loggedInUserId = userId;
+    conf.sites[siteIndex].userToken = token;
+    return await saveConf(conf);
+  }
+
+  static Future<UserToken> getLoggedInUser() async {
+    int siteIndex = await getSiteIndex();
+    var conf = await getConf();
+    return UserToken(
+        conf.sites[siteIndex].loggedInUserId, conf.sites[siteIndex].userToken);
+  }
+
   static Future<Conf> getConf() async {
     try {
       String j = await confFile.readAsString();
@@ -89,6 +105,43 @@ class AppConfig {
       SortOldest: S.of(context).subtitle_oldest,
     };
   }
+
+  /// launchURL with Chrome CustomTabs
+  static void launchURL(BuildContext context, String url) async {
+    try {
+      await launch(
+        url,
+        option: CustomTabsOption(
+          toolbarColor: Colors.white,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          animation: const CustomTabsAnimation(
+            startEnter: 'android:anim/slide_in_right',
+            startExit: 'android:anim/slide_out_left',
+            endEnter: 'android:anim/slide_in_left',
+            endExit: 'android:anim/slide_out_right',
+          ),
+          extraCustomTabs: <String>[
+            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+            'org.mozilla.firefox',
+            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+            'com.microsoft.emmx',
+          ],
+        ),
+      );
+    } catch (e) {
+      // An exception is thrown if browser app is not installed on Android device.
+      debugPrint(e.toString());
+    }
+  }
+}
+
+class UserToken {
+  int uid;
+  String token;
+
+  UserToken(this.uid, this.token);
 }
 
 class Conf {
@@ -121,9 +174,11 @@ class SiteInfo {
   String title;
   String faviconUrl;
   int loggedInUserId;
+  String userToken;
   Map source;
 
   SiteInfo(this.url, this.title, this.faviconUrl, this.loggedInUserId,
+      this.userToken,
       {this.source});
 
   factory SiteInfo.formMap(Map m) {
@@ -134,6 +189,7 @@ class SiteInfo {
             ? "https://discuss.flarum.org/assets/favicon-sltwadyk.png"
             : m["faviconUrl"],
         m["loggedInUserId"] == null ? -1 : int.parse(m["loggedInUserId"]),
+        m["userToken"],
         source: m);
   }
 
@@ -142,7 +198,8 @@ class SiteInfo {
       "url": url,
       "title": title,
       "faviconUrl": faviconUrl,
-      "loggedInUserId": loggedInUserId.toString()
+      "loggedInUserId": loggedInUserId.toString(),
+      "userToken": userToken
     };
   }
 }

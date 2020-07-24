@@ -6,7 +6,7 @@ import 'package:core/api/decoder/tags.dart';
 import 'package:core/api/decoder/users.dart';
 import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
-import 'package:core/ui/page/UserPage.dart';
+import 'package:core/ui/page/UserInfoPage.dart';
 import 'package:core/util/String.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';

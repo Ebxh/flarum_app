@@ -38,6 +38,6 @@ class ColorUtil {
   }
 
   static Brightness getBrightnessFromBackground(Color color) {
-    return color.computeLuminance() < 0.5 ? Brightness.light : Brightness.dark;
+    return color.computeLuminance() < 0.5 ? Brightness.dark : Brightness.light;
   }
 }

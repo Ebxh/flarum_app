@@ -35,6 +35,10 @@ class UserInfo {
       this.groups,
       this.source);
 
+  factory UserInfo.formJson(String data) {
+    return UserInfo.formBaseData(BaseBean.formJson(data).data);
+  }
+
   factory UserInfo.formBaseData(BaseData data) {
     Map m = data.attributes;
     return UserInfo(

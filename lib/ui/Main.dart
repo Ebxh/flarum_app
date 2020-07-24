@@ -4,6 +4,8 @@ import 'package:core/api/data.dart';
 import 'package:core/api/decoder/forums.dart';
 import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
+import 'package:core/ui/page/LoginPage.dart';
+import 'package:core/ui/page/UserPage.dart';
 import 'package:core/ui/widgets.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +70,8 @@ class _MainPageState extends State<MainPage> {
             : Scaffold(
                 key: scaffold,
                 appBar: AppBar(
+                  brightness: ColorUtil.getBrightnessFromBackground(
+                      Theme.of(context).primaryColor),
                   title: ListTile(
                     title: Text(
                       initData.forumInfo.title,
@@ -110,7 +114,23 @@ class _MainPageState extends State<MainPage> {
                           Icons.account_circle,
                           color: textColor,
                         ),
-                        onPressed: () {})
+                        onPressed: () {
+                          if (initData.loggedUser != null) {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return UserPage();
+                            }));
+                          } else {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return LoginPage();
+                            })).then((ok) {
+                              if (ok != null && ok) {
+                                refreshUI();
+                              }
+                            });
+                          }
+                        })
                   ],
                 ),
                 body: IndexedStack(
@@ -171,7 +191,6 @@ class _MainPageState extends State<MainPage> {
   Future<InitData> initApp(BuildContext context) async {
     _isLoading = true;
     await AppConfig.init();
-    await Api.init();
     var sites = await AppConfig.getSiteList();
     ForumInfo info;
     if (sites == null || sites.length == 0) {
@@ -316,8 +335,8 @@ class _MainPageState extends State<MainPage> {
                           var url = "${urlInput.text}/api";
                           var f = await Api.checkUrl(url);
                           if (f != null) {
-                            AppConfig.addSite(
-                                SiteInfo(f.apiUrl, f.title, f.faviconUrl,-1));
+                            AppConfig.addSite(SiteInfo(
+                                f.apiUrl, f.title, f.faviconUrl, -1, null));
                             var index = await AppConfig.getSiteIndex();
                             if (index == -1) {
                               index = 0;

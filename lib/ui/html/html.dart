@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/page/ImagesView.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
 
@@ -22,7 +22,10 @@ class HtmlView extends StatelessWidget {
       widgets.add(getWidget(context, element));
     });
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,37 +54,37 @@ class HtmlView extends StatelessWidget {
               String url = n.attributes["src"];
               span.add(WidgetSpan(
                   child: contentPadding(Center(
-                child: InkWell(
-                  child: Material(
-                    child: Hero(
-                        tag: url,
-                        child: CachedNetworkImage(
-                          imageUrl: url,
-                          placeholder: (BuildContext context, String url) {
-                            return Icon(
-                              Icons.image,
-                              size: 64,
-                              color: Colors.grey,
-                            );
-                          },
-                          errorWidget: (BuildContext context, String url,
-                              dynamic error) {
-                            return Icon(
-                              Icons.warning,
-                              size: 64,
-                              color: Colors.grey,
-                            );
-                          },
-                        )),
-                  ),
-                  onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return ImagesVIew([n.attributes["src"]], 0);
-                    }));
-                  },
-                ),
-              ))));
+                    child: InkWell(
+                      child: Material(
+                        child: Hero(
+                            tag: url,
+                            child: CachedNetworkImage(
+                              imageUrl: url,
+                              placeholder: (BuildContext context, String url) {
+                                return Icon(
+                                  Icons.image,
+                                  size: 64,
+                                  color: Colors.grey,
+                                );
+                              },
+                              errorWidget: (BuildContext context, String url,
+                                  dynamic error) {
+                                return Icon(
+                                  Icons.warning,
+                                  size: 64,
+                                  color: Colors.grey,
+                                );
+                              },
+                            )),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                              return ImagesVIew([n.attributes["src"]], 0);
+                            }));
+                      },
+                    ),
+                  ))));
             } else {
               span.add(TextSpan(
                   text: "${n.text}", style: TextStyle(fontSize: textSize)));
@@ -92,80 +95,84 @@ class HtmlView extends StatelessWidget {
               case "UserMention":
                 span.add(WidgetSpan(
                     child: InkWell(
-                  child: Text("${n.text}",
-                      style: TextStyle(
-                          fontSize: textSize,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold)),
-                  onTap: () {},
-                )));
+                      child: Text("${n.text}",
+                          style: TextStyle(
+                              fontSize: textSize,
+                              color: Theme
+                                  .of(context)
+                                  .primaryColor,
+                              fontWeight: FontWeight.bold)),
+                      onTap: () {},
+                    )));
                 break;
               case "PostMention":
                 span.add(WidgetSpan(
                     child: InkWell(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 5),
-                        child: FaIcon(
-                          FontAwesomeIcons.reply,
-                          color: Colors.blue,
-                          size: textSize,
-                        ),
-                      ),
-                      Text("${n.text}",
-                          style: TextStyle(
-                              fontSize: textSize,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: FaIcon(
+                              FontAwesomeIcons.reply,
                               color: Colors.blue,
-                              fontWeight: FontWeight.bold))
-                    ],
-                  ),
-                  onTap: () {
-                    print(n.parent.attributes);
-                  },
-                )));
+                              size: textSize,
+                            ),
+                          ),
+                          Text("${n.text}",
+                              style: TextStyle(
+                                  fontSize: textSize,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold))
+                        ],
+                      ),
+                      onTap: () {
+                        print(n.parent.attributes);
+                      },
+                    )));
                 break;
               case "github-issue-link":
                 span.add(WidgetSpan(
                     child: InkWell(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 5, right: 2),
-                        child: FaIcon(
-                          FontAwesomeIcons.github,
-                          size: 18,
-                        ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 5, right: 2),
+                            child: FaIcon(
+                              FontAwesomeIcons.github,
+                              size: 18,
+                            ),
+                          ),
+                          Text("${n.text}",
+                              style: TextStyle(
+                                  fontSize: textSize,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.bold))
+                        ],
                       ),
-                      Text("${n.text}",
-                          style: TextStyle(
-                              fontSize: textSize,
-                              color: Colors.black,
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.bold))
-                    ],
-                  ),
-                  onTap: () {
-                    String url = n.parent.attributes["href"];
-                    _launchURL(context, url);
-                  },
-                )));
+                      onTap: () {
+                        String url = n.parent.attributes["href"];
+                        AppConfig.launchURL(context, url);
+                      },
+                    )));
                 break;
               default:
                 span.add(WidgetSpan(
                     child: InkWell(
-                  child: Text("${n.text}",
-                      style: TextStyle(
-                          fontSize: textSize,
-                          color: Theme.of(context).primaryColor,
-                          decoration: TextDecoration.underline,
-                          fontWeight: FontWeight.bold)),
-                  onTap: () {
-                    _launchURL(context, n.parent.attributes["href"]);
-                  },
-                )));
+                      child: Text("${n.text}",
+                          style: TextStyle(
+                              fontSize: textSize,
+                              color: Theme
+                                  .of(context)
+                                  .primaryColor,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.bold)),
+                      onTap: () {
+                        AppConfig.launchURL(context, n.parent.attributes["href"]);
+                      },
+                    )));
                 if (n.parent.className != "") {
                   print("UnimplementedUrlClass:${n.parent.className}");
                 }
@@ -210,9 +217,9 @@ class HtmlView extends StatelessWidget {
             print("UnimplementedNode:${n.parent.localName}");
             span.add(WidgetSpan(
                 child: Text(
-              "${n.text}",
-              style: TextStyle(fontSize: textSize),
-            )));
+                  "${n.text}",
+                  style: TextStyle(fontSize: textSize),
+                )));
             break;
         }
       }
@@ -268,14 +275,23 @@ class HtmlView extends StatelessWidget {
         return contentPadding(SizedBox());
       case "details":
         return contentPadding(SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: RaisedButton(
-              color: Theme.of(context).primaryColor,
+              color: Theme
+                  .of(context)
+                  .primaryColor,
               child: Text(
-                S.of(context).title_show_details,
+                S
+                    .of(context)
+                    .title_show_details,
                 style: TextStyle(
                     color: ColorUtil.getTitleFormBackGround(
-                        Theme.of(context).primaryColor)),
+                        Theme
+                            .of(context)
+                            .primaryColor)),
               ),
               onPressed: () {
                 showDialog(
@@ -283,17 +299,21 @@ class HtmlView extends StatelessWidget {
                     child: Builder(builder: (BuildContext context) {
                       var e = element.outerHtml.replaceAll("<details", "<p");
                       return AlertDialog(
-                        title: Text(S.of(context).title_details),
+                        title: Text(S
+                            .of(context)
+                            .title_details),
                         content: Scrollbar(
                             child: SingleChildScrollView(
-                          child: HtmlView(e),
-                        )),
+                              child: HtmlView(e),
+                            )),
                         actions: <Widget>[
                           FlatButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text(S.of(context).title_close))
+                              child: Text(S
+                                  .of(context)
+                                  .title_close))
                         ],
                       );
                     }));
@@ -312,7 +332,10 @@ class HtmlView extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.all(10),
           child: SizedBox(
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -332,7 +355,10 @@ class HtmlView extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.all(10),
           child: SizedBox(
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -343,7 +369,10 @@ class HtmlView extends StatelessWidget {
       case "blockquote":
         Color background = HexColor.fromHex("#e7edf3");
         return SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: Card(
             elevation: 0,
             color: background,
@@ -355,14 +384,17 @@ class HtmlView extends StatelessWidget {
                   text: TextSpan(
                       children: getRichTextSpan(context, element.nodes),
                       style:
-                          TextStyle(fontSize: textSize, color: Colors.black))),
+                      TextStyle(fontSize: textSize, color: Colors.black))),
             ),
           ),
         );
       case "pre":
         Color backGroundColor = Colors.black87;
         return contentPadding(SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: Card(
             elevation: 0,
             color: backGroundColor,
@@ -386,7 +418,10 @@ class HtmlView extends StatelessWidget {
         break;
       default:
         return contentPadding(contentPadding(SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: RaisedButton(
               color: Colors.red,
               child: Text(
@@ -414,32 +449,4 @@ class HtmlView extends StatelessWidget {
     );
   }
 
-  void _launchURL(BuildContext context, String url) async {
-    try {
-      await launch(
-        url,
-        option: CustomTabsOption(
-          toolbarColor: Colors.white,
-          enableDefaultShare: true,
-          enableUrlBarHiding: true,
-          showPageTitle: true,
-          animation: const CustomTabsAnimation(
-            startEnter: 'android:anim/slide_in_right',
-            startExit: 'android:anim/slide_out_left',
-            endEnter: 'android:anim/slide_in_left',
-            endExit: 'android:anim/slide_out_right',
-          ),
-          extraCustomTabs: <String>[
-            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
-            'org.mozilla.firefox',
-            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
-            'com.microsoft.emmx',
-          ],
-        ),
-      );
-    } catch (e) {
-      // An exception is thrown if browser app is not installed on Android device.
-      debugPrint(e.toString());
-    }
-  }
 }

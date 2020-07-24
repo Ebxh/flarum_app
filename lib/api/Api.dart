@@ -1,32 +1,27 @@
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:core/api/decoder/discussions.dart';
 import 'package:core/api/decoder/forums.dart';
 import 'package:core/api/decoder/posts.dart';
+import 'package:core/conf/app.dart';
 import 'package:core/util/String.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'decoder/tags.dart';
+import 'decoder/users.dart';
 
 class Api {
-  static PersistCookieJar _cookieJar;
-  static Dio _dio ;
+  static Dio _dio;
   static String apiUrl = "";
   static Map<int, TagInfo> _tags;
 
-  static init () async {
-    _cookieJar = PersistCookieJar(
-      dir: (await getApplicationDocumentsDirectory()).path +"/cookies"
-    );
-    _dio = Dio()..interceptors.add(CookieManager(_cookieJar));
-
+  static Future<void> init(String url) async {
+    apiUrl = url;
+    _dio = Dio()..options.baseUrl = url;
   }
 
   static Future<ForumInfo> checkUrl(String url) async {
     if (StringCheck(url).isUrl()) {
       try {
-        return ForumInfo.formJson((await _dio.get(url)).data);
+        return ForumInfo.formJson((await Dio().get(url)).data);
       } catch (e) {
         print(e);
         return null;
@@ -39,7 +34,7 @@ class Api {
   static Future<Tags> getTags() async {
     _tags = {};
     try {
-      var t = TagInfo.getListFormJson((await _dio.get("$apiUrl/tags")).data);
+      var t = TagInfo.getListFormJson((await _dio.get("/tags")).data);
       t.tags.forEach((_, tag) {
         if (tag.children != null) {
           tag.children.forEach((id, t) {
@@ -63,18 +58,17 @@ class Api {
   }
 
   static Future<DiscussionInfo> getDiscussion(int id) async {
-    return DiscussionInfo.formJson(
-        (await _dio.get("$apiUrl/discussions/$id")).data);
+    return DiscussionInfo.formJson((await _dio.get("/discussions/$id")).data);
   }
 
   static Future<Discussions> getDiscussionList(String sortKey,
       {String tagSlug}) async {
     String url;
     if (tagSlug == null) {
-      url = "$apiUrl/discussions?include=user,tags"
+      url = "/discussions?include=user,tags"
           "&sort=$sortKey&";
     } else {
-      url = "$apiUrl/discussions?include=user,tags"
+      url = "/discussions?include=user,tags"
           "&sort=$sortKey&filter[q]=tag:${Uri.encodeComponent(tagSlug)}&";
     }
     return getDiscussionListByUrl(url);
@@ -90,10 +84,41 @@ class Api {
   }
 
   static Future<Posts> getPostsById(List<int> l) async {
-    var url = "$apiUrl/posts?filter[id]=";
+    var url = "/posts?filter[id]=";
     l.forEach((id) {
       url += "$id,";
     });
     return Posts.formJson((await _dio.get(url)).data);
+  }
+
+  static Future<UserInfo> getLoggedInUserInfo() async {
+    var t = await AppConfig.getLoggedInUser();
+    if (t.uid == -1) {
+      return null;
+    }
+    _dio
+      ..options.baseUrl = apiUrl
+      ..options.headers = {"Authentication": "Token ${t.token}"};
+    return getUserInfoById(t.uid);
+  }
+
+  static Future<UserInfo> getUserInfoById(int id) async {
+    try {
+      return UserInfo.formJson((await _dio.get("users/$id")).data);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  static Future<bool> login(String username, String password) async {
+    var result = (await _dio.post("/token", data: {
+      "identification": username,
+      "password": password,
+    }));
+    var userId = result.data["userId"];
+    var token = result.data["token"];
+
+    return AppConfig.setLoggedInUser(userId, token);
   }
 }

@@ -193,6 +193,36 @@ class S {
     );
   }
 
+  /// `Me`
+  String get title_me {
+    return Intl.message(
+      'Me',
+      name: 'title_me',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get title_login {
+    return Intl.message(
+      'Login',
+      name: 'title_login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SingUp`
+  String get title_singUp {
+    return Intl.message(
+      'SingUp',
+      name: 'title_singUp',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Latest`
   String get subtitle_latest {
     return Intl.message(

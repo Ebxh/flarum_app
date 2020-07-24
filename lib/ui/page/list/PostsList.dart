@@ -97,8 +97,8 @@ class _PostsListState extends State<PostsList> {
                               var p = discussionInfo
                                   .posts[discussionInfo.postsIdList[index]];
                               if (p == null) {
-                                print(index);
-                                print(discussionInfo.postsIdList[index]);
+                                print(
+                                    "null discussionInfo(index:$index,id:${discussionInfo.postsIdList[index]}),on url：");
                               }
                               switch (p.contentType) {
                                 case "comment":
@@ -469,15 +469,13 @@ class _PostsListState extends State<PostsList> {
       });
       if (count + 20 > discussionInfo.postsIdList.length) {
         c = count + (discussionInfo.postsIdList.length - count);
+        print(discussionInfo.postsIdList.length - count);
       } else {
         c = count + 20;
       }
       List<int> nl = [];
       for (int i = count; i < c; i++) {
-        var p = discussionInfo.posts[i];
-        if (p == null) {
-          nl.add(discussionInfo.postsIdList[i]);
-        }
+        nl.add(discussionInfo.postsIdList[i]);
       }
 
       var posts = await Api.getPostsById(nl);

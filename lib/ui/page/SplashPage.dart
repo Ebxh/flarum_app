@@ -19,12 +19,15 @@ class Splash extends StatefulWidget {
 class _SplashPage extends State<Splash> {
   @override
   void initState() {
-    Api.apiUrl = widget.info.apiUrl;
-    Future.wait([
-      Api.getTags(),
-      Api.getDiscussionList(AppConfig.SortLatest),
-    ]).then((results) {
-      Navigator.pop(context, InitData(widget.info, results[0], results[1]));
+    Api.init(widget.info.apiUrl).then((_) async {
+      var u = await Api.getLoggedInUserInfo();
+      Future.wait([
+        Api.getTags(),
+        Api.getDiscussionList(AppConfig.SortLatest),
+      ]).then((results) {
+        Navigator.pop(
+            context, InitData(widget.info, results[0], results[1], u));
+      });
     });
     super.initState();
   }
