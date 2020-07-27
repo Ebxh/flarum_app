@@ -183,11 +183,21 @@ class S {
     );
   }
 
-  /// `Search`
-  String get title_search {
+  /// `Search All`
+  String get title_search_all {
     return Intl.message(
-      'Search',
-      name: 'title_search',
+      'Search All',
+      name: 'title_search_all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search With `
+  String get title_search_with {
+    return Intl.message(
+      'Search With ',
+      name: 'title_search_with',
       desc: '',
       args: [],
     );
@@ -198,6 +208,26 @@ class S {
     return Intl.message(
       'Me',
       name: 'title_me',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email Or UserName`
+  String get title_email_or_username {
+    return Intl.message(
+      'Email Or UserName',
+      name: 'title_email_or_username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get title_password {
+    return Intl.message(
+      'Password',
+      name: 'title_password',
       desc: '',
       args: [],
     );
@@ -218,6 +248,16 @@ class S {
     return Intl.message(
       'SingUp',
       name: 'title_singUp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search With Tag`
+  String get title_search_with_tag {
+    return Intl.message(
+      'Search With Tag',
+      name: 'title_search_with_tag',
       desc: '',
       args: [],
     );

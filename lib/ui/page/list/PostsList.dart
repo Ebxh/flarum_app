@@ -241,12 +241,12 @@ class _PostsListState extends State<PostsList> {
 
                                   before.forEach((id) {
                                     if (!after.contains(id)) {
-                                      removed.add(Api.getTag(id));
+                                      removed.add(Api.getTagById(id));
                                     }
                                   });
                                   after.forEach((id) {
                                     if (!before.contains(id)) {
-                                      added.add(Api.getTag(id));
+                                      added.add(Api.getTagById(id));
                                     }
                                   });
 

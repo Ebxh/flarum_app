@@ -1,6 +1,7 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/tags.dart';
+import 'package:core/generated/l10n.dart';
 import 'package:core/ui/page/SearchPage.dart';
 import 'package:core/ui/widgets.dart';
 import 'package:core/util/color.dart';
@@ -97,7 +98,10 @@ class _TagInfoPageState extends State<TagInfoPage> {
                           onPressed: () {
                             showSearch(
                                 context: context,
-                                delegate: SearchPage(widget.tagInfo, initData));
+                                delegate: SearchPage(
+                                    widget.tagInfo, initData, true,
+                                    hintText:
+                                        "${S.of(context).title_search_with} ${widget.tagInfo.name}"));
                           }),
                   widget.tagInfo.isChild ||
                           widget.tagInfo.children == null ||
@@ -110,7 +114,8 @@ class _TagInfoPageState extends State<TagInfoPage> {
                           onPressed: () {
                             showSearch(
                                 context: context,
-                                delegate: SearchPage(widget.tagInfo, initData));
+                                delegate:
+                                    SearchPage(widget.tagInfo, initData, true));
                           })
                       : PopupMenuButton(
                           child: IconButton(

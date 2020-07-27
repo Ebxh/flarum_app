@@ -32,7 +32,7 @@ class _TagsPageState extends State<TagsPage> {
                     enabled: false,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.search),
-                      hintText: S.of(context).title_search,
+                      hintText: S.of(context).title_search_all,
                     ),
                     style: TextStyle(
                       fontSize: 14
@@ -41,7 +41,7 @@ class _TagsPageState extends State<TagsPage> {
                   onTap: () {
                     showSearch(
                         context: context,
-                        delegate: SearchPage(null, widget.initData));
+                        delegate: SearchPage(null, widget.initData,true));
                   },
                 ));
           }

@@ -11,7 +11,8 @@ import 'decoder/users.dart';
 class Api {
   static Dio _dio;
   static String apiUrl = "";
-  static Map<int, TagInfo> _tags;
+  static Map<int, TagInfo> _allTags;
+  static Tags _tags;
 
   static Future<void> init(String url) async {
     apiUrl = url;
@@ -31,20 +32,25 @@ class Api {
     }
   }
 
+  static Tags getTagsWithCache() {
+    return _tags;
+  }
+
   static Future<Tags> getTags() async {
-    _tags = {};
+    _allTags = {};
     try {
       var t = TagInfo.getListFormJson((await _dio.get("/tags")).data);
+      _tags = t;
       t.tags.forEach((_, tag) {
         if (tag.children != null) {
           tag.children.forEach((id, t) {
-            _tags.addAll({t.id: t});
+            _allTags.addAll({t.id: t});
           });
         }
-        _tags.addAll({tag.id: tag});
+        _allTags.addAll({tag.id: tag});
       });
       t.miniTags.forEach((id, tag) {
-        _tags.addAll({tag.id: tag});
+        _allTags.addAll({tag.id: tag});
       });
       return t;
     } catch (e) {
@@ -53,8 +59,8 @@ class Api {
     }
   }
 
-  static TagInfo getTag(int id) {
-    return _tags[id];
+  static TagInfo getTagById(int id) {
+    return _allTags[id];
   }
 
   static Future<DiscussionInfo> getDiscussion(int id) async {
@@ -98,6 +104,7 @@ class Api {
     }
     _dio
       ..options.baseUrl = apiUrl
+
       /// api is invalid?
       ..options.headers = {"Authentication": "Token ${t.token}"};
     return getUserInfoById(t.uid);

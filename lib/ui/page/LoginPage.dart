@@ -46,12 +46,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 TextField(
                   controller: userNameController,
-                  decoration: InputDecoration(labelText: "Email Or UserName"),
+                  decoration: InputDecoration(
+                      labelText: S.of(context).title_email_or_username),
                 ),
                 TextField(
                   controller: passwordController,
                   obscureText: true,
-                  decoration: InputDecoration(labelText: "Password"),
+                  decoration:
+                      InputDecoration(labelText: S.of(context).title_password),
                 ),
                 ButtonBar(
                   alignment: MainAxisAlignment.center,

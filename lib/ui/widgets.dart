@@ -151,7 +151,7 @@ Widget makeMiniCards(
                         if (t.isChild) {
                           tag = t;
                         } else if (t.position != null) {
-                          tag = Api.getTag(t.id);
+                          tag = Api.getTagById(t.id);
                         } else {
                           tag = initData.tags.miniTags[t.id];
                         }
