@@ -114,24 +114,8 @@ class SearchPage extends SearchDelegate<String> {
         t.children.forEach((id, t) {
           Color backgroundColor = HexColor.fromHex(t.color);
           Color textColor = ColorUtil.getTitleFormBackGround(backgroundColor);
-          childCards.add(Card(
-            color: backgroundColor,
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                t.name,
-                style: TextStyle(color: textColor),
-              ),
-            ),
-          ));
-        });
-      }
-      children.add(SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Card(
+          childCards.add(InkWell(
+            child: Card(
               color: backgroundColor,
               child: Padding(
                 padding: EdgeInsets.all(10),
@@ -140,6 +124,40 @@ class SearchPage extends SearchDelegate<String> {
                   style: TextStyle(color: textColor),
                 ),
               ),
+            ),
+            onTap: () {
+              showSearch(
+                  context: context,
+                  delegate: SearchPage(t, initData, false,
+                      hintText:
+                          "${S.of(context).title_search_with} ${t.name}"));
+            },
+          ));
+        });
+      }
+      children.add(SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            InkWell(
+              child: Card(
+                color: backgroundColor,
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    t.name,
+                    style: TextStyle(color: textColor),
+                  ),
+                ),
+              ),
+              onTap: () {
+                showSearch(
+                    context: context,
+                    delegate: SearchPage(t, initData, false,
+                        hintText:
+                            "${S.of(context).title_search_with} ${t.name}"));
+              },
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
