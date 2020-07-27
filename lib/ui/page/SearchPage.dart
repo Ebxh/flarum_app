@@ -55,24 +55,26 @@ class SearchPage extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     if (tagInfo == null) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 10,left: 10),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Text(
-                "${S.of(context).title_search_with_tag} :",
-                style: TextStyle(color: Colors.black54),
+      return SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 10, left: 10),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  "${S.of(context).title_search_with_tag} :",
+                  style: TextStyle(color: Colors.black54),
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 5, left: 10, right: 10),
-            child: makeTagList(context),
-          )
-        ],
+            Padding(
+              padding: EdgeInsets.only(top: 5, left: 10, right: 10),
+              child: makeTagList(context),
+            )
+          ],
+        ),
       );
     } else {
       return Padding(
