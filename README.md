@@ -14,6 +14,7 @@ A flarum application by Flutter.
 - View Discussion
 - View the tag list
 - View the tag details and tag discussion  
+- Search  
 - ...TODO
 
 
