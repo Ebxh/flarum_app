@@ -80,6 +80,11 @@ class Api {
     return getDiscussionListByUrl(url);
   }
 
+  static Future<Discussions> searchDiscuss(String key,String tagSlug) async {
+    String url = "/discussions?include=user,lastPostedUser,mostRelevantPost,mostRelevantPost.user,firstPost,tags&filter[q]=$key tag:$tagSlug&";
+    return getDiscussionListByUrl(url);
+  }
+
   static Future<Discussions> getDiscussionListByUrl(String url) async {
     try {
       return Discussions.formJson((await _dio.get(url)).data);

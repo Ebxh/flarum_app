@@ -1,7 +1,9 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
+import 'package:core/api/decoder/discussions.dart';
 import 'package:core/api/decoder/tags.dart';
 import 'package:core/generated/l10n.dart';
+import 'package:core/ui/page/list/DiscussionsList.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +14,8 @@ class SearchPage extends SearchDelegate<String> {
   InitData initData;
   bool isFirstPage;
   String searchText;
+  Discussions result;
+  String lastQuery = "";
   SearchPage(
     this.tagInfo,
     this.initData,
@@ -56,7 +60,28 @@ class SearchPage extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Text("result");
+    if (lastQuery != query) {
+      result = null;
+      lastQuery = "${tagInfo == null ? "" : tagInfo.slug}:$query";
+    }
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+      if (result == null) {
+        Api.searchDiscuss(query, tagInfo == null ? "" : tagInfo.slug).then((r) {
+          setState.call(() {
+            result = r;
+          });
+        });
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      } else {
+        return ListPage(
+            InitData(
+                initData.forumInfo, initData.tags, result, initData.loggedUser),
+            Theme.of(context).primaryColor);
+      }
+    });
   }
 
   @override

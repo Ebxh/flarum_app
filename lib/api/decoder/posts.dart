@@ -67,10 +67,17 @@ class PostInfo {
         data.source);
     List<int> likes = [];
     List<int> mentionedBy = [];
-    var discussion = int.parse(data.relationships["discussion"]["data"]["id"]);
-    var user;
 
-    /// https://discuss.flarum.org/api/discussions/18316
+    /// in search,some post not have relationships `(*>﹏<*)′
+    if (data.relationships == null) {
+      return p;
+    }
+
+    var discussion;
+    if (data.relationships["discussion"] != null) {
+      discussion = int.parse(data.relationships["discussion"]["data"]["id"]);
+    }
+    var user;
     if (data.relationships["user"] != null) {
       user = int.parse(data.relationships["user"]["data"]["id"]);
     }
