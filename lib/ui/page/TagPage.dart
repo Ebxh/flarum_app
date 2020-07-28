@@ -114,8 +114,10 @@ class _TagInfoPageState extends State<TagInfoPage> {
                           onPressed: () {
                             showSearch(
                                 context: context,
-                                delegate:
-                                    SearchPage(widget.tagInfo, initData, true));
+                                delegate: SearchPage(
+                                    widget.tagInfo, initData, true,
+                                    hintText:
+                                        "${S.of(context).title_search_with} ${widget.tagInfo.name}"));
                           })
                       : PopupMenuButton(
                           child: IconButton(
