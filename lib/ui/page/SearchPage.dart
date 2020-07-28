@@ -5,14 +5,18 @@ import 'package:core/generated/l10n.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
+typedef Function OnTagSelected(TagInfo tagInfo);
+
 class SearchPage extends SearchDelegate<String> {
-  final TagInfo tagInfo;
-  final InitData initData;
-  final bool isFirstPage;
+  TagInfo tagInfo;
+  InitData initData;
+  bool isFirstPage;
+  String searchText;
   SearchPage(
     this.tagInfo,
     this.initData,
     this.isFirstPage, {
+    this.searchText,
     String hintText,
   }) : super(
           searchFieldLabel: hintText,
@@ -27,6 +31,9 @@ class SearchPage extends SearchDelegate<String> {
 
   @override
   List<Widget> buildActions(BuildContext context) {
+    if (searchText != null) {
+      query = searchText;
+    }
     return [
       IconButton(
         icon: Icon(Icons.clear_all),
@@ -54,85 +61,75 @@ class SearchPage extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (tagInfo == null) {
-      return SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 10, left: 10),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Text(
-                  "${S.of(context).title_search_with_tag} :",
-                  style: TextStyle(color: Colors.black54),
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+      int index = tagInfo == null ? 0 : 1;
+      return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: IndexedStack(
+            key: Key(index.toString()),
+            index: index,
+            children: <Widget>[
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 10, left: 10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          "${S.of(context).title_search_with_tag} :",
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5, left: 10, right: 10),
+                      child: makeTagList(context, (TagInfo t) {
+                        setState.call(() {
+                          tagInfo = t;
+                        });
+                        return;
+                      }),
+                    )
+                  ],
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 5, left: 10, right: 10),
-              child: makeTagList(context),
-            )
-          ],
-        ),
-      );
-    } else {
-      return Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RaisedButton(
-                color: Colors.blue,
-                child: Text(
-                  "${S.of(context).title_search_all}  >>",
-                  style: TextStyle(color: Colors.white),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                        color: Colors.blue,
+                        child: Text(
+                          "<< ${S.of(context).title_search_all}",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          setState.call(() {
+                            tagInfo = null;
+                          });
+                        })
+                  ],
                 ),
-                onPressed: () {
-                  if (isFirstPage) {
-                    showSearch(
-                        context: context,
-                        delegate: SearchPage(null, initData, false));
-                  } else {
-                    Navigator.pop(context);
-                  }
-                })
-          ],
-        ),
-      );
-    }
+              )
+            ],
+          ));
+    });
   }
 
-  Widget makeTagList(BuildContext context) {
+  Widget makeTagList(BuildContext context, OnTagSelected onTagSelected) {
     var tags = Api.getTagsWithCache();
     List<Widget> children = [];
     tags.tags.forEach((id, t) {
-      Color backgroundColor = HexColor.fromHex(t.color);
-      Color textColor = ColorUtil.getTitleFormBackGround(backgroundColor);
       List<Widget> childCards = [];
       if (t.children != null) {
         t.children.forEach((id, t) {
-          Color backgroundColor = HexColor.fromHex(t.color);
-          Color textColor = ColorUtil.getTitleFormBackGround(backgroundColor);
-          childCards.add(InkWell(
-            child: Card(
-              color: backgroundColor,
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  t.name,
-                  style: TextStyle(color: textColor),
-                ),
-              ),
-            ),
-            onTap: () {
-              showSearch(
-                  context: context,
-                  delegate: SearchPage(t, initData, false,
-                      hintText:
-                          "${S.of(context).title_search_with} ${t.name}"));
-            },
-          ));
+          childCards.add(
+            makeTagCard(context, t, onTagSelected),
+          );
         });
       }
       children.add(SingleChildScrollView(
@@ -140,25 +137,7 @@ class SearchPage extends SearchDelegate<String> {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            InkWell(
-              child: Card(
-                color: backgroundColor,
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    t.name,
-                    style: TextStyle(color: textColor),
-                  ),
-                ),
-              ),
-              onTap: () {
-                showSearch(
-                    context: context,
-                    delegate: SearchPage(t, initData, false,
-                        hintText:
-                            "${S.of(context).title_search_with} ${t.name}"));
-              },
-            ),
+            makeTagCard(context, t, onTagSelected),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: childCards,
@@ -170,6 +149,26 @@ class SearchPage extends SearchDelegate<String> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: children,
+    );
+  }
+
+  makeTagCard(BuildContext context, TagInfo t, OnTagSelected onTagSelected) {
+    Color backgroundColor = HexColor.fromHex(t.color);
+    Color textColor = ColorUtil.getTitleFormBackGround(backgroundColor);
+    return InkWell(
+      child: Card(
+        color: backgroundColor,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Text(
+            t.name,
+            style: TextStyle(color: textColor),
+          ),
+        ),
+      ),
+      onTap: () {
+        onTagSelected(t);
+      },
     );
   }
 }

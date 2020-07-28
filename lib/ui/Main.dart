@@ -133,12 +133,16 @@ class _MainPageState extends State<MainPage> {
                         })
                   ],
                 ),
-                body: IndexedStack(
-                  index: pageIndex,
-                  children: <Widget>[
-                    ListPage(initData, Theme.of(context).primaryColor),
-                    TagsPage(initData)
-                  ],
+                body: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  child: IndexedStack(
+                    key: Key(pageIndex.toString()),
+                    index: pageIndex,
+                    children: <Widget>[
+                      ListPage(initData, Theme.of(context).primaryColor),
+                      TagsPage(initData)
+                    ],
+                  ),
                 ),
                 floatingActionButton: FloatingActionButton(
                     tooltip: S.of(context).title_new_post,
