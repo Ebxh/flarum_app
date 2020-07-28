@@ -13,14 +13,12 @@ class SearchPage extends SearchDelegate<String> {
   TagInfo tagInfo;
   InitData initData;
   bool isFirstPage;
-  String searchText;
   Discussions result;
   String lastQuery = "";
   SearchPage(
     this.tagInfo,
     this.initData,
     this.isFirstPage, {
-    this.searchText,
     String hintText,
   }) : super(
           searchFieldLabel: hintText,
@@ -35,9 +33,6 @@ class SearchPage extends SearchDelegate<String> {
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    if (searchText != null) {
-      query = searchText;
-    }
     return [
       IconButton(
         icon: Icon(Icons.clear_all),
@@ -60,7 +55,7 @@ class SearchPage extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    if (lastQuery != query) {
+    if (lastQuery != "${tagInfo == null ? "" : tagInfo.slug}:$query") {
       result = null;
       lastQuery = "${tagInfo == null ? "" : tagInfo.slug}:$query";
     }
