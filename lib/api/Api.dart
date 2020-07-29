@@ -16,7 +16,9 @@ class Api {
 
   static Future<void> init(String url) async {
     apiUrl = url;
-    _dio = Dio()..options.baseUrl = url;
+    _dio = Dio()
+      ..options.baseUrl = url
+      ..options.headers = {"user-agent": "flarum-app/1.0.x"};
   }
 
   static Future<ForumInfo> checkUrl(String url) async {
@@ -80,8 +82,9 @@ class Api {
     return getDiscussionListByUrl(url);
   }
 
-  static Future<Discussions> searchDiscuss(String key,String tagSlug) async {
-    String url = "/discussions?include=user,lastPostedUser,mostRelevantPost,mostRelevantPost.user,firstPost,tags&filter[q]=$key tag:$tagSlug&";
+  static Future<Discussions> searchDiscuss(String key, String tagSlug) async {
+    String url =
+        "/discussions?include=user,lastPostedUser,mostRelevantPost,mostRelevantPost.user,firstPost,tags&filter[q]=$key tag:$tagSlug&";
     return getDiscussionListByUrl(url);
   }
 
@@ -111,7 +114,7 @@ class Api {
       ..options.baseUrl = apiUrl
 
       /// api is invalid?
-      ..options.headers = {"Authentication": "Token ${t.token}"};
+      ..options.headers.addAll({"authentication": "Token ${t.token}"});
     return getUserInfoById(t.uid);
   }
 
