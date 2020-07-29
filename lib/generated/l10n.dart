@@ -263,6 +263,26 @@ class S {
     );
   }
 
+  /// `Before`
+  String get title_change_before {
+    return Intl.message(
+      'Before',
+      name: 'title_change_before',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `After`
+  String get title_change_after {
+    return Intl.message(
+      'After',
+      name: 'title_change_after',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Latest`
   String get subtitle_latest {
     return Intl.message(
@@ -343,51 +363,21 @@ class S {
     );
   }
 
-  /// `Change the title from`
-  String get c_change_the_title_form {
+  /// `change the title.`
+  String get c_change_the_title {
     return Intl.message(
-      'Change the title from',
-      name: 'c_change_the_title_form',
+      'change the title.',
+      name: 'c_change_the_title',
       desc: '',
       args: [],
     );
   }
 
-  /// `to`
-  String get c_change_the_title_to {
+  /// `change the tag.`
+  String get c_change_the_tag {
     return Intl.message(
-      'to',
-      name: 'c_change_the_title_to',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `added`
-  String get c_tag_added {
-    return Intl.message(
-      'added',
-      name: 'c_tag_added',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `and`
-  String get c_tag_and {
-    return Intl.message(
-      'and',
-      name: 'c_tag_and',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `removed`
-  String get c_tag_removed {
-    return Intl.message(
-      'removed',
-      name: 'c_tag_removed',
+      'change the tag.',
+      name: 'c_change_the_tag',
       desc: '',
       args: [],
     );

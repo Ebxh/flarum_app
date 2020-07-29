@@ -6,6 +6,7 @@ import 'package:core/api/decoder/users.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/html/html.dart';
 import 'package:core/util/color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -236,22 +237,28 @@ class _PostsListState extends State<PostsList> {
                                   UserInfo u = discussionInfo.users[int.parse(
                                       p.source["relationships"]["user"]["data"]
                                           ["id"])];
-                                  List<TagInfo> removed = [];
-                                  List<TagInfo> added = [];
+                                  List<TagInfo> beforeTags = [];
+                                  List<TagInfo> afterTags = [];
 
                                   before.forEach((id) {
-                                    if (!after.contains(id)) {
-                                      removed.add(Api.getTagById(id));
-                                    }
+                                    beforeTags.add(Api.getTagById(id));
                                   });
                                   after.forEach((id) {
-                                    if (!before.contains(id)) {
-                                      added.add(Api.getTagById(id));
-                                    }
+                                    afterTags.add(Api.getTagById(id));
                                   });
-
-                                  card = makeTaggedCard(
-                                      context, u.displayName, added, removed);
+                                  Color textColor =
+                                      Color.fromARGB(255, 102, 125, 153);
+                                  card = makeMessageCard(
+                                      textColor,
+                                      FontAwesomeIcons.tag,
+                                      u.displayName,
+                                      S.of(context).c_change_the_tag,
+                                      details: makeBeforeAndAfterWidget(
+                                          context,
+                                          makeMiniCards(context, beforeTags,
+                                              widget.initData),
+                                          makeMiniCards(context, afterTags,
+                                              widget.initData)));
                                   break;
                                 case "discussionRenamed":
                                   UserInfo u = discussionInfo.users[int.parse(
@@ -265,7 +272,9 @@ class _PostsListState extends State<PostsList> {
                                       Color.fromARGB(255, 102, 136, 153),
                                       FontAwesomeIcons.pen,
                                       u.displayName,
-                                      "${S.of(context).c_change_the_title_form} `$before` ${S.of(context).c_change_the_title_to} `$after`");
+                                      "${S.of(context).c_change_the_title}",
+                                      details: makeBeforeAndAfterWidget(
+                                          context, Text(before), Text(after)));
                                   break;
                                 default:
                                   print("UnimplementedTypes:" + p.contentType);
@@ -317,7 +326,8 @@ class _PostsListState extends State<PostsList> {
   }
 
   Widget makeMessageCard(
-      Color textColor, IconData icon, String userName, String text) {
+      Color textColor, IconData icon, String userName, String text,
+      {Widget details}) {
     return Card(
         child: Padding(
       padding: EdgeInsets.only(left: 15, right: 15, top: 4, bottom: 4),
@@ -346,100 +356,71 @@ class _PostsListState extends State<PostsList> {
         TextSpan(
           text: text,
           style: TextStyle(fontSize: 18, color: textColor),
-        )
+        ),
+        details == null
+            ? TextSpan()
+            : WidgetSpan(
+                child: Padding(
+                padding: EdgeInsets.only(left: 15),
+                child: InkWell(
+                  child: Text(
+                    S.of(context).title_show_details,
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor, fontSize: 16),
+                  ),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        child: Builder(builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(S.of(context).title_details),
+                            content: details,
+                            actions: <Widget>[
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(S.of(context).title_close),
+                              )
+                            ],
+                          );
+                        }));
+                  },
+                ),
+              )),
       ])),
     ));
   }
 
-  Widget makeTaggedCard(BuildContext context, String userName,
-      List<TagInfo> added, List<TagInfo> removed) {
-    Color textColor = Color.fromARGB(255, 102, 125, 153);
-    InlineSpan centerWidget = WidgetSpan(child: SizedBox());
-    if (added.length != 0 && removed.length != 0) {
-      centerWidget = TextSpan(
-          text: S.of(context).c_tag_and,
-          style: TextStyle(color: textColor, fontSize: 18));
-    }
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.only(left: 15, right: 15, top: 4, bottom: 4),
-        child: RichText(
-            text: TextSpan(children: [
-          WidgetSpan(
-              child: FaIcon(
-            FontAwesomeIcons.tag,
-            color: textColor,
-            size: 18,
-          )),
-          WidgetSpan(child: Padding(padding: EdgeInsets.only(right: 10))),
-          WidgetSpan(
-              child: InkWell(
-            child: Text(
-              userName,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, color: textColor, fontSize: 18),
-            ),
-            onTap: () {},
-          )),
-          TextSpan(
-            text: " ",
-            style: TextStyle(fontSize: 18),
-          ),
-          added.length != 0
-              ? TextSpan(
-                  text: S.of(context).c_tag_added,
-                  style: TextStyle(color: textColor, fontSize: 18))
-              : WidgetSpan(child: SizedBox()),
-          WidgetSpan(child: makeMiniTagCards(context, added, widget.initData)),
-          TextSpan(
-            text: " ",
-            style: TextStyle(fontSize: 18),
-          ),
-          centerWidget,
-          TextSpan(
-            text: " ",
-            style: TextStyle(fontSize: 18),
-          ),
-          removed.length != 0
-              ? TextSpan(
-                  text: S.of(context).c_tag_removed,
-                  style: TextStyle(color: textColor, fontSize: 18))
-              : WidgetSpan(child: SizedBox()),
-          WidgetSpan(
-              child: makeMiniTagCards(context, removed, widget.initData)),
-        ])),
-      ),
-    );
-  }
-
-  Widget makeMiniTagCards(
-      BuildContext context, List<TagInfo> tags, InitData initData) {
-    List<Widget> cards = [];
-    tags.forEach((t) {
-      Color backGroundColor = HexColor.fromHex(t.color);
-      Color textColor = ColorUtil.getTitleFormBackGround(backGroundColor);
-      cards.add(Padding(
-        padding: EdgeInsets.only(left: 5),
-        child: Container(
-          color: backGroundColor,
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.only(left: 2, right: 2),
-              child: Text(
-                t.name,
-                style: TextStyle(color: textColor),
-              ),
-            ),
+  Widget makeBeforeAndAfterWidget(
+      BuildContext context, Widget before, Widget after) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Text(
+            "${S.of(context).title_change_before} :",
+            style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
         ),
-      ));
-    });
-    return SizedBox(
-      height: 20,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: cards,
-      ),
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: before,
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Text(
+            "${S.of(context).title_change_after} :",
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: after,
+        ),
+      ],
     );
   }
 

@@ -23,6 +23,8 @@
   "title_login": "登录",
   "title_singUp": "注册",
   "title_search_with_tag": "从标签搜索",
+  "title_change_before": "修改前",
+  "title_change_after": "修改后",
   "subtitle_latest": "最近回复",
   "subtitle_top": "最多回复",
   "subtitle_newest": "最新主题",
@@ -31,9 +33,6 @@
   "c_unstickied_the_discussion": "取消置顶该主题",
   "c_locked_the_discussion": "锁定该主题",
   "c_unlocked_the_discussion": "取消锁定该主题",
-  "c_change_the_title_form": "将标题从",
-  "c_change_the_title_to": "更改为",
-  "c_tag_added": "添加了标签",
-  "c_tag_and": "并",
-  "c_tag_removed": "移除了标签"
+  "c_change_the_title": "修改了标题",
+  "c_change_the_tag": "修改了标签"
 }

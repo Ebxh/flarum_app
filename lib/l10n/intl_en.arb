@@ -23,6 +23,8 @@
   "title_login": "Login",
   "title_singUp": "SingUp",
   "title_search_with_tag": "Search With Tag",
+  "title_change_before": "Before",
+  "title_change_after": "After",
   "subtitle_latest": "Latest",
   "subtitle_top": "Top",
   "subtitle_newest": "Newest",
@@ -31,9 +33,6 @@
   "c_unstickied_the_discussion": "unstickied the discussion.",
   "c_locked_the_discussion": "locked the discussion.",
   "c_unlocked_the_discussion": "unlocked the discussion.",
-  "c_change_the_title_form": "Change the title from",
-  "c_change_the_title_to": "to",
-  "c_tag_added": "added",
-  "c_tag_and": "and",
-  "c_tag_removed": "removed"
+  "c_change_the_title": "change the title.",
+  "c_change_the_tag": "change the tag."
 }
