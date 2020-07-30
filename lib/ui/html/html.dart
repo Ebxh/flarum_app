@@ -52,12 +52,13 @@ class HtmlView extends StatelessWidget {
           case "p":
             if (n.toString() == "<html img>") {
               String url = n.attributes["src"];
+              String k = UniqueKey().toString();
               span.add(WidgetSpan(
                   child: contentPadding(Center(
                     child: InkWell(
                       child: Material(
                         child: Hero(
-                            tag: url,
+                            tag: k,
                             child: CachedNetworkImage(
                               imageUrl: url,
                               placeholder: (BuildContext context, String url) {
@@ -80,7 +81,7 @@ class HtmlView extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {
-                              return ImagesVIew([n.attributes["src"]], 0);
+                              return ImagesView([n.attributes["src"]], 0,k);
                             }));
                       },
                     ),
