@@ -283,6 +283,36 @@ class S {
     );
   }
 
+  /// `Time`
+  String get title_time {
+    return Intl.message(
+      'Time',
+      name: 'title_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Count`
+  String get title_count {
+    return Intl.message(
+      'Count',
+      name: 'title_count',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title`
+  String get title_title {
+    return Intl.message(
+      'Title',
+      name: 'title_title',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Latest`
   String get subtitle_latest {
     return Intl.message(
@@ -378,6 +408,26 @@ class S {
     return Intl.message(
       'change the tag.',
       name: 'c_change_the_tag',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `split post to`
+  String get c_split_post_to {
+    return Intl.message(
+      'split post to',
+      name: 'c_split_post_to',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `split post form`
+  String get c_split_post_form {
+    return Intl.message(
+      'split post form',
+      name: 'c_split_post_form',
       desc: '',
       args: [],
     );

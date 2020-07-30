@@ -200,7 +200,7 @@ class _PostsListState extends State<PostsList> {
                                   card = makeMessageCard(
                                       textColor,
                                       FontAwesomeIcons.thumbtack,
-                                      u.displayName,
+                                      u,
                                       sticky
                                           ? S
                                               .of(context)
@@ -220,7 +220,7 @@ class _PostsListState extends State<PostsList> {
                                   card = makeMessageCard(
                                       textColor,
                                       FontAwesomeIcons.lock,
-                                      u.displayName,
+                                      u,
                                       locked
                                           ? S
                                               .of(context)
@@ -251,10 +251,11 @@ class _PostsListState extends State<PostsList> {
                                   card = makeMessageCard(
                                       textColor,
                                       FontAwesomeIcons.tag,
-                                      u.displayName,
+                                      u,
                                       S.of(context).c_change_the_tag,
                                       details: makeBeforeAndAfterWidget(
                                           context,
+                                          p.createdAt,
                                           makeMiniCards(context, beforeTags,
                                               widget.initData),
                                           makeMiniCards(context, afterTags,
@@ -271,10 +272,32 @@ class _PostsListState extends State<PostsList> {
                                   card = makeMessageCard(
                                       Color.fromARGB(255, 102, 136, 153),
                                       FontAwesomeIcons.pen,
-                                      u.displayName,
+                                      u,
                                       "${S.of(context).c_change_the_title}",
                                       details: makeBeforeAndAfterWidget(
-                                          context, Text(before), Text(after)));
+                                          context,
+                                          p.createdAt,
+                                          Text(before),
+                                          Text(after)));
+                                  break;
+                                case "discussionSplit":
+                                  UserInfo u = discussionInfo.users[int.parse(
+                                      p.source["relationships"]["user"]["data"]
+                                          ["id"])];
+                                  Map content =
+                                      p.source["attributes"]["content"];
+                                  bool toNew = content["toNew"];
+                                  int count = content["count"];
+                                  String url = content["url"];
+                                  String title = content["title"];
+
+                                  card = makeMessageCard(
+                                      Color.fromARGB(255, 102, 136, 153),
+                                      FontAwesomeIcons.codeBranch,
+                                      u,
+                                      toNew ? "${S.of(context).c_split_post_to}" : S.of(context).c_split_post_form,
+                                      details: makeSplitWidget(
+                                          context, p.createdAt, count,title, url));
                                   break;
                                 default:
                                   print("UnimplementedTypes:" + p.contentType);
@@ -326,7 +349,7 @@ class _PostsListState extends State<PostsList> {
   }
 
   Widget makeMessageCard(
-      Color textColor, IconData icon, String userName, String text,
+      Color textColor, IconData icon, UserInfo user, String text,
       {Widget details}) {
     return Card(
         child: Padding(
@@ -343,7 +366,7 @@ class _PostsListState extends State<PostsList> {
         WidgetSpan(
             child: InkWell(
           child: Text(
-            userName,
+            user.displayName,
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: textColor, fontSize: 18),
           ),
@@ -392,12 +415,30 @@ class _PostsListState extends State<PostsList> {
     ));
   }
 
+  Widget makeSplitWidget(
+      BuildContext context, String time,int count, String title, String url) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        makeTitleAndConnect("${S.of(context).title_title}:", title),
+        makeTitleAndConnect("${S.of(context).title_time}:", time),
+        makeTitleAndConnect("${S.of(context).title_count}:", count.toString()),
+        Center(
+          child: RaisedButton(color: Colors.blue,child: Text("GO",style: TextStyle(
+            color: Colors.white
+          ),),onPressed: (){}),
+        )
+      ],
+    );
+  }
+
   Widget makeBeforeAndAfterWidget(
-      BuildContext context, Widget before, Widget after) {
+      BuildContext context, String time, Widget before, Widget after) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
+        makeTitleAndConnect("${S.of(context).title_time}:", time),
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Text(
@@ -419,6 +460,25 @@ class _PostsListState extends State<PostsList> {
         Padding(
           padding: EdgeInsets.only(top: 20),
           child: after,
+        ),
+      ],
+    );
+  }
+
+  Widget makeTitleAndConnect(String title, String connect) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Text(
+              "$title",
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            )),
+        Padding(
+          padding: EdgeInsets.only(top: 10, bottom: 10),
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width, child: Text(connect)),
         ),
       ],
     );

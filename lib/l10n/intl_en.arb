@@ -25,6 +25,9 @@
   "title_search_with_tag": "Search With Tag",
   "title_change_before": "Before",
   "title_change_after": "After",
+  "title_time": "Time",
+  "title_count": "Count",
+  "title_title": "Title",
   "subtitle_latest": "Latest",
   "subtitle_top": "Top",
   "subtitle_newest": "Newest",
@@ -34,5 +37,7 @@
   "c_locked_the_discussion": "locked the discussion.",
   "c_unlocked_the_discussion": "unlocked the discussion.",
   "c_change_the_title": "change the title.",
-  "c_change_the_tag": "change the tag."
+  "c_change_the_tag": "change the tag.",
+  "c_split_post_to": "split post to",
+  "c_split_post_form": "split post form"
 }

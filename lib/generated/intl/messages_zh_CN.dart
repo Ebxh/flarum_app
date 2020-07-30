@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "c_change_the_tag" : MessageLookupByLibrary.simpleMessage("修改了标签"),
     "c_change_the_title" : MessageLookupByLibrary.simpleMessage("修改了标题"),
     "c_locked_the_discussion" : MessageLookupByLibrary.simpleMessage("锁定该主题"),
+    "c_split_post_form" : MessageLookupByLibrary.simpleMessage("分割贴子自"),
+    "c_split_post_to" : MessageLookupByLibrary.simpleMessage("分割帖子到"),
     "c_stickied_the_discussion" : MessageLookupByLibrary.simpleMessage("置顶该主题"),
     "c_unlocked_the_discussion" : MessageLookupByLibrary.simpleMessage("取消锁定该主题"),
     "c_unstickied_the_discussion" : MessageLookupByLibrary.simpleMessage("取消置顶该主题"),
@@ -38,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_change_after" : MessageLookupByLibrary.simpleMessage("修改后"),
     "title_change_before" : MessageLookupByLibrary.simpleMessage("修改前"),
     "title_close" : MessageLookupByLibrary.simpleMessage("关闭"),
+    "title_count" : MessageLookupByLibrary.simpleMessage("数量"),
     "title_details" : MessageLookupByLibrary.simpleMessage("详情"),
     "title_discussion_detail" : MessageLookupByLibrary.simpleMessage("主题详情"),
     "title_email_or_username" : MessageLookupByLibrary.simpleMessage("邮箱或用户名"),
@@ -54,6 +57,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_sort" : MessageLookupByLibrary.simpleMessage("排序方式"),
     "title_switchSite" : MessageLookupByLibrary.simpleMessage("切换站点"),
     "title_tags" : MessageLookupByLibrary.simpleMessage("板块"),
+    "title_time" : MessageLookupByLibrary.simpleMessage("时间"),
+    "title_title" : MessageLookupByLibrary.simpleMessage("标题"),
     "title_user_info" : MessageLookupByLibrary.simpleMessage("用户信息"),
     "title_welcome" : MessageLookupByLibrary.simpleMessage("欢迎！")
   };

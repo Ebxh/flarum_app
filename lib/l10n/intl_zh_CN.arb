@@ -25,6 +25,9 @@
   "title_search_with_tag": "从标签搜索",
   "title_change_before": "修改前",
   "title_change_after": "修改后",
+  "title_time": "时间",
+  "title_count": "数量",
+  "title_title": "标题",
   "subtitle_latest": "最近回复",
   "subtitle_top": "最多回复",
   "subtitle_newest": "最新主题",
@@ -34,5 +37,7 @@
   "c_locked_the_discussion": "锁定该主题",
   "c_unlocked_the_discussion": "取消锁定该主题",
   "c_change_the_title": "修改了标题",
-  "c_change_the_tag": "修改了标签"
+  "c_change_the_tag": "修改了标签",
+  "c_split_post_to": "分割帖子到",
+  "c_split_post_form": "分割贴子自"
 }
