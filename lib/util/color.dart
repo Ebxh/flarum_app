@@ -11,7 +11,8 @@ extension HexColor on Color {
       if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
       buffer.write(hexString.replaceFirst('#', ''));
       var c = Color(int.parse(buffer.toString(), radix: 16));
-      if ((transparent == null || !transparent) && c == Colors.transparent) {
+      /// fix Default color
+      if ((transparent == null || !transparent) && hexString == "#888") {
         return Colors.black;
       }
       return c;
