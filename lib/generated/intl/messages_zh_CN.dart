@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "c_change_the_tag" : MessageLookupByLibrary.simpleMessage("修改了标签"),
     "c_change_the_title" : MessageLookupByLibrary.simpleMessage("修改了标题"),
     "c_locked_the_discussion" : MessageLookupByLibrary.simpleMessage("锁定该主题"),
+    "c_merged_post_from" : MessageLookupByLibrary.simpleMessage("合并帖子自"),
     "c_split_post_form" : MessageLookupByLibrary.simpleMessage("分割贴子自"),
     "c_split_post_to" : MessageLookupByLibrary.simpleMessage("分割帖子到"),
     "c_stickied_the_discussion" : MessageLookupByLibrary.simpleMessage("置顶该主题"),

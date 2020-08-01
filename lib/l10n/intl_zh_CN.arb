@@ -39,5 +39,6 @@
   "c_change_the_title": "修改了标题",
   "c_change_the_tag": "修改了标签",
   "c_split_post_to": "分割帖子到",
-  "c_split_post_form": "分割贴子自"
+  "c_split_post_form": "分割贴子自",
+  "c_merged_post_from": "合并帖子自"
 }

@@ -295,9 +295,27 @@ class _PostsListState extends State<PostsList> {
                                       Color.fromARGB(255, 102, 136, 153),
                                       FontAwesomeIcons.codeBranch,
                                       u,
-                                      toNew ? "${S.of(context).c_split_post_to}" : S.of(context).c_split_post_form,
-                                      details: makeSplitWidget(
-                                          context, p.createdAt, count,title, url));
+                                      toNew
+                                          ? "${S.of(context).c_split_post_to}"
+                                          : S.of(context).c_split_post_form,
+                                      details: makeSplitWidget(context,
+                                          p.createdAt, count, title, url));
+                                  break;
+                                case "discussionMerged":
+                                  UserInfo u = discussionInfo.users[int.parse(
+                                      p.source["relationships"]["user"]["data"]
+                                          ["id"])];
+                                  Map content =
+                                      p.source["attributes"]["content"];
+                                  int count = content["count"];
+                                  List titles = content["titles"];
+                                  card = makeMessageCard(
+                                      Color.fromARGB(255, 102, 136, 153),
+                                      FontAwesomeIcons.codeBranch,
+                                      u,
+                                      S.of(context).c_merged_post_from,
+                                      details: makeMergedWidget(
+                                          context, p.createdAt, titles, count));
                                   break;
                                 default:
                                   print("UnimplementedTypes:" + p.contentType);
@@ -415,8 +433,21 @@ class _PostsListState extends State<PostsList> {
     ));
   }
 
+  Widget makeMergedWidget(
+      BuildContext context, String time, List titles, int count) {
+    String ts = "";
+    titles.forEach((t) {
+      ts += "$t\n";
+    });
+    return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      makeTitleAndConnect("${S.of(context).title_time}:", time),
+      makeTitleAndConnect("${S.of(context).title_count}:", count.toString()),
+      makeTitleAndConnect("${S.of(context).title_title}:", ts)
+    ]);
+  }
+
   Widget makeSplitWidget(
-      BuildContext context, String time,int count, String title, String url) {
+      BuildContext context, String time, int count, String title, String url) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -424,9 +455,13 @@ class _PostsListState extends State<PostsList> {
         makeTitleAndConnect("${S.of(context).title_time}:", time),
         makeTitleAndConnect("${S.of(context).title_count}:", count.toString()),
         Center(
-          child: RaisedButton(color: Colors.blue,child: Text("GO",style: TextStyle(
-            color: Colors.white
-          ),),onPressed: (){}),
+          child: RaisedButton(
+              color: Colors.blue,
+              child: Text(
+                "GO",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {}),
         )
       ],
     );

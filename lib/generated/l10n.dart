@@ -353,81 +353,91 @@ class S {
     );
   }
 
-  /// `stickied the discussion.`
+  /// `Stickied the discussion.`
   String get c_stickied_the_discussion {
     return Intl.message(
-      'stickied the discussion.',
+      'Stickied the discussion.',
       name: 'c_stickied_the_discussion',
       desc: '',
       args: [],
     );
   }
 
-  /// `unstickied the discussion.`
+  /// `Unstickied the discussion.`
   String get c_unstickied_the_discussion {
     return Intl.message(
-      'unstickied the discussion.',
+      'Unstickied the discussion.',
       name: 'c_unstickied_the_discussion',
       desc: '',
       args: [],
     );
   }
 
-  /// `locked the discussion.`
+  /// `Locked the discussion.`
   String get c_locked_the_discussion {
     return Intl.message(
-      'locked the discussion.',
+      'Locked the discussion.',
       name: 'c_locked_the_discussion',
       desc: '',
       args: [],
     );
   }
 
-  /// `unlocked the discussion.`
+  /// `Unlocked the discussion.`
   String get c_unlocked_the_discussion {
     return Intl.message(
-      'unlocked the discussion.',
+      'Unlocked the discussion.',
       name: 'c_unlocked_the_discussion',
       desc: '',
       args: [],
     );
   }
 
-  /// `change the title.`
+  /// `Change the title.`
   String get c_change_the_title {
     return Intl.message(
-      'change the title.',
+      'Change the title.',
       name: 'c_change_the_title',
       desc: '',
       args: [],
     );
   }
 
-  /// `change the tag.`
+  /// `Change the tag.`
   String get c_change_the_tag {
     return Intl.message(
-      'change the tag.',
+      'Change the tag.',
       name: 'c_change_the_tag',
       desc: '',
       args: [],
     );
   }
 
-  /// `split post to`
+  /// `Split post to`
   String get c_split_post_to {
     return Intl.message(
-      'split post to',
+      'Split post to',
       name: 'c_split_post_to',
       desc: '',
       args: [],
     );
   }
 
-  /// `split post form`
+  /// `Split post form`
   String get c_split_post_form {
     return Intl.message(
-      'split post form',
+      'Split post form',
       name: 'c_split_post_form',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Merged post from`
+  String get c_merged_post_from {
+    return Intl.message(
+      'Merged post from',
+      name: 'c_merged_post_from',
       desc: '',
       args: [],
     );
