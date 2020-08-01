@@ -32,13 +32,13 @@
   "subtitle_top": "Top",
   "subtitle_newest": "Newest",
   "subtitle_oldest": "Oldest",
-  "c_stickied_the_discussion": "Stickied the discussion.",
-  "c_unstickied_the_discussion": "Unstickied the discussion.",
-  "c_locked_the_discussion": "Locked the discussion.",
-  "c_unlocked_the_discussion": "Unlocked the discussion.",
-  "c_change_the_title": "Change the title.",
-  "c_change_the_tag": "Change the tag.",
-  "c_split_post_to": "Split post to",
-  "c_split_post_form": "Split post form",
-  "c_merged_post_from": "Merged post from"
+  "c_stickied_the_discussion": "stickied the discussion.",
+  "c_unstickied_the_discussion": "unstickied the discussion.",
+  "c_locked_the_discussion": "locked the discussion.",
+  "c_unlocked_the_discussion": "unlocked the discussion.",
+  "c_change_the_title": "change the title.",
+  "c_change_the_tag": "change the tag.",
+  "c_split_post_to": "split post to",
+  "c_split_post_form": "split post form",
+  "c_merged_post_from": "merged post from"
 }
