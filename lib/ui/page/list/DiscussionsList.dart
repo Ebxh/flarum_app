@@ -106,6 +106,8 @@ class _ListPageState extends State<ListPage> {
           initData.discussions.list.addAll(result.list);
           initData.discussions.links = result.links;
         });
+      }else {
+
       }
       isLoading = false;
       setState(() {});

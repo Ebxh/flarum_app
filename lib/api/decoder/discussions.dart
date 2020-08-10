@@ -156,6 +156,9 @@ class Discussions {
     Map<int, UserInfo> users = {};
     Map<int, PostInfo> posts = {};
     Map<int, TagInfo> tags = {};
+    if (base.included.data == null || base.data.list == null) {
+      return Discussions(list, base.links);
+    }
     base.included.data.forEach((data) {
       switch (data.type) {
         case "users":
