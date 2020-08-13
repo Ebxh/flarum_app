@@ -20,9 +20,9 @@ jobs:
       - name: install Flutter
         uses: subosito/flutter-action@v1
         with:
-          channel: "master"
-      - name: upgrade
-        run: flutter upgrade
+          channel: "dev"
+      - name: go master channel
+        run: flutter channel master
       - name: flutter pub get
         run: flutter pub get
       - name: build Android
