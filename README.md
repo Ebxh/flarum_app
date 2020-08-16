@@ -6,7 +6,7 @@ A flarum application by Flutter.
 ![preview.png](https://i.loli.net/2020/07/16/g8b1m4JBH5qISdE.png)
 
 ## Supported platforms
-- Android 4.1 +
+- Android 6.0 +
 - ios 8 + (64bit only)
 
 ## Completed Functions
