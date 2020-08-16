@@ -23,7 +23,7 @@ jobs:
           channel: "dev"
       - name: go master channel
         run: flutter channel master
-       - name: upgrade
+      - name: upgrade
          run: flutter upgrade
       - name: flutter pub get
         run: flutter pub get
