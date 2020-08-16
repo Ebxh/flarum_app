@@ -24,7 +24,7 @@ jobs:
       - name: go master channel
         run: flutter channel master
       - name: upgrade
-         run: flutter upgrade
+        run: flutter upgrade
       - name: flutter pub get
         run: flutter pub get
       - name: build Android
