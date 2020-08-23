@@ -53,7 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_search_all" : MessageLookupByLibrary.simpleMessage("Search All"),
     "title_search_with" : MessageLookupByLibrary.simpleMessage("Search With "),
     "title_search_with_tag" : MessageLookupByLibrary.simpleMessage("Search With Tag"),
-    "title_show_details" : MessageLookupByLibrary.simpleMessage("Show Details"),
+    "title_show_details" : MessageLookupByLibrary.simpleMessage("Details"),
     "title_singUp" : MessageLookupByLibrary.simpleMessage("SingUp"),
     "title_sort" : MessageLookupByLibrary.simpleMessage("Sort"),
     "title_switchSite" : MessageLookupByLibrary.simpleMessage("Switch Site"),

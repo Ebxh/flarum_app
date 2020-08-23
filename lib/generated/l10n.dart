@@ -173,10 +173,10 @@ class S {
     );
   }
 
-  /// `Show Details`
+  /// `Details`
   String get title_show_details {
     return Intl.message(
-      'Show Details',
+      'Details',
       name: 'title_show_details',
       desc: '',
       args: [],
