@@ -1,6 +1,7 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/discussions.dart';
+import 'package:core/api/decoder/posts.dart';
 import 'package:core/api/decoder/tags.dart';
 import 'package:core/api/decoder/users.dart';
 import 'package:core/conf/app.dart';
@@ -106,159 +107,7 @@ class _PostsListState extends State<PostsList> {
                               }
                               switch (p.contentType) {
                                 case "comment":
-                                  UserInfo u;
-                                  if (p.user == null) {
-                                    u = UserInfo.deletedUser;
-                                  } else {
-                                    u = discussionInfo.users[p.user];
-                                  }
-                                  if (u == null) {
-                                    print("${p.user} ${p.id} $count");
-                                  }
-
-                                  var buttonPadding =
-                                      MediaQuery.of(context).size.width / 12;
-
-                                  card = Card(
-                                      elevation: 0,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          ListTile(
-                                            title: Text(u.displayName),
-                                            leading: Avatar(
-                                                u,
-                                                Theme.of(context).primaryColor,
-                                                UniqueKey()),
-                                            subtitle: Text(p.createdAt),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 15,
-                                                right: 15,
-                                                bottom: 15),
-                                            child: HtmlView(
-                                              p.contentHtml,
-                                              onLinkTap: (String url) async {
-                                                if (url.startsWith(
-                                                    Api.getIndexUrl())) {
-                                                  ///Link handled by the application
-                                                  List<String> data = url
-                                                      .replaceAll(
-                                                          Api.getIndexUrl(), "")
-                                                      .split("/");
-                                                  if (data == null ||
-                                                      data.length <= 2) {
-                                                    AppConfig.launchURL(
-                                                        context, url);
-                                                  }
-                                                  String key = data[1];
-                                                  String id = data[2];
-                                                  switch (key) {
-                                                    case "d":
-                                                      setState(() {
-                                                        isLoading = true;
-                                                      });
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) {
-                                                        return DiscussionPage(
-                                                            widget.initData,
-                                                            DiscussionInfo
-                                                                .makeWithId(
-                                                                    id));
-                                                      }));
-                                                      break;
-                                                    case "u":
-                                                      setState(() {
-                                                        isLoading = true;
-                                                      });
-                                                      var u = await Api
-                                                          .getUserInfoByName(
-                                                              id);
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                        return UserPage(
-                                                            u, UniqueKey());
-                                                      }));
-                                                      break;
-                                                    case "t":
-                                                      Navigator.push(context,
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) {
-                                                        return TagInfoPage(
-                                                            Api.getTagBySlug(
-                                                                id),
-                                                            widget.initData);
-                                                      }));
-                                                      break;
-                                                  }
-                                                  print(key);
-                                                  setState(() {
-                                                    isLoading = false;
-                                                  });
-                                                } else {
-                                                  AppConfig.launchURL(
-                                                      context, url);
-                                                }
-                                              },
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: buttonPadding,
-                                                      bottom: 10,
-                                                      right: buttonPadding),
-                                                  child: IconButton(
-                                                      icon: FaIcon(
-                                                        FontAwesomeIcons
-                                                            .thumbsUp,
-                                                        size: 18,
-                                                      ),
-                                                      onPressed: () {}),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: buttonPadding,
-                                                      bottom: 10,
-                                                      right: buttonPadding),
-                                                  child: IconButton(
-                                                      icon: FaIcon(
-                                                          FontAwesomeIcons
-                                                              .commentAlt,
-                                                          size: 18),
-                                                      onPressed: () {}),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: buttonPadding,
-                                                      bottom: 10,
-                                                      right: buttonPadding),
-                                                  child: IconButton(
-                                                      icon: FaIcon(
-                                                          Icons.more_horiz,
-                                                          size: 18),
-                                                      onPressed: () {}),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ));
+                                  card = makePostCard(p,context);
                                   break;
                                 case "discussionStickied":
                                   var sticky = p.source["attributes"]["content"]
@@ -437,6 +286,74 @@ class _PostsListState extends State<PostsList> {
           );
   }
 
+  Widget makePostCard(PostInfo p,BuildContext context) {
+    UserInfo u;
+    if (p.user == null) {
+      u = UserInfo.deletedUser;
+    } else {
+      u = discussionInfo.users[p.user];
+    }
+    if (u == null) {
+      print("${p.user} ${p.id} $count");
+    }
+
+    var buttonPadding = MediaQuery.of(context).size.width / 12;
+    return Card(
+        elevation: 0,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              title: Text(u.displayName),
+              leading: Avatar(u, Theme.of(context).primaryColor, UniqueKey()),
+              subtitle: Text(p.createdAt),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+              child: HtmlView(
+                p.contentHtml,
+                onLinkTap: (String url) {
+                  onLinkTap(url, context);
+                },
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: buttonPadding, bottom: 10, right: buttonPadding),
+                    child: IconButton(
+                        icon: FaIcon(
+                          FontAwesomeIcons.thumbsUp,
+                          size: 18,
+                        ),
+                        onPressed: () {}),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: buttonPadding, bottom: 10, right: buttonPadding),
+                    child: IconButton(
+                        icon: FaIcon(FontAwesomeIcons.commentAlt, size: 18),
+                        onPressed: () {}),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: buttonPadding, bottom: 10, right: buttonPadding),
+                    child: IconButton(
+                        icon: FaIcon(Icons.more_horiz, size: 18),
+                        onPressed: () {}),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+
   Widget makeMessageCard(
       Color textColor, IconData icon, UserInfo user, String text,
       {Widget details}) {
@@ -459,7 +376,12 @@ class _PostsListState extends State<PostsList> {
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: textColor, fontSize: 18),
           ),
-          onTap: () {},
+          onTap: () async {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (BuildContext context) {
+              return UserPage(user, UniqueKey());
+            }));
+          },
         )),
         TextSpan(
           text: " ",
@@ -595,7 +517,6 @@ class _PostsListState extends State<PostsList> {
       isLoading = true;
     });
     var d = await Api.getDiscussionById(widget.discussionInfo.id);
-    print(d.tags.length);
     if (d.tags == null && widget.discussionInfo.tags != null) {
       d.tags = widget.discussionInfo.tags;
     }
@@ -636,6 +557,73 @@ class _PostsListState extends State<PostsList> {
       setState(() {
         count = c;
       });
+    }
+  }
+
+  onLinkTap(String url, BuildContext context) async {
+    if (url.startsWith(Api.getIndexUrl())) {
+      ///Link handled by the application
+      List<String> data = url.replaceAll(Api.getIndexUrl(), "").split("/");
+      if (data == null || data.length <= 2) {
+        AppConfig.launchURL(context, url);
+      }
+      String key = data[1];
+      String id = data[2];
+      switch (key) {
+        case "d":
+          if (data.length == 3) {
+            setState(() {
+              isLoading = true;
+            });
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return DiscussionPage(
+                  widget.initData, DiscussionInfo.makeWithId(id));
+            }));
+          } else if (data.length == 4) {
+            int postNumber = int.parse(data[3]);
+            PostInfo post;
+            for (var p in discussionInfo.posts.values.toList()) {
+              if (p.number == postNumber) {
+                post = p;
+                break;
+              }
+            }
+            showDialog(
+                context: context,
+                child: Builder(builder: (BuildContext context) {
+                  return AlertDialog(
+                    insetPadding: EdgeInsets.only(
+                      top: 50,left: 5,right: 5
+                    ),
+                    contentPadding: EdgeInsets.all(0),
+                    content: SingleChildScrollView(
+                      child: makePostCard(post,context),
+                    ),
+                  );
+                }));
+          }
+          break;
+        case "u":
+          setState(() {
+            isLoading = true;
+          });
+          var u = await Api.getUserInfoByName(id);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (BuildContext context) {
+            return UserPage(u, UniqueKey());
+          }));
+          break;
+        case "t":
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return TagInfoPage(Api.getTagBySlug(id), widget.initData);
+          }));
+          break;
+      }
+      setState(() {
+        isLoading = false;
+      });
+    } else {
+      AppConfig.launchURL(context, url);
     }
   }
 }

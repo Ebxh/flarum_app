@@ -71,13 +71,12 @@ class Api {
 
   static TagInfo getTagBySlug(String slug) {
     print(_allTags.length);
-    TagInfo tag;
-    _allTags.forEach((_, t) {
+    for (var t in _allTags.values.toList()) {
       if (t.slug == slug) {
-        tag = t;
+        return t;
       }
-    });
-    return tag;
+    }
+    return null;
   }
 
   static Future<DiscussionInfo> getDiscussionById(String id) async {
