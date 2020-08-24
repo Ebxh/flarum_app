@@ -22,10 +22,7 @@ class HtmlView extends StatelessWidget {
       widgets.add(getWidget(context, element));
     });
     return SizedBox(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,37 +52,37 @@ class HtmlView extends StatelessWidget {
               String k = UniqueKey().toString();
               span.add(WidgetSpan(
                   child: contentPadding(Center(
-                    child: InkWell(
-                      child: Material(
-                        child: Hero(
-                            tag: k,
-                            child: CachedNetworkImage(
-                              imageUrl: url,
-                              placeholder: (BuildContext context, String url) {
-                                return Icon(
-                                  Icons.image,
-                                  size: 64,
-                                  color: Colors.grey,
-                                );
-                              },
-                              errorWidget: (BuildContext context, String url,
-                                  dynamic error) {
-                                return Icon(
-                                  Icons.warning,
-                                  size: 64,
-                                  color: Colors.grey,
-                                );
-                              },
-                            )),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                              return ImagesView([n.attributes["src"]], 0,k);
-                            }));
-                      },
-                    ),
-                  ))));
+                child: InkWell(
+                  child: Material(
+                    child: Hero(
+                        tag: k,
+                        child: CachedNetworkImage(
+                          imageUrl: url,
+                          placeholder: (BuildContext context, String url) {
+                            return Icon(
+                              Icons.image,
+                              size: 64,
+                              color: Colors.grey,
+                            );
+                          },
+                          errorWidget: (BuildContext context, String url,
+                              dynamic error) {
+                            return Icon(
+                              Icons.warning,
+                              size: 64,
+                              color: Colors.grey,
+                            );
+                          },
+                        )),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return ImagesView([n.attributes["src"]], 0, k);
+                    }));
+                  },
+                ),
+              ))));
             } else {
               span.add(TextSpan(
                   text: "${n.text}", style: TextStyle(fontSize: textSize)));
@@ -96,84 +93,80 @@ class HtmlView extends StatelessWidget {
               case "UserMention":
                 span.add(WidgetSpan(
                     child: InkWell(
-                      child: Text("${n.text}",
-                          style: TextStyle(
-                              fontSize: textSize,
-                              color: Theme
-                                  .of(context)
-                                  .primaryColor,
-                              fontWeight: FontWeight.bold)),
-                      onTap: () {},
-                    )));
+                  child: Text("${n.text}",
+                      style: TextStyle(
+                          fontSize: textSize,
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold)),
+                  onTap: () {},
+                )));
                 break;
               case "PostMention":
                 span.add(WidgetSpan(
                     child: InkWell(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(right: 5),
-                            child: FaIcon(
-                              FontAwesomeIcons.reply,
-                              color: Colors.blue,
-                              size: textSize,
-                            ),
-                          ),
-                          Text("${n.text}",
-                              style: TextStyle(
-                                  fontSize: textSize,
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold))
-                        ],
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 5),
+                        child: FaIcon(
+                          FontAwesomeIcons.reply,
+                          color: Colors.blue,
+                          size: textSize,
+                        ),
                       ),
-                      onTap: () {
-                        print(n.parent.attributes);
-                      },
-                    )));
+                      Text("${n.text}",
+                          style: TextStyle(
+                              fontSize: textSize,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold))
+                    ],
+                  ),
+                  onTap: () {
+                    print(n.parent.attributes);
+                  },
+                )));
                 break;
               case "github-issue-link":
                 span.add(WidgetSpan(
                     child: InkWell(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(left: 5, right: 2),
-                            child: FaIcon(
-                              FontAwesomeIcons.github,
-                              size: 18,
-                            ),
-                          ),
-                          Text("${n.text}",
-                              style: TextStyle(
-                                  fontSize: textSize,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.underline,
-                                  fontWeight: FontWeight.bold))
-                        ],
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 5, right: 2),
+                        child: FaIcon(
+                          FontAwesomeIcons.github,
+                          size: 18,
+                        ),
                       ),
-                      onTap: () {
-                        String url = n.parent.attributes["href"];
-                        AppConfig.launchURL(context, url);
-                      },
-                    )));
+                      Text("${n.text}",
+                          style: TextStyle(
+                              fontSize: textSize,
+                              color: Colors.black,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.bold))
+                    ],
+                  ),
+                  onTap: () {
+                    String url = n.parent.attributes["href"];
+                    AppConfig.launchURL(context, url);
+                  },
+                )));
                 break;
               default:
                 span.add(WidgetSpan(
                     child: InkWell(
-                      child: Text("${n.text}",
-                          style: TextStyle(
-                              fontSize: textSize,
-                              color: Theme
-                                  .of(context)
-                                  .primaryColor,
-                              decoration: TextDecoration.underline,
-                              fontWeight: FontWeight.bold)),
-                      onTap: () {
-                        AppConfig.launchURL(context, n.parent.attributes["href"]);
-                      },
-                    )));
+                  child: Text("${n.text}",
+                      style: TextStyle(
+                          fontSize: textSize,
+                          color: Theme.of(context).primaryColor,
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.bold)),
+                  onTap: () {
+                    AppConfig.launchURL(context, n.parent.attributes["href"]);
+                  },
+                )));
                 if (n.parent.className != "") {
                   print("UnimplementedUrlClass:${n.parent.className}");
                 }
@@ -218,9 +211,9 @@ class HtmlView extends StatelessWidget {
             print("UnimplementedNode:${n.parent.localName}");
             span.add(WidgetSpan(
                 child: Text(
-                  "${n.text}",
-                  style: TextStyle(fontSize: textSize),
-                )));
+              "${n.text}",
+              style: TextStyle(fontSize: textSize),
+            )));
             break;
         }
       }
@@ -276,23 +269,14 @@ class HtmlView extends StatelessWidget {
         return contentPadding(SizedBox());
       case "details":
         return contentPadding(SizedBox(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          width: MediaQuery.of(context).size.width,
           child: RaisedButton(
-              color: Theme
-                  .of(context)
-                  .primaryColor,
+              color: Theme.of(context).primaryColor,
               child: Text(
-                S
-                    .of(context)
-                    .title_show_details,
+                S.of(context).title_show_details,
                 style: TextStyle(
                     color: ColorUtil.getTitleFormBackGround(
-                        Theme
-                            .of(context)
-                            .primaryColor)),
+                        Theme.of(context).primaryColor)),
               ),
               onPressed: () {
                 showDialog(
@@ -300,21 +284,17 @@ class HtmlView extends StatelessWidget {
                     child: Builder(builder: (BuildContext context) {
                       var e = element.outerHtml.replaceAll("<details", "<p");
                       return AlertDialog(
-                        title: Text(S
-                            .of(context)
-                            .title_details),
+                        title: Text(S.of(context).title_details),
                         content: Scrollbar(
                             child: SingleChildScrollView(
-                              child: HtmlView(e),
-                            )),
+                          child: HtmlView(e),
+                        )),
                         actions: <Widget>[
                           FlatButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text(S
-                                  .of(context)
-                                  .title_close))
+                              child: Text(S.of(context).title_close))
                         ],
                       );
                     }));
@@ -333,10 +313,7 @@ class HtmlView extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.all(10),
           child: SizedBox(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -356,10 +333,7 @@ class HtmlView extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.all(10),
           child: SizedBox(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -370,10 +344,7 @@ class HtmlView extends StatelessWidget {
       case "blockquote":
         Color background = HexColor.fromHex("#e7edf3");
         return SizedBox(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          width: MediaQuery.of(context).size.width,
           child: Card(
             elevation: 0,
             color: background,
@@ -385,17 +356,14 @@ class HtmlView extends StatelessWidget {
                   text: TextSpan(
                       children: getRichTextSpan(context, element.nodes),
                       style:
-                      TextStyle(fontSize: textSize, color: Colors.black))),
+                          TextStyle(fontSize: textSize, color: Colors.black))),
             ),
           ),
         );
       case "pre":
         Color backGroundColor = Colors.black87;
         return contentPadding(SizedBox(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          width: MediaQuery.of(context).size.width,
           child: Card(
             elevation: 0,
             color: backGroundColor,
@@ -403,10 +371,19 @@ class HtmlView extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(0))),
             child: Padding(
               padding: const EdgeInsets.all(10),
-              child: Text(
-                element.text,
-                style: TextStyle(
-                    color: ColorUtil.getTitleFormBackGround(backGroundColor)),
+              child: NotificationListener(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    element.text,
+                    style: TextStyle(
+                        color:
+                            ColorUtil.getTitleFormBackGround(backGroundColor)),
+                  ),
+                ),
+                onNotification: (ScrollNotification notification) {
+                  return true;
+                },
               ),
             ),
           ),
@@ -419,10 +396,7 @@ class HtmlView extends StatelessWidget {
         break;
       default:
         return contentPadding(contentPadding(SizedBox(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          width: MediaQuery.of(context).size.width,
           child: RaisedButton(
               color: Colors.red,
               child: Text(
@@ -449,5 +423,4 @@ class HtmlView extends StatelessWidget {
       child: child,
     );
   }
-
 }
