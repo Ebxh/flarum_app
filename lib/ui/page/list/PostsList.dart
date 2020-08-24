@@ -3,10 +3,13 @@ import 'package:core/api/data.dart';
 import 'package:core/api/decoder/discussions.dart';
 import 'package:core/api/decoder/tags.dart';
 import 'package:core/api/decoder/users.dart';
+import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/html/html.dart';
+import 'package:core/ui/page/DiscussionPage.dart';
+import 'package:core/ui/page/TagInfoPage.dart';
+import 'package:core/ui/page/UserInfoPage.dart';
 import 'package:core/util/color.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -49,12 +52,12 @@ class _PostsListState extends State<PostsList> {
                               index = index - 1;
                               if (index == -1) {
                                 Color backGroundColor;
-                                if (widget.discussionInfo.tags == null ||
-                                    widget.discussionInfo.tags.length == 0) {
+                                if (discussionInfo.tags == null ||
+                                    discussionInfo.tags.length == 0) {
                                   backGroundColor =
                                       Theme.of(context).primaryColor;
                                 } else {
-                                  for (var t in widget.discussionInfo.tags) {
+                                  for (var t in discussionInfo.tags) {
                                     if (!t.isChild) {
                                       backGroundColor = backGroundColor =
                                           HexColor.fromHex(t.color);
@@ -86,7 +89,7 @@ class _PostsListState extends State<PostsList> {
                                         child: Center(
                                           child: makeMiniCards(
                                               context,
-                                              widget.discussionInfo.tags,
+                                              discussionInfo.tags,
                                               widget.initData),
                                         ),
                                       ),
@@ -136,6 +139,74 @@ class _PostsListState extends State<PostsList> {
                                                 bottom: 15),
                                             child: HtmlView(
                                               p.contentHtml,
+                                              onLinkTap: (String url) async {
+                                                if (url.startsWith(
+                                                    Api.getIndexUrl())) {
+                                                  ///Link handled by the application
+                                                  List<String> data = url
+                                                      .replaceAll(
+                                                          Api.getIndexUrl(), "")
+                                                      .split("/");
+                                                  if (data == null ||
+                                                      data.length <= 2) {
+                                                    AppConfig.launchURL(
+                                                        context, url);
+                                                  }
+                                                  String key = data[1];
+                                                  String id = data[2];
+                                                  switch (key) {
+                                                    case "d":
+                                                      setState(() {
+                                                        isLoading = true;
+                                                      });
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) {
+                                                        return DiscussionPage(
+                                                            widget.initData,
+                                                            DiscussionInfo
+                                                                .makeWithId(
+                                                                    id));
+                                                      }));
+                                                      break;
+                                                    case "u":
+                                                      setState(() {
+                                                        isLoading = true;
+                                                      });
+                                                      var u = await Api
+                                                          .getUserInfoByName(
+                                                              id);
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                        return UserPage(
+                                                            u, UniqueKey());
+                                                      }));
+                                                      break;
+                                                    case "t":
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) {
+                                                        return TagInfoPage(
+                                                            Api.getTagBySlug(
+                                                                id),
+                                                            widget.initData);
+                                                      }));
+                                                      break;
+                                                  }
+                                                  print(key);
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
+                                                } else {
+                                                  AppConfig.launchURL(
+                                                      context, url);
+                                                }
+                                              },
                                             ),
                                           ),
                                           SizedBox(
@@ -523,7 +594,11 @@ class _PostsListState extends State<PostsList> {
     setState(() {
       isLoading = true;
     });
-    var d = await Api.getDiscussion(widget.discussionInfo.id);
+    var d = await Api.getDiscussionById(widget.discussionInfo.id);
+    print(d.tags.length);
+    if (d.tags == null && widget.discussionInfo.tags != null) {
+      d.tags = widget.discussionInfo.tags;
+    }
     setState(() {
       isLoading = false;
       if (d.posts.length >= 20) {

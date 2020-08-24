@@ -1,19 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:core/conf/app.dart';
 import 'package:core/generated/l10n.dart';
-import 'package:core/ui/page/ImagesView.dart';
+import 'file:///C:/Users/me/Project/flarum_app/lib/ui/html/ImagesView.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
 
+typedef void OnLinkTap(String link);
+
 class HtmlView extends StatelessWidget {
   final String content;
-
+  final OnLinkTap onLinkTap;
   static double textSize = 16;
 
-  HtmlView(this.content);
+  HtmlView(this.content, {this.onLinkTap}) : assert(onLinkTap != null);
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +99,9 @@ class HtmlView extends StatelessWidget {
                           fontSize: textSize,
                           color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold)),
-                  onTap: () {},
+                  onTap: () {
+                    onLinkTap(n.parent.attributes["href"]);
+                  },
                 )));
                 break;
               case "PostMention":
@@ -123,7 +126,7 @@ class HtmlView extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    print(n.parent.attributes);
+                    onLinkTap(n.parent.attributes["href"]);
                   },
                 )));
                 break;
@@ -149,8 +152,7 @@ class HtmlView extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    String url = n.parent.attributes["href"];
-                    AppConfig.launchURL(context, url);
+                    onLinkTap(n.parent.attributes["href"]);
                   },
                 )));
                 break;
@@ -164,7 +166,7 @@ class HtmlView extends StatelessWidget {
                           decoration: TextDecoration.underline,
                           fontWeight: FontWeight.bold)),
                   onTap: () {
-                    AppConfig.launchURL(context, n.parent.attributes["href"]);
+                    onLinkTap(n.parent.attributes["href"]);
                   },
                 )));
                 if (n.parent.className != "") {
@@ -287,7 +289,7 @@ class HtmlView extends StatelessWidget {
                         title: Text(S.of(context).title_details),
                         content: Scrollbar(
                             child: SingleChildScrollView(
-                          child: HtmlView(e),
+                          child: HtmlView(e,onLinkTap: onLinkTap,),
                         )),
                         actions: <Widget>[
                           FlatButton(

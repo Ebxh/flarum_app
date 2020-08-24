@@ -4,7 +4,7 @@ import 'package:core/api/decoder/tags.dart';
 import 'package:core/api/decoder/users.dart';
 
 class DiscussionInfo {
-  int id;
+  String id;
   String title;
   String slug;
   int commentCount;
@@ -61,7 +61,7 @@ class DiscussionInfo {
 
   factory DiscussionInfo.formMaoAndId(Map m, int id) {
     return DiscussionInfo(
-        id,
+        id.toString(),
         m["title"],
         m["slug"],
         m["commentCount"],
@@ -97,6 +97,36 @@ class DiscussionInfo {
 
   factory DiscussionInfo.formJson(String j) {
     return DiscussionInfo.formBase(BaseBean.formJson(j));
+  }
+
+  factory DiscussionInfo.makeWithId(String id) {
+    return DiscussionInfo(
+        id,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null);
   }
 
   factory DiscussionInfo.formBase(BaseBean base) {
@@ -137,6 +167,7 @@ class DiscussionInfo {
     d.posts = posts;
     d.postsIdList = postsId;
     d.users = users;
+    d.tags = tags;
     return d;
   }
 }

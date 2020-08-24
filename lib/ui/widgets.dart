@@ -11,7 +11,7 @@ import 'package:core/util/String.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
-import 'page/TagPage.dart';
+import 'page/TagInfoPage.dart';
 
 class SiteIcon extends StatelessWidget {
   final ForumInfo info;
@@ -117,6 +117,9 @@ Widget makeBackButton(BuildContext context, Color textColor) {
 
 Widget makeMiniCards(
     BuildContext context, List<TagInfo> tags, InitData initData) {
+  if (tags == null) {
+    return SizedBox();
+  }
   if (tags.length == 0) {
     return null;
   }

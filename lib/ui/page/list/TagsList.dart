@@ -5,7 +5,7 @@ import 'package:core/ui/page/SearchPage.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
-import '../TagPage.dart';
+import '../TagInfoPage.dart';
 
 class TagsPage extends StatefulWidget {
   final InitData initData;

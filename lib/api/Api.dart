@@ -34,6 +34,10 @@ class Api {
     }
   }
 
+  static String getIndexUrl() {
+    return apiUrl.replaceAll("/api", "");
+  }
+
   static Tags getTagsWithCache() {
     return _tags;
   }
@@ -65,8 +69,23 @@ class Api {
     return _allTags[id];
   }
 
-  static Future<DiscussionInfo> getDiscussion(int id) async {
-    return DiscussionInfo.formJson((await _dio.get("/discussions/$id")).data);
+  static TagInfo getTagBySlug(String slug) {
+    print(_allTags.length);
+    TagInfo tag;
+    _allTags.forEach((_, t) {
+      if (t.slug == slug) {
+        tag = t;
+      }
+    });
+    return tag;
+  }
+
+  static Future<DiscussionInfo> getDiscussionById(String id) async {
+    return getDiscussionByUrl("/discussions/$id");
+  }
+
+  static Future<DiscussionInfo> getDiscussionByUrl(String url) async {
+    return DiscussionInfo.formJson((await _dio.get(url)).data);
   }
 
   static Future<Discussions> getDiscussionList(String sortKey,
@@ -118,9 +137,17 @@ class Api {
     return getUserInfoById(t.uid);
   }
 
+  static Future<UserInfo> getUserInfoByName(String name) async {
+    return getUserByUrl("users/$name");
+  }
+
   static Future<UserInfo> getUserInfoById(int id) async {
+    return getUserByUrl("users/$id");
+  }
+
+  static Future<UserInfo> getUserByUrl(String url) async {
     try {
-      return UserInfo.formJson((await _dio.get("users/$id")).data);
+      return UserInfo.formJson((await _dio.get(url)).data);
     } catch (e) {
       print(e);
       return null;

@@ -7,7 +7,7 @@ import 'package:core/ui/page/list/DiscussionsList.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
-typedef Function OnTagSelected(TagInfo tagInfo);
+typedef void OnTagSelected(TagInfo tagInfo);
 
 class SearchPage extends SearchDelegate<String> {
   TagInfo tagInfo;
