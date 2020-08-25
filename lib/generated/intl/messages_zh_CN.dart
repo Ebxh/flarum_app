@@ -41,7 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "time_hours_ago" : MessageLookupByLibrary.simpleMessage("小时前"),
     "time_just_now" : MessageLookupByLibrary.simpleMessage("就在刚刚"),
     "time_minutes_ago" : MessageLookupByLibrary.simpleMessage("分钟前"),
-    "time_months_ago" : MessageLookupByLibrary.simpleMessage("月前"),
+    "time_months_ago" : MessageLookupByLibrary.simpleMessage("个月前"),
     "time_seconds_ago" : MessageLookupByLibrary.simpleMessage("秒前"),
     "time_weeks_ago" : MessageLookupByLibrary.simpleMessage("周前"),
     "time_years_ago" : MessageLookupByLibrary.simpleMessage("年前"),

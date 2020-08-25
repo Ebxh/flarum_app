@@ -20,7 +20,7 @@ class TimeUtil {
       return "${(diff.inDays / 30).floor()}${S.of(context).time_months_ago}";
     if (diff.inDays > 7)
       return "${(diff.inDays / 7).floor()}${S.of(context).time_weeks_ago}";
-    if (diff.inDays > 0) return "${diff.inDays} ${S.of(context).time_days_ago}";
+    if (diff.inDays > 0) return "${diff.inDays}${S.of(context).time_days_ago}";
     if (diff.inHours > 0)
       return "${diff.inHours}${S.of(context).time_hours_ago}";
     if (diff.inMinutes > 0)
