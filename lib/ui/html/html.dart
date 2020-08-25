@@ -1,13 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/generated/l10n.dart';
 import 'package:core/ui/html/CodeView.dart';
-import 'file:///C:/Users/me/Project/flarum_app/lib/ui/html/ImagesView.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
+
+import 'ImagesView.dart';
 
 typedef void OnLinkTap(String link);
 
