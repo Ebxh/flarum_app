@@ -26,7 +26,7 @@ class TimeUtil {
     if (diff.inMinutes > 0)
       return "${diff.inMinutes}${S.of(context).time_minutes_ago}";
     if (diff.inSeconds > 0)
-      return "${diff.inMinutes}${S.of(context).time_seconds_ago}";
+      return "${diff.inSeconds}${S.of(context).time_seconds_ago}";
     return S.of(context).time_just_now;
   }
 
