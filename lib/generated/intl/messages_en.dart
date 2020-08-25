@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_details" : MessageLookupByLibrary.simpleMessage("Details"),
     "title_discussion_detail" : MessageLookupByLibrary.simpleMessage("Details"),
     "title_email_or_username" : MessageLookupByLibrary.simpleMessage("Email Or UserName"),
+    "title_go_see" : MessageLookupByLibrary.simpleMessage("Go See"),
     "title_home" : MessageLookupByLibrary.simpleMessage("Home"),
     "title_login" : MessageLookupByLibrary.simpleMessage("Login"),
     "title_me" : MessageLookupByLibrary.simpleMessage("Me"),

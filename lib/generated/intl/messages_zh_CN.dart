@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_details" : MessageLookupByLibrary.simpleMessage("详情"),
     "title_discussion_detail" : MessageLookupByLibrary.simpleMessage("主题详情"),
     "title_email_or_username" : MessageLookupByLibrary.simpleMessage("邮箱或用户名"),
+    "title_go_see" : MessageLookupByLibrary.simpleMessage("去看看"),
     "title_home" : MessageLookupByLibrary.simpleMessage("首页"),
     "title_login" : MessageLookupByLibrary.simpleMessage("登录"),
     "title_me" : MessageLookupByLibrary.simpleMessage("我"),

@@ -455,7 +455,8 @@ class _PostsListState extends State<PostsList> {
       ts += "$t\n";
     });
     return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-      makeTitleAndConnect("${S.of(context).title_time}:", time),
+      makeTitleAndConnect("${S.of(context).title_time}:",
+          TimeUtil(DateTime.parse(time)).getPreciseTime()),
       makeTitleAndConnect("${S.of(context).title_count}:", count.toString()),
       makeTitleAndConnect("${S.of(context).title_title}:", ts)
     ]);
@@ -467,16 +468,19 @@ class _PostsListState extends State<PostsList> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         makeTitleAndConnect("${S.of(context).title_title}:", title),
-        makeTitleAndConnect("${S.of(context).title_time}:", time),
+        makeTitleAndConnect("${S.of(context).title_time}:",
+            TimeUtil(DateTime.parse(time)).getPreciseTime()),
         makeTitleAndConnect("${S.of(context).title_count}:", count.toString()),
         Center(
           child: RaisedButton(
               color: Colors.blue,
               child: Text(
-                "GO",
+                S.of(context).title_go_see,
                 style: TextStyle(color: Colors.white),
               ),
-              onPressed: () {}),
+              onPressed: () {
+                onLinkTap(url, context);
+              }),
         )
       ],
     );
@@ -602,25 +606,32 @@ class _PostsListState extends State<PostsList> {
                   widget.initData, DiscussionInfo.makeWithId(id));
             }));
           } else if (data.length == 4) {
-            int postNumber = int.parse(data[3]);
-            PostInfo post;
-            for (var p in discussionInfo.posts.values.toList()) {
-              if (p.number == postNumber) {
-                post = p;
-                break;
+            if (id.split("-")[0] == discussionInfo.id) {
+              int postNumber = int.parse(data[3]);
+              PostInfo post;
+              for (var p in discussionInfo.posts.values.toList()) {
+                if (p.number == postNumber) {
+                  post = p;
+                  break;
+                }
               }
+              showDialog(
+                  context: context,
+                  child: Builder(builder: (BuildContext context) {
+                    return AlertDialog(
+                      insetPadding: EdgeInsets.only(top: 50, left: 5, right: 5),
+                      contentPadding: EdgeInsets.all(0),
+                      content: SingleChildScrollView(
+                        child: makePostCard(post, context),
+                      ),
+                    );
+                  }));
+            } else {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return DiscussionPage(
+                    widget.initData, DiscussionInfo.makeWithId(id));
+              }));
             }
-            showDialog(
-                context: context,
-                child: Builder(builder: (BuildContext context) {
-                  return AlertDialog(
-                    insetPadding: EdgeInsets.only(top: 50, left: 5, right: 5),
-                    contentPadding: EdgeInsets.all(0),
-                    content: SingleChildScrollView(
-                      child: makePostCard(post, context),
-                    ),
-                  );
-                }));
           }
           break;
         case "u":

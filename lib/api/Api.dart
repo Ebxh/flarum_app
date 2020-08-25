@@ -70,7 +70,6 @@ class Api {
   }
 
   static TagInfo getTagBySlug(String slug) {
-    print(_allTags.length);
     for (var t in _allTags.values.toList()) {
       if (t.slug == slug) {
         return t;

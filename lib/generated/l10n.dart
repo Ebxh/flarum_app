@@ -323,6 +323,16 @@ class S {
     );
   }
 
+  /// `Go See`
+  String get title_go_see {
+    return Intl.message(
+      'Go See',
+      name: 'title_go_see',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Latest`
   String get subtitle_latest {
     return Intl.message(
