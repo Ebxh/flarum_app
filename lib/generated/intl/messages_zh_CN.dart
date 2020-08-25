@@ -58,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "title_me" : MessageLookupByLibrary.simpleMessage("我"),
     "title_new_post" : MessageLookupByLibrary.simpleMessage("发帖"),
     "title_password" : MessageLookupByLibrary.simpleMessage("密码"),
+    "title_precise_time" : MessageLookupByLibrary.simpleMessage("精确时间"),
     "title_search_all" : MessageLookupByLibrary.simpleMessage("全局搜索"),
     "title_search_with" : MessageLookupByLibrary.simpleMessage("搜索于"),
     "title_search_with_tag" : MessageLookupByLibrary.simpleMessage("从标签搜索"),

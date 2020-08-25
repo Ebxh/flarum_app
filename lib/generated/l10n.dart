@@ -313,6 +313,16 @@ class S {
     );
   }
 
+  /// `Precise time`
+  String get title_precise_time {
+    return Intl.message(
+      'Precise time',
+      name: 'title_precise_time',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Latest`
   String get subtitle_latest {
     return Intl.message(
@@ -443,70 +453,70 @@ class S {
     );
   }
 
-  /// `years ago`
+  /// ` years ago`
   String get time_years_ago {
     return Intl.message(
-      'years ago',
+      ' years ago',
       name: 'time_years_ago',
       desc: '',
       args: [],
     );
   }
 
-  /// `months ago`
+  /// ` months ago`
   String get time_months_ago {
     return Intl.message(
-      'months ago',
+      ' months ago',
       name: 'time_months_ago',
       desc: '',
       args: [],
     );
   }
 
-  /// `weeks ago`
+  /// ` weeks ago`
   String get time_weeks_ago {
     return Intl.message(
-      'weeks ago',
+      ' weeks ago',
       name: 'time_weeks_ago',
       desc: '',
       args: [],
     );
   }
 
-  /// `days ago`
+  /// ` days ago`
   String get time_days_ago {
     return Intl.message(
-      'days ago',
+      ' days ago',
       name: 'time_days_ago',
       desc: '',
       args: [],
     );
   }
 
-  /// `hours ago`
+  /// ` hours ago`
   String get time_hours_ago {
     return Intl.message(
-      'hours ago',
+      ' hours ago',
       name: 'time_hours_ago',
       desc: '',
       args: [],
     );
   }
 
-  /// `minutes ago`
+  /// ` minutes ago`
   String get time_minutes_ago {
     return Intl.message(
-      'minutes ago',
+      ' minutes ago',
       name: 'time_minutes_ago',
       desc: '',
       args: [],
     );
   }
 
-  /// `seconds ago`
+  /// ` seconds ago`
   String get time_seconds_ago {
     return Intl.message(
-      'seconds ago',
+      ' seconds ago',
       name: 'time_seconds_ago',
       desc: '',
       args: [],

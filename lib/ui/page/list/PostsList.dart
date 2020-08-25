@@ -307,8 +307,28 @@ class _PostsListState extends State<PostsList> {
             ListTile(
               title: Text(u.displayName),
               leading: Avatar(u, Theme.of(context).primaryColor, UniqueKey()),
-              subtitle:
-                  Text(TimeUtil(DateTime.parse(p.createdAt)).timeAgo(context)),
+              subtitle: InkWell(
+                child: Text(
+                    TimeUtil(DateTime.parse(p.createdAt)).timeAgo(context)),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(S.of(context).title_precise_time),
+                          content: Text(TimeUtil(DateTime.parse(p.createdAt))
+                              .getPreciseTime()),
+                          actions: [
+                            FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(S.of(context).title_close))
+                          ],
+                        );
+                      });
+                },
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
