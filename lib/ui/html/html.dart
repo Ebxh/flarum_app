@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/generated/l10n.dart';
+import 'package:core/ui/html/CodeView.dart';
 import 'file:///C:/Users/me/Project/flarum_app/lib/ui/html/ImagesView.dart';
 import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
@@ -289,7 +291,10 @@ class HtmlView extends StatelessWidget {
                         title: Text(S.of(context).title_details),
                         content: Scrollbar(
                             child: SingleChildScrollView(
-                          child: HtmlView(e,onLinkTap: onLinkTap,),
+                          child: HtmlView(
+                            e,
+                            onLinkTap: onLinkTap,
+                          ),
                         )),
                         actions: <Widget>[
                           FlatButton(
@@ -366,28 +371,46 @@ class HtmlView extends StatelessWidget {
         Color backGroundColor = Colors.black87;
         return contentPadding(SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: Card(
-            elevation: 0,
-            color: backGroundColor,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(0))),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: NotificationListener(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Text(
-                    element.text,
-                    style: TextStyle(
-                        color:
-                            ColorUtil.getTitleFormBackGround(backGroundColor)),
+          child: InkWell(
+            child: Card(
+              elevation: 0,
+              color: backGroundColor,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(0))),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: NotificationListener(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Text(
+                      element.text,
+                      style: TextStyle(
+                          color: ColorUtil.getTitleFormBackGround(
+                              backGroundColor)),
+                    ),
                   ),
+                  onNotification: (ScrollNotification notification) {
+                    return true;
+                  },
                 ),
-                onNotification: (ScrollNotification notification) {
-                  return true;
-                },
               ),
             ),
+            onTap: () async {
+              SystemChrome.setEnabledSystemUIOverlays([]);
+              SystemChrome.setPreferredOrientations([
+                DeviceOrientation.landscapeRight,
+                DeviceOrientation.landscapeRight,
+              ]);
+              await Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return CodeView(element.text);
+              }));
+              SystemChrome.setEnabledSystemUIOverlays(
+                  [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+              SystemChrome.setPreferredOrientations([
+                DeviceOrientation.portraitUp,
+              ]);
+            },
           ),
         ));
       case "div":
