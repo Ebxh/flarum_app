@@ -492,7 +492,8 @@ class _PostsListState extends State<PostsList> {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        makeTitleAndConnect("${S.of(context).title_time}:", time),
+        makeTitleAndConnect("${S.of(context).title_time}:",
+            TimeUtil(DateTime.parse(time)).getPreciseTime()),
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Text(
