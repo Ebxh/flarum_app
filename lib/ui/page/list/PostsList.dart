@@ -11,6 +11,7 @@ import 'package:core/ui/page/DiscussionPage.dart';
 import 'package:core/ui/page/TagInfoPage.dart';
 import 'package:core/ui/page/UserInfoPage.dart';
 import 'package:core/util/color.dart';
+import 'package:core/util/time.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -107,7 +108,7 @@ class _PostsListState extends State<PostsList> {
                               }
                               switch (p.contentType) {
                                 case "comment":
-                                  card = makePostCard(p,context);
+                                  card = makePostCard(p, context);
                                   break;
                                 case "discussionStickied":
                                   var sticky = p.source["attributes"]["content"]
@@ -286,7 +287,7 @@ class _PostsListState extends State<PostsList> {
           );
   }
 
-  Widget makePostCard(PostInfo p,BuildContext context) {
+  Widget makePostCard(PostInfo p, BuildContext context) {
     UserInfo u;
     if (p.user == null) {
       u = UserInfo.deletedUser;
@@ -306,7 +307,8 @@ class _PostsListState extends State<PostsList> {
             ListTile(
               title: Text(u.displayName),
               leading: Avatar(u, Theme.of(context).primaryColor, UniqueKey()),
-              subtitle: Text(p.createdAt),
+              subtitle:
+                  Text(TimeUtil(DateTime.parse(p.createdAt)).timeAgo(context)),
             ),
             Padding(
               padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
@@ -592,12 +594,10 @@ class _PostsListState extends State<PostsList> {
                 context: context,
                 child: Builder(builder: (BuildContext context) {
                   return AlertDialog(
-                    insetPadding: EdgeInsets.only(
-                      top: 50,left: 5,right: 5
-                    ),
+                    insetPadding: EdgeInsets.only(top: 50, left: 5, right: 5),
                     contentPadding: EdgeInsets.all(0),
                     content: SingleChildScrollView(
-                      child: makePostCard(post,context),
+                      child: makePostCard(post, context),
                     ),
                   );
                 }));

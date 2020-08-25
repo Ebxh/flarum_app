@@ -40,5 +40,13 @@
   "c_change_the_tag": "change the tag.",
   "c_split_post_to": "split post to",
   "c_split_post_form": "split post form",
-  "c_merged_post_from": "merged post from"
+  "c_merged_post_from": "merged post from",
+  "time_years_ago": "years ago",
+  "time_months_ago": "months ago",
+  "time_weeks_ago": "weeks ago",
+  "time_days_ago": "days ago",
+  "time_hours_ago": "hours ago",
+  "time_minutes_ago": "minutes ago",
+  "time_seconds_ago": "seconds ago",
+  "time_just_now": "just now"
 }

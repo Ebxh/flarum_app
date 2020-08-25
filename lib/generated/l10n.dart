@@ -442,6 +442,86 @@ class S {
       args: [],
     );
   }
+
+  /// `years ago`
+  String get time_years_ago {
+    return Intl.message(
+      'years ago',
+      name: 'time_years_ago',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `months ago`
+  String get time_months_ago {
+    return Intl.message(
+      'months ago',
+      name: 'time_months_ago',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `weeks ago`
+  String get time_weeks_ago {
+    return Intl.message(
+      'weeks ago',
+      name: 'time_weeks_ago',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `days ago`
+  String get time_days_ago {
+    return Intl.message(
+      'days ago',
+      name: 'time_days_ago',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `hours ago`
+  String get time_hours_ago {
+    return Intl.message(
+      'hours ago',
+      name: 'time_hours_ago',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `minutes ago`
+  String get time_minutes_ago {
+    return Intl.message(
+      'minutes ago',
+      name: 'time_minutes_ago',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `seconds ago`
+  String get time_seconds_ago {
+    return Intl.message(
+      'seconds ago',
+      name: 'time_seconds_ago',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `just now`
+  String get time_just_now {
+    return Intl.message(
+      'just now',
+      name: 'time_just_now',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
