@@ -124,14 +124,15 @@ class Api {
 
   static Future<UserInfo> getLoggedInUserInfo() async {
     var t = await AppConfig.getLoggedInUser();
+    print(t.uid);
+    print(t.token);
     if (t.uid == -1) {
       return null;
     }
     _dio
       ..options.baseUrl = apiUrl
-
-      /// api is invalid?
-      ..options.headers.addAll({"authentication": "Token ${t.token}"});
+      /// it's work!
+      ..options.headers.addAll({"Authorization": "Token ${t.token};userId=${t.uid}"});
     return getUserInfoById(t.uid);
   }
 
