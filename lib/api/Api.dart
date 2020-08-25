@@ -124,8 +124,6 @@ class Api {
 
   static Future<UserInfo> getLoggedInUserInfo() async {
     var t = await AppConfig.getLoggedInUser();
-    print(t.uid);
-    print(t.token);
     if (t.uid == -1) {
       return null;
     }
