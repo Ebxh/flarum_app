@@ -1,6 +1,7 @@
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/ui/page/DiscussionPage.dart';
+import 'package:core/util/color.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets.dart';
@@ -49,8 +50,29 @@ class _ListPageState extends State<ListPage> {
                       );
                     }
                     var d = widget.initData.discussions.list[index];
+                    int lastReadPostNumber = d.source["lastReadPostNumber"];
+                    int unread = d.lastPostNumber;
+                    Color numberBoxBackground = Colors.grey;
+                    if (lastReadPostNumber == null && Api.isLogin()) {
+                      lastReadPostNumber = 0;
+                    }
+                    if (lastReadPostNumber != null) {
+                      unread = d.lastPostNumber - lastReadPostNumber;
+                      if (unread == 0) {
+                        lastReadPostNumber = null;
+                        unread = d.commentCount -1;
+                      }else {
+                        numberBoxBackground = widget.backgroundColor;
+                      }
+                    }
                     return ListTile(
-                      title: Text(d.title),
+                      title: Text(
+                        d.title,
+                        style: TextStyle(
+                            fontWeight: lastReadPostNumber == null
+                                ? FontWeight.normal
+                                : FontWeight.bold),
+                      ),
                       leading: Avatar(d.user, widget.backgroundColor,
                           "${d.user.username}-$index"),
                       trailing: ClipRRect(
@@ -58,14 +80,16 @@ class _ListPageState extends State<ListPage> {
                           child: Container(
                             height: 30,
                             constraints: BoxConstraints(maxWidth: 50),
-                            color: Colors.black12,
+                            color: numberBoxBackground,
                             child: Center(
                               child: Padding(
                                 padding: EdgeInsets.only(
                                   left: 5,
                                   right: 5,
                                 ),
-                                child: Text("${d.commentCount - 1}"),
+                                child: Text("$unread",style: TextStyle(
+                                  color: ColorUtil.getTitleFormBackGround(numberBoxBackground)
+                                ),),
                               ),
                             ),
                           )),
@@ -106,9 +130,7 @@ class _ListPageState extends State<ListPage> {
           initData.discussions.list.addAll(result.list);
           initData.discussions.links = result.links;
         });
-      }else {
-
-      }
+      } else {}
       isLoading = false;
       setState(() {});
     }

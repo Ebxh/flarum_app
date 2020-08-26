@@ -109,28 +109,34 @@ class _MainPageState extends State<MainPage> {
                         showSites(context, sites);
                       }),
                   actions: <Widget>[
-                    IconButton(
-                        icon: Icon(
+                    IconButton(icon: Builder(
+                      builder: (BuildContext context) {
+                        if (Api.isLogin()) {
+                          return makeUserAvatarImage(initData.loggedUser,
+                              Theme.of(context).primaryColor, 26, 8);
+                        }
+                        return Icon(
                           Icons.account_circle,
                           color: textColor,
-                        ),
-                        onPressed: () {
-                          if (initData.loggedUser != null) {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              return UserPage();
-                            }));
-                          } else {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              return LoginPage();
-                            })).then((ok) {
-                              if (ok != null && ok) {
-                                refreshUI();
-                              }
-                            });
+                        );
+                      },
+                    ), onPressed: () {
+                      if (initData.loggedUser != null) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return UserPage();
+                        }));
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return LoginPage();
+                        })).then((ok) {
+                          if (ok != null && ok) {
+                            refreshUI();
                           }
-                        })
+                        });
+                      }
+                    })
                   ],
                 ),
                 body: AnimatedSwitcher(

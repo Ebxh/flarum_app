@@ -13,6 +13,7 @@ class Api {
   static String apiUrl = "";
   static Map<int, TagInfo> _allTags;
   static Tags _tags;
+  static bool _isLogin = false;
 
   static Future<void> init(String url) async {
     apiUrl = url;
@@ -32,6 +33,10 @@ class Api {
     } else {
       return null;
     }
+  }
+
+  static bool isLogin() {
+    return _isLogin;
   }
 
   static String getIndexUrl() {
@@ -125,13 +130,19 @@ class Api {
   static Future<UserInfo> getLoggedInUserInfo() async {
     var t = await AppConfig.getLoggedInUser();
     if (t.uid == -1) {
+      _isLogin = false;
       return null;
     }
     _dio
       ..options.baseUrl = apiUrl
-      /// it's work!
-      ..options.headers.addAll({"Authorization": "Token ${t.token};userId=${t.uid}"});
-    return getUserInfoById(t.uid);
+
+      /// it work!
+      ..options
+          .headers
+          .addAll({"Authorization": "Token ${t.token};userId=${t.uid}"});
+    var u = await getUserInfoById(t.uid);
+    _isLogin = u != null;
+    return u;
   }
 
   static Future<UserInfo> getUserInfoByName(String name) async {
@@ -152,10 +163,15 @@ class Api {
   }
 
   static Future<bool> login(String username, String password) async {
-    var result = (await _dio.post("/token", data: {
-      "identification": username,
-      "password": password,
-    }));
+    var result;
+    try {
+      result =  (await _dio.post("/token", data: {
+        "identification": username,
+        "password": password,
+      }));
+    } catch (_) {
+      return Future.value(false);
+    }
     var userId = result.data["userId"];
     var token = result.data["token"];
 
