@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/api/Api.dart';
 import 'package:core/api/data.dart';
 import 'package:core/api/decoder/discussions.dart';
@@ -17,11 +19,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../widgets.dart';
 
+typedef void OnReadReadingProgressChange(int current, int total);
+
 class PostsList extends StatefulWidget {
   final InitData initData;
   final DiscussionInfo discussionInfo;
+  final OnReadReadingProgressChange onReadReadingProgressChange;
 
-  PostsList(this.initData, this.discussionInfo);
+  PostsList(this.initData, this.discussionInfo,
+      {this.onReadReadingProgressChange})
+      : assert(onReadReadingProgressChange != null);
 
   @override
   _PostsListState createState() => _PostsListState();
@@ -33,10 +40,41 @@ class _PostsListState extends State<PostsList> {
 
   bool isLoading = false;
 
+  double maxListLen = 0;
+  double currentListLen = 0;
+  double lastMaxListLen = 0;
+  double lastCurrentListLen = 0;
+  Timer timer;
+  int lastReadCount = 1;
+
   @override
   void initState() {
     loadData();
+
+    /// Use a timer to ease the UI drop frame
+    timer = Timer.periodic(Duration(milliseconds: 500), (timer) {
+      /// Check if the data is updated
+      if (currentListLen != lastCurrentListLen ||
+          maxListLen != lastMaxListLen) {
+        lastCurrentListLen = currentListLen;
+        lastMaxListLen = maxListLen;
+        int readCount = ((currentListLen / maxListLen) * count).ceil();
+        if (lastReadCount != readCount) {
+          lastReadCount = readCount;
+          widget.onReadReadingProgressChange(readCount, count);
+        }
+      }
+    });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (timer.isActive) {
+      timer.cancel();
+    }
+    super.dispose();
   }
 
   @override
@@ -261,6 +299,8 @@ class _PostsListState extends State<PostsList> {
                           loadMore();
                         }
                       }
+                      maxListLen = notification.metrics.maxScrollExtent;
+                      currentListLen = notification.metrics.pixels;
                       return false;
                     },
                   ),
@@ -554,6 +594,7 @@ class _PostsListState extends State<PostsList> {
       } else {
         count = d.posts.length;
       }
+      widget.onReadReadingProgressChange(1,count);
       discussionInfo = d;
     });
   }

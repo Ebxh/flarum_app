@@ -18,6 +18,8 @@ class DiscussionPage extends StatefulWidget {
 }
 
 class _DiscussionPageState extends State<DiscussionPage> {
+  String readProgress = "0/0";
+
   @override
   Widget build(BuildContext context) {
     Color backgroundColor = Colors.white;
@@ -26,15 +28,37 @@ class _DiscussionPageState extends State<DiscussionPage> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         brightness: Brightness.light,
-        title: Text(
-          S.of(context).title_discussion_detail,
-          style: TextStyle(color: textColor),
+        title: ListTile(
+          title: Text(
+            S.of(context).title_discussion_detail,
+            style: TextStyle(color: textColor),
+            textAlign: TextAlign.center,
+          ),
+          subtitle: Text(
+            readProgress,
+            textAlign: TextAlign.center,
+          ),
         ),
-        centerTitle: true,
         leading: makeBackButton(context, textColor),
+        actions: [
+          PopupMenuButton(
+            icon: Icon(Icons.keyboard_arrow_down,color: textColor,),
+            itemBuilder: (BuildContext context) {
+              return [];
+            },
+          )
+        ],
       ),
       backgroundColor: Color.fromARGB(255, 242, 241, 246),
-      body: PostsList(widget.initData, widget.discussionInfo),
+      body: PostsList(
+        widget.initData,
+        widget.discussionInfo,
+        onReadReadingProgressChange: (int current, int total) {
+          setState(() {
+            readProgress = "$current/$total";
+          });
+        },
+      ),
     );
   }
 }
