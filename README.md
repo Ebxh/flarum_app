@@ -1,6 +1,6 @@
-# flarum_app
+# fla
 
-A flarum application by Flutter.
+A Open source Flarum application by Flutter.
 
 ## Preview Images
 ![preview.png](https://i.loli.net/2020/07/16/g8b1m4JBH5qISdE.png)
@@ -20,7 +20,7 @@ A flarum application by Flutter.
 
 ## How to start ?
 
-[download](https://github.com/clinux-co/flarum_app/releases) or :
+[download](/releases) or :
 
 1. A windows/linux/macOS 64bit device
 2. install Android-Studio (if macOS,you have to install xcode)
