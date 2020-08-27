@@ -1,29 +1,28 @@
-name: core
+name: flarum_flutter
 description: A flarum application by Flutter.
 
-version: 1.0.2+1
+version: 1.0.3
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.20.0 <2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: ^0.16.1
-  shared_preferences: ^0.5.10
-  dio: ^3.0.10
-  cached_network_image: ^2.2.0+1
-  gesture_zoom_box: ^0.0.3
-  path_provider: ^1.6.14
-  html: ^0.14.0+3
-  font_awesome_flutter: ^8.8.1
-  flutter_custom_tabs: ^0.6.0
+
+  # To use the latest core version, please comment out'ref'
+  # and use flutter pub upgrade to update.
+
+  core:
+    git:
+      url: https://github.com/flarum-flutter/core.git
+      # ref: 0.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 flutter:
   uses-material-design: true
-flutter_intl:
-  enabled: true

@@ -1,5 +1,6 @@
-import 'package:core/ui/Main.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../lib/main.dart';
 
 
 void main() {
