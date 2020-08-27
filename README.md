@@ -20,7 +20,7 @@ A Open source Flarum application by Flutter.
 
 ## How to start ?
 
-[download](/releases) or :
+[download](https://github.com/fluam/fla/releases) or :
 
 1. A windows/linux/macOS 64bit device
 2. install Android-Studio (if macOS,you have to install xcode)
