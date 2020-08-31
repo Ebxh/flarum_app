@@ -21,8 +21,8 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           channel: "dev"
-      - name: go master channel
-        run: flutter channel master
+      - name: go master stable
+        run: flutter stable master
       - name: upgrade
         run: flutter upgrade
       - name: flutter pub get
