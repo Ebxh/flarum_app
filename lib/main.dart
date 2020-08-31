@@ -13,10 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:i18n/i18n.dart';
+import 'package:i18n/timeAgo.dart';
 import 'package:util/SystemUI.dart';
 import 'package:util/color.dart';
 
 void main() {
+  TimeAgo.init();
   runApp(MainPage());
   SystemUI.setStatusBarColor(Colors.transparent, Brightness.light);
 }
@@ -273,8 +275,12 @@ class _MainPageState extends State<MainPage> {
                     child: ListTile(
                       title: Text(sites[index].title),
                       subtitle: Text(sites[index].url.replaceAll("/api", "")),
-                      leading: CachedNetworkImage(
-                          height: 42, imageUrl: sites[index].faviconUrl),
+                      leading: SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: CachedNetworkImage(
+                            height: 42, imageUrl: sites[index].faviconUrl),
+                      ),
                       onTap: () async {
                         await AppConfig.setSiteIndex(index);
                         refreshUI();
@@ -342,14 +348,20 @@ class _MainPageState extends State<MainPage> {
                   onPressed: isLoading
                       ? null
                       : () async {
+
                     FocusScope.of(context).requestFocus(FocusNode());
                     setState(() {
                       isLoading = true;
                     });
+                    if (!urlInput.text.startsWith("https://")) {
+                      setState(() {
+                        urlInput.text = "https://${urlInput.text}";
+                      });
+                    }
                     var url = "${urlInput.text}/api";
                     var f = await Api.checkUrl(url);
                     if (f != null) {
-                      AppConfig.addSite(SiteInfo(
+                      await AppConfig.addSite(SiteInfo(
                           f.apiUrl, f.title, f.faviconUrl, -1, null));
                       var index = await AppConfig.getSiteIndex();
                       if (index == -1) {

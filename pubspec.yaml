@@ -19,7 +19,7 @@ dependencies:
   core:
     git:
       url: https://github.com/flarum-flutter/core.git
-      # ref: 0.0.1
+      ref: 0.0.2
 
 dev_dependencies:
   flutter_test:
