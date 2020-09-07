@@ -3,9 +3,10 @@ import 'package:api/data.dart';
 import 'package:api/decoder/forums.dart';
 import 'package:appConfig/appConfig.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:core/LoginPage.dart';
+import 'package:core/DiscussionPage.dart';
+import 'package:core/NewPost.dart';
 import 'package:core/SplashPage.dart';
-import 'package:core/UserPage.dart';
+import 'package:core/user//UserPage.dart';
 import 'package:core/list/DiscussionsList.dart';
 import 'package:core/list/TagsList.dart';
 import 'package:core/widgets.dart';
@@ -41,9 +42,9 @@ class _MainPageState extends State<MainPage> {
     return MaterialApp(
       theme: ThemeData(
           primaryColor:
-          initData != null && initData.forumInfo.themePrimaryColor != null
-              ? HexColor.fromHex(initData.forumInfo.themePrimaryColor)
-              : Colors.blue,
+              initData != null && initData.forumInfo.themePrimaryColor != null
+                  ? HexColor.fromHex(initData.forumInfo.themePrimaryColor)
+                  : Colors.blue,
           brightness: Brightness.light),
       darkTheme: ThemeData(brightness: Brightness.dark),
       debugShowCheckedModeBanner: false,
@@ -70,136 +71,139 @@ class _MainPageState extends State<MainPage> {
         }
         return _isLoading
             ? Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ))
+                body: Center(
+                child: CircularProgressIndicator(),
+              ))
             : Scaffold(
-          key: scaffold,
-          appBar: AppBar(
-            brightness: ColorUtil.getBrightnessFromBackground(
-                Theme.of(context).primaryColor),
-            title: ListTile(
-              title: Text(
-                initData.forumInfo.title,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                style: TextStyle(color: textColor, fontSize: 20),
-              ),
-              subtitle: pageIndex == 0
-                  ? makeSortPopupMenu(
-                  context,
-                  discussionSort,
-                  ColorUtil.getSubtitleFormBackGround(
-                      Theme.of(context).primaryColor), (key) async {
-                setState(() {
-                  discussionSort = key;
-                  initData.discussions = null;
-                });
-                initData.discussions =
-                await Api.getDiscussionList(key);
-                if (initData.discussions != null) {
-                  setState(() {});
-                }
-              })
-                  : null,
-            ),
-            centerTitle: true,
-            leading: IconButton(
-                tooltip: S.of(context).title_switchSite,
-                icon: Icon(
-                  Icons.keyboard_arrow_down,
-                  color: textColor,
-                ),
-                onPressed: () async {
-                  var sites = await AppConfig.getSiteList();
-                  showSites(context, sites);
-                }),
-            actions: <Widget>[
-              IconButton(icon: Builder(
-                builder: (BuildContext context) {
-                  if (Api.isLogin()) {
-                    return makeUserAvatarImage(initData.loggedUser,
-                        Theme.of(context).primaryColor, 26, 8);
-                  }
-                  return Icon(
-                    Icons.account_circle,
-                    color: textColor,
-                  );
-                },
-              ), onPressed: () {
-                if (initData.loggedUser != null) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (BuildContext context) {
-                        return UserPage();
-                      }));
-                } else {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (BuildContext context) {
-                        return LoginPage();
-                      })).then((ok) {
-                    if (ok != null && ok) {
-                      refreshUI();
-                    }
-                  });
-                }
-              })
-            ],
-          ),
-          body: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 500),
-            child: IndexedStack(
-              key: Key(pageIndex.toString()),
-              index: pageIndex,
-              children: <Widget>[
-                ListPage(initData, Theme.of(context).primaryColor),
-                TagsPage(initData)
-              ],
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-              tooltip: S.of(context).title_new_post,
-              backgroundColor: Theme.of(context).primaryColor,
-              child: FaIcon(
-                FontAwesomeIcons.pen,
-                color: textColor,
-              ),
-              onPressed: () {}),
-          floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: BottomAppBar(
-            shape: CircularNotchedRectangle(),
-            color: Theme.of(context).primaryColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                IconButton(
-                  tooltip: S.of(context).title_home,
-                  icon: Icon(
-                    Icons.home,
-                    color: textColor,
+                key: scaffold,
+                appBar: AppBar(
+                  brightness: ColorUtil.getBrightnessFromBackground(
+                      Theme.of(context).primaryColor),
+                  title: ListTile(
+                    title: Text(
+                      initData.forumInfo.title,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      style: TextStyle(color: textColor, fontSize: 20),
+                    ),
+                    subtitle: pageIndex == 0
+                        ? makeSortPopupMenu(
+                            context,
+                            discussionSort,
+                            ColorUtil.getSubtitleFormBackGround(
+                                Theme.of(context).primaryColor), (key) async {
+                            setState(() {
+                              discussionSort = key;
+                              initData.discussions = null;
+                            });
+                            initData.discussions =
+                                await Api.getDiscussionList(key);
+                            if (initData.discussions != null) {
+                              setState(() {});
+                            }
+                          })
+                        : null,
                   ),
-                  onPressed: () {
-                    setState(() {
-                      pageIndex = 0;
-                    });
-                  },
+                  centerTitle: true,
+                  leading: IconButton(
+                      tooltip: S.of(context).title_switchSite,
+                      icon: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: textColor,
+                      ),
+                      onPressed: () async {
+                        var sites = await AppConfig.getSiteList();
+                        showSites(context, sites);
+                      }),
+                  actions: <Widget>[
+                    IconButton(icon: Builder(
+                      builder: (BuildContext context) {
+                        if (initData.loggedUser != null) {
+                          return makeUserAvatarImage(initData.loggedUser,
+                              Theme.of(context).primaryColor, 26, 8);
+                        }
+                        return Icon(
+                          Icons.account_circle,
+                          color: textColor,
+                        );
+                      },
+                    ), onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return UserPage(initData);
+                      })).then((_) {
+                        setState(() {});
+                      });
+                    }),
+                  ],
                 ),
-                IconButton(
-                    tooltip: S.of(context).title_tags,
-                    icon: Icon(
-                      Icons.apps,
+                body: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  child: IndexedStack(
+                    key: Key(pageIndex.toString()),
+                    index: pageIndex,
+                    children: <Widget>[
+                      DiscussionsList(initData, Theme.of(context).primaryColor),
+                      TagsPage(initData)
+                    ],
+                  ),
+                ),
+                floatingActionButton: FloatingActionButton(
+                    tooltip: S.of(context).title_new_post,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: FaIcon(
+                      FontAwesomeIcons.pen,
                       color: textColor,
                     ),
                     onPressed: () {
-                      setState(() {
-                        pageIndex = 1;
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return NewPostPage(initData);
+                      })).then((d) {
+                        if (d != null) {
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return DiscussionPage(initData, d);
+                          }));
+                        }
                       });
-                    })
-              ],
-            ),
-          ),
-        );
+                    }),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                bottomNavigationBar: BottomAppBar(
+                  shape: CircularNotchedRectangle(),
+                  color: Theme.of(context).primaryColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      IconButton(
+                        tooltip: S.of(context).title_home,
+                        icon: Icon(
+                          Icons.home,
+                          color: textColor,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            pageIndex = 0;
+                          });
+                        },
+                      ),
+                      IconButton(
+                          tooltip: S.of(context).title_tags,
+                          icon: Icon(
+                            Icons.apps,
+                            color: textColor,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              pageIndex = 1;
+                            });
+                          })
+                    ],
+                  ),
+                ),
+              );
       }),
     );
   }
@@ -216,7 +220,7 @@ class _MainPageState extends State<MainPage> {
         await AppConfig.setSiteIndex(0);
       }
       var site =
-      (await AppConfig.getSiteList())[await AppConfig.getSiteIndex()];
+          (await AppConfig.getSiteList())[await AppConfig.getSiteIndex()];
       info = await Api.checkUrl(site.url);
     }
     if (info == null) {
@@ -224,8 +228,8 @@ class _MainPageState extends State<MainPage> {
     }
     var result = await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) {
-          return Splash(info);
-        }));
+      return Splash(info);
+    }));
     if (result != null || result is InitData) {
       return result;
     }
@@ -333,12 +337,12 @@ class _MainPageState extends State<MainPage> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 10),
-                child: Text(S.of(context).content_add_flarum),
+                child: Text(S.of(context).title_add_flarum),
               ),
               TextField(
                 controller: urlInput,
                 decoration:
-                InputDecoration(hintText: "https://", errorText: err),
+                    InputDecoration(hintText: "https://", errorText: err),
               ),
               Padding(
                 padding: EdgeInsets.only(
@@ -348,36 +352,35 @@ class _MainPageState extends State<MainPage> {
                   onPressed: isLoading
                       ? null
                       : () async {
-
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    setState(() {
-                      isLoading = true;
-                    });
-                    if (!urlInput.text.startsWith("https://")) {
-                      setState(() {
-                        urlInput.text = "https://${urlInput.text}";
-                      });
-                    }
-                    var url = "${urlInput.text}/api";
-                    var f = await Api.checkUrl(url);
-                    if (f != null) {
-                      await AppConfig.addSite(SiteInfo(
-                          f.apiUrl, f.title, f.faviconUrl, -1, null));
-                      var index = await AppConfig.getSiteIndex();
-                      if (index == -1) {
-                        index = 0;
-                      }
-                      await AppConfig.setSiteIndex(index);
-                      Navigator.pop(context, f);
-                    } else {
-                      err = S.of(context).error_url;
-                    }
-                    setState(() {
-                      isLoading = false;
-                    });
-                  },
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {
+                            isLoading = true;
+                          });
+                          if (!urlInput.text.startsWith("https://")) {
+                            setState(() {
+                              urlInput.text = "https://${urlInput.text}";
+                            });
+                          }
+                          var url = "${urlInput.text}/api";
+                          var f = await Api.checkUrl(url);
+                          if (f != null) {
+                            await AppConfig.addSite(SiteInfo(
+                                f.apiUrl, f.title, f.faviconUrl, -1, null));
+                            var index = await AppConfig.getSiteIndex();
+                            if (index == -1) {
+                              index = 0;
+                            }
+                            await AppConfig.setSiteIndex(index);
+                            Navigator.pop(context, f);
+                          } else {
+                            err = S.of(context).error_url;
+                          }
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
                   child: Text(
-                    isLoading ? "..." : S.of(context).button_done,
+                    isLoading ? "..." : S.of(context).title_done,
                     style: TextStyle(color: Colors.white),
                   ),
                   color: isLoading
@@ -393,8 +396,8 @@ class _MainPageState extends State<MainPage> {
 
   void refreshUI() {
     setState(() {
-      discussionSort = "";
       initData = null;
+      discussionSort = "";
     });
   }
 }
