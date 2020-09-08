@@ -9,6 +9,7 @@ import 'package:core/SplashPage.dart';
 import 'package:core/user//UserPage.dart';
 import 'package:core/list/DiscussionsList.dart';
 import 'package:core/list/TagsList.dart';
+import 'package:core/user/LoginPage.dart';
 import 'package:core/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -156,17 +157,20 @@ class _MainPageState extends State<MainPage> {
                       color: textColor,
                     ),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return NewPostPage(initData);
-                      })).then((d) {
-                        if (d != null) {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return DiscussionPage(initData, d);
-                          }));
-                        }
-                      });
+                      if (initData.loggedUser == null ||
+                          initData.loggedUser.id == -1) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return LoginPage(initData);
+                        })).then((ok) {
+                          setState(() {});
+                          if (ok != null && ok) {
+                            goCreatePostPage(context);
+                          }
+                        });
+                        return;
+                      }
+                      goCreatePostPage(context);
                     }),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerDocked,
@@ -206,6 +210,19 @@ class _MainPageState extends State<MainPage> {
               );
       }),
     );
+  }
+
+  void goCreatePostPage(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return NewPostPage(initData);
+    })).then((d) {
+      if (d != null) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) {
+          return DiscussionPage(initData, d);
+        }));
+      }
+    });
   }
 
   Future<InitData> initApp(BuildContext context) async {
