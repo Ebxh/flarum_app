@@ -120,8 +120,17 @@ class _MainPageState extends State<MainPage> {
                     IconButton(icon: Builder(
                       builder: (BuildContext context) {
                         if (initData.loggedUser != null) {
-                          return makeUserAvatarImage(initData.loggedUser,
-                              Theme.of(context).primaryColor, 26, 8);
+                          return Hero(
+                              tag: "UserPage",
+                              child: Material(
+                                color: Colors.transparent,
+                                child: makeUserAvatarImage(
+                                    initData.loggedUser,
+                                    Theme.of(context).primaryColor,
+                                    26,
+                                    8,
+                                    1000),
+                              ));
                         }
                         return Icon(
                           Icons.account_circle,
