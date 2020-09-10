@@ -40,11 +40,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "co.clinux.flarum.core"
+        applicationId "io.github.fluam.fla"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 200900901
+        versionName "1.0.4 preview"
     }
 
     buildTypes {
