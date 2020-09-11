@@ -2,6 +2,7 @@ import 'package:api/api.dart';
 import 'package:api/data.dart';
 import 'package:api/decoder/forums.dart';
 import 'package:appConfig/appConfig.dart';
+import 'package:appConfig/data/data.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/DiscussionPage.dart';
 import 'package:core/NewPost.dart';
@@ -319,7 +320,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     onDismissed: (DismissDirection direction) async {
                       sites.removeAt(index);
-                      await AppConfig.removeSite(index);
+                      await AppConfig.removeSite(sites[index]);
                       if (index == await AppConfig.getSiteIndex()) {
                         Navigator.pop(context);
                         await AppConfig.setSiteIndex(0);
@@ -390,8 +391,8 @@ class _MainPageState extends State<MainPage> {
                           var url = "${urlInput.text}/api";
                           var f = await Api.checkUrl(url);
                           if (f != null) {
-                            await AppConfig.addSite(SiteInfo(
-                                f.apiUrl, f.title, f.faviconUrl, -1, null));
+                            await AppConfig.addSite(SiteInfo(f.apiUrl, f.title,
+                                f.faviconUrl, UserToken(-1, null), null));
                             var index = await AppConfig.getSiteIndex();
                             if (index == -1) {
                               index = 0;
