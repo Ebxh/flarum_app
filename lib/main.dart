@@ -48,7 +48,7 @@ class _MainPageState extends State<MainPage> {
                   ? HexColor.fromHex(initData.forumInfo.themePrimaryColor)
                   : Colors.blue,
           brightness: Brightness.light),
-      darkTheme: ThemeData(brightness: Brightness.dark),
+      darkTheme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -263,22 +263,26 @@ class _MainPageState extends State<MainPage> {
     return null;
   }
 
-  void showSites(BuildContext ctx, List<SiteInfo> sites) async {
+  void showSites(BuildContext context, List<SiteInfo> sites) async {
+    Color backgroundColor =
+        isDarkMode(context) ? Theme.of(context).primaryColor : Colors.white;
+    Color textColor = ColorUtil.getTitleFormBackGround(backgroundColor);
     showModalBottomSheet(
-        context: ctx,
+        context: context,
         builder: (BuildContext context) {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: backgroundColor,
               elevation: 0.1,
               title: Text(
                 S.of(context).title_switchSite,
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                    color: ColorUtil.getTitleFormBackGround(backgroundColor)),
               ),
               leading: IconButton(
                   icon: Icon(
                     Icons.chevron_left,
-                    color: Colors.black,
+                    color: textColor,
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -290,10 +294,10 @@ class _MainPageState extends State<MainPage> {
                     Navigator.pop(context);
                     var info = await addSite(context, false);
                     if (info != null) {
-                      showSites(ctx, await AppConfig.getSiteList());
+                      showSites(context, await AppConfig.getSiteList());
                     }
                   },
-                  color: Colors.black,
+                  color: textColor,
                   tooltip: S.of(context).title_addSite,
                 )
               ],
