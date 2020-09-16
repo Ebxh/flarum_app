@@ -34,7 +34,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   InitData initData;
   GlobalKey<ScaffoldState> scaffold = GlobalKey();
-  bool _isLoading = false;
+  LoadState loadState = LoadState().setStatusOk();
   int pageIndex = 0;
   String discussionSort = "";
   Color textColor;
@@ -63,19 +63,29 @@ class _MainPageState extends State<MainPage> {
         textColor =
             ColorUtil.getTitleFormBackGround(Theme.of(context).primaryColor);
 
-        if (initData == null && !_isLoading) {
+        if (initData == null &&
+            !loadState.isLoading() &&
+            !loadState.isFailed()) {
           initApp(context).then((result) {
+            if (result == null) {
+              setState(() {
+                loadState.setStatusFailed();
+              });
+              showErrorSnackBar(scaffold: scaffold);
+              return;
+            }
             setState(() {
               initData = result;
-              _isLoading = false;
+              loadState.setStatusOk();
             });
           });
         }
-        return _isLoading
+        return loadState.isLoading() || loadState.isFailed()
             ? Scaffold(
-                body: Center(
-                child: CircularProgressIndicator(),
-              ))
+                key: scaffold,
+                body: makeLoadBody(context, loadState, null, onRetry: () async {
+                  showSites(context, await AppConfig.getSiteList());
+                }))
             : Scaffold(
                 key: scaffold,
                 appBar: AppBar(
@@ -236,7 +246,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<InitData> initApp(BuildContext context) async {
-    _isLoading = true;
+    loadState.setStatusLoading();
     await AppConfig.init();
     var sites = await AppConfig.getSiteList();
     ForumInfo info;
@@ -427,6 +437,7 @@ class _MainPageState extends State<MainPage> {
 
   void refreshUI() {
     setState(() {
+      loadState.setStatusOk();
       initData = null;
       discussionSort = "";
     });
